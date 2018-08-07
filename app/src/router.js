@@ -1,15 +1,43 @@
-import React from 'react';
-import { Router, Route, Switch } from 'dva/router';
-import IndexPage from './routes/IndexPage';
+import { Route, Switch, routerRedux, Redirect } from 'dva/router';
 
-function RouterConfig({ history }) {
+import dynamic from 'dva/dynamic';
+
+const { ConnectedRouter } = routerRedux;
+
+const Routers = function ({ history, app }) {
+  const error = dynamic({
+    app,
+    component: () => import('./routes/error'),
+  });
+
+  const routes = [
+    {
+      path: '/index', // 首页
+      models: () => [import('./models/example')],
+      component: () => import('./routes/IndexPage')
+    },
+  ];
+
   return (
-    <Router history={history}>
+    <ConnectedRouter history={history}>
       <Switch>
-        <Route path="/" exact component={IndexPage} />
+        <Route exact path="/" render={() => (<Redirect to="/index" />)} />
+        {
+          routes.map(({ path, ...dynamics }, key) => (
+            <Route key={key}
+              exact
+              path={path}
+              component={dynamic({
+                app,
+                ...dynamics,
+              })}
+            />
+          ))
+        }
+        <Route component={error} />
       </Switch>
-    </Router>
-  );
+    </ConnectedRouter>
+  )
 }
 
-export default RouterConfig;
+export default Routers;

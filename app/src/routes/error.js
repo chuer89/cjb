@@ -1,16 +1,14 @@
 import React from 'react';
 import { connect } from 'dva';
-import App from './app';
+import { Button } from 'antd';
 
 function IndexPage() {
   return (
-    <App>
-      <h1>这里是页面</h1>
-    </App>
+    <div>
+      <h1>错误页面</h1>
+      <Button>错误页面</Button>
+    </div>
   );
 }
-
-IndexPage.propTypes = {
-};
 
 export default connect()(IndexPage);
