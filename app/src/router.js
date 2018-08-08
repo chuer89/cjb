@@ -14,7 +14,7 @@ const Routers = function ({ history, app }) {
     {
       path: '/index', // 首页
       models: () => [import('./models/example')],
-      component: () => import('./routes/IndexPage')
+      component: () => import('./routes/workbench/')
     },
   ];
 
