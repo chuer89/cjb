@@ -2,8 +2,12 @@ import { Layout, Menu, Icon } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import style from './app.less';
+import NProgress from 'nprogress';
+import { Link } from 'dva/router';
 
 const { Header, Content, Footer, Sider } = Layout;
+
+NProgress.start();
 
 class App extends React.Component {
   state = {
@@ -18,6 +22,7 @@ class App extends React.Component {
 
   render() {
     let { children } = this.props;
+    let contentHeight = document.body.clientHeight - 64 - 60;
 
     return (
       <Layout>
@@ -29,12 +34,16 @@ class App extends React.Component {
           <div className={style.logo} />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
-              <Icon type="desktop" />
-              <span>工作台</span>
+              <Link to="/index">
+                <Icon type="desktop" />
+                <span>工作台</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="pie-chart" />
-              <span>仪表盘</span>
+              <Link to="/dashboard">
+                <Icon type="pie-chart" />
+                <span>仪表盘</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="copy" />
@@ -60,7 +69,7 @@ class App extends React.Component {
             </div>
 
           </Header>
-          <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
+          <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: contentHeight }}>
             {children}
           </Content>
           <Footer style={{ textAlign: 'center' }}>

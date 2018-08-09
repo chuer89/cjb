@@ -2,6 +2,7 @@ import "babel-polyfill";
 import dva from 'dva';
 import './index.css';
 import createLoading from 'dva-loading';
+import 'nprogress/nprogress.css'
 
 // 1. Initialize
 const app = dva();

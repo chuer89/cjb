@@ -12,20 +12,24 @@ const Routers = function ({ history, app }) {
 
   const routes = [
     {
+      path: '/login', // 登陆页
+      component: () => import('./routes/login/')
+    },
+    {
       path: '/index', // 首页
       models: () => [import('./models/example')],
       component: () => import('./routes/workbench/')
     },
     {
-      path: '/login', // 登陆页
-      component: () => import('./routes/login/')
+      path: '/dashboard', // 登陆页
+      component: () => import('./routes/dashboard/')
     },
   ];
 
   return (
     <ConnectedRouter history={history}>
       <Switch>
-        <Route exact path="/" render={() => (<Redirect to="/index" />)} />
+        <Route exact path="/" render={() => (<Redirect to="/login" />)} />
         {
           routes.map(({ path, ...dynamics }, key) => (
             <Route key={key}

@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'dva'
 import { Button, Row, Form, Input } from 'antd'
 import styles from './index.less'
+import NProgress from 'nprogress';
 
 const FormItem = Form.Item
 
+NProgress.start();
 const Login = ({
   loading,
   dispatch,
@@ -14,12 +16,14 @@ const Login = ({
     validateFieldsAndScroll,
   },
 }) => {
+  NProgress.done();
   function handleOk () {
     validateFieldsAndScroll((errors, values) => {
       if (errors) {
         return
       }
-      dispatch({ type: 'login/login', payload: values })
+      // dispatch({ type: 'login/login', payload: values })
+      window.location.href = '#/index'
     })
   }
 
@@ -54,10 +58,6 @@ const Login = ({
           <Button type="primary" onClick={handleOk} loading={loading.effects.login}>
             Sign in
           </Button>
-          <p>
-            <span>Username：guest</span>
-            <span>Password：guest</span>
-          </p>
         </Row>
 
       </form>

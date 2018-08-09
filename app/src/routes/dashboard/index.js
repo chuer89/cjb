@@ -3,13 +3,13 @@ import { connect } from 'dva';
 import App from '../app';
 import NProgress from 'nprogress';
 
-function WorkBench() {
+function Dashboard() {
   NProgress.done();
   return (
     <App>
-      <h1>工作台内容</h1>
+      <h1>仪表盘数据</h1>
     </App>
   );
 }
 
-export default connect()(WorkBench);
+export default connect()(Dashboard);
