@@ -10,42 +10,58 @@ class App extends React.Component {
     collapsed: false,
   };
 
-  onCollapse = (collapsed) => {
-    console.log(collapsed);
-    this.setState({ collapsed });
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
   }
 
   render() {
     let { children } = this.props;
+
     return (
-      <Layout style={{ minHeight: '100vh' }}>
+      <Layout>
         <Sider
+          trigger={null}
           collapsible
           collapsed={this.state.collapsed}
-          onCollapse={this.onCollapse}
         >
           <div className={style.logo} />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
               <Icon type="desktop" />
               <span>工作台</span>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="pie-chart"/>
+              <Icon type="pie-chart" />
               <span>仪表盘</span>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="user" />
+              <Icon type="copy" />
               <span>员工档案</span>
             </Menu.Item>
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }} />
-          <Content style={{ margin: '0 16px' }}>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-              {children}
+          <Header style={{ background: '#fff', padding: 0 }}>
+            <div className={style.headerBox}>
+              <div className={style.headerItem}>
+                <Icon
+                  className={style.trigger}
+                  type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+                  onClick={this.toggle}
+                />
+              </div>
+              <div className={style.headerItem + ' ' + style.userHeader}>
+                <span className={style.userInfo}>
+                  <Icon type="user" /><span>蒙扎特</span>
+                </span>
+              </div>
             </div>
+
+          </Header>
+          <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
+            {children}
           </Content>
           <Footer style={{ textAlign: 'center' }}>
             匠 ©2018

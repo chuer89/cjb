@@ -16,6 +16,10 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/example')],
       component: () => import('./routes/workbench/')
     },
+    {
+      path: '/login', // 登陆页
+      component: () => import('./routes/login/')
+    },
   ];
 
   return (
