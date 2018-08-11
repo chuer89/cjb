@@ -16,13 +16,18 @@ const Routers = function ({ history, app }) {
       component: () => import('./routes/login/')
     },
     {
-      path: '/index', // 首页
+      path: '/index', // 工作台
       models: () => [import('./models/example')],
       component: () => import('./routes/workbench/')
     },
     {
-      path: '/dashboard', // 登陆页
+      path: '/dashboard', // 仪表盘
       component: () => import('./routes/dashboard/')
+    },
+    {
+      path: '/record', // 档案管理
+      models: () => [import('./models/record')],
+      component: () => import('./routes/record/')
     },
   ];
 

@@ -7,12 +7,39 @@ import { Link } from 'dva/router';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-NProgress.start();
-
 class App extends React.Component {
   state = {
     collapsed: false,
-  };
+
+    defaultSelectedKeys: ['/index'],
+    selectedKeys: [],
+
+    menus: [{
+      path: '/index',
+      icon: 'desktop',
+      name: '工作台',
+    }, {
+      path: '/dashboard',
+      icon: 'pie-chart',
+      name: '仪表盘',
+    }, {
+      path: '/record',
+      icon: 'copy',
+      name: '员工档案',
+    }]
+  }
+
+  UNSAFE_componentWillMount() {
+    let { defaultSelectedKeys } = this.state;
+    let { pathname } = this.props.app;
+    let selectedKeys = [pathname] || defaultSelectedKeys;
+
+    this.setState({
+      selectedKeys,
+    });
+
+    NProgress.start();
+  }
 
   toggle = () => {
     this.setState({
@@ -23,6 +50,19 @@ class App extends React.Component {
   render() {
     let { children } = this.props;
     let contentHeight = document.body.clientHeight - 64 - 60;
+    let { menus, selectedKeys } = this.state;
+
+    // 菜单组件
+    let renderMenus = menus.map((item) => {
+      return (
+        <Menu.Item key={item.path}>
+          <Link to={item.path}>
+            <Icon type={item.icon} />
+            <span>{item.name}</span>
+          </Link>
+        </Menu.Item>
+      )
+    });
 
     return (
       <Layout>
@@ -32,23 +72,8 @@ class App extends React.Component {
           collapsed={this.state.collapsed}
         >
           <div className={style.logo} />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1">
-              <Link to="/index">
-                <Icon type="desktop" />
-                <span>工作台</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Link to="/dashboard">
-                <Icon type="pie-chart" />
-                <span>仪表盘</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="copy" />
-              <span>员工档案</span>
-            </Menu.Item>
+          <Menu theme="dark" mode="inline" selectedKeys={selectedKeys}>
+            {renderMenus}
           </Menu>
         </Sider>
         <Layout>
@@ -67,7 +92,6 @@ class App extends React.Component {
                 </span>
               </div>
             </div>
-
           </Header>
           <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: contentHeight }}>
             {children}
@@ -81,4 +105,6 @@ class App extends React.Component {
   }
 }
 
-export default connect()(App);
+export default connect((({ app }) => ({
+  app,
+})))(App);
