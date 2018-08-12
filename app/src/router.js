@@ -22,6 +22,7 @@ const Routers = function ({ history, app }) {
     },
     {
       path: '/dashboard', // 仪表盘
+      models: () => [import('./models/dashboard')],
       component: () => import('./routes/dashboard/')
     },
     {

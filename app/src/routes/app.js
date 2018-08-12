@@ -64,6 +64,14 @@ class App extends React.Component {
       )
     });
 
+    // 内容样式
+    let contentStyle = {
+      // margin: '24px 16px', 
+      padding: 24, 
+      // background: '#fff', 
+      minHeight: contentHeight,
+    }
+
     return (
       <Layout>
         <Sider
@@ -93,7 +101,7 @@ class App extends React.Component {
               </div>
             </div>
           </Header>
-          <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: contentHeight }}>
+          <Content style={contentStyle}>
             {children}
           </Content>
           <Footer style={{ textAlign: 'center' }}>

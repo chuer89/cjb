@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import App from '../app';
 import NProgress from 'nprogress';
 import { Table, Icon, Divider } from 'antd';
+import style from './record.less';
 
 class RecordList extends React.Component {
   constructor(props) {
@@ -23,8 +24,10 @@ class RecordList extends React.Component {
     
     return (
       <App>
+        <div className={style.content}>
         <h1>档案管理</h1>
         <Table dataSource={dataSource} columns={columns} />
+        </div>
       </App>
     );
   }
