@@ -5,6 +5,7 @@ import App from '../app';
 import NProgress from 'nprogress';
 import { Table, Icon, Divider, Button, Input, Select } from 'antd';
 import style from './record.less';
+import { Link } from 'dva/router';
 
 const Option = Select.Option;
 
@@ -71,7 +72,9 @@ class RecordList extends React.Component {
       <App>
         <div className={style.content}>
           <div>
-            <Button type="primary" icon="user-add" style={{ 'marginRight': '15px' }}>添加员工</Button>
+            <Link to="addUser">
+              <Button type="primary" icon="user-add" style={{ 'marginRight': '15px' }}>添加员工</Button>
+            </Link>
             <Button type="primary" icon="usergroup-add">批量添加</Button>
           </div>
           <div className={style.searchBox}>
