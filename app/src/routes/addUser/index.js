@@ -7,6 +7,8 @@ import { Table, Icon, Divider, Button, Input, Select, Breadcrumb, Tabs } from 'a
 import style from './add.less';
 import { Link } from 'dva/router';
 
+import Personal from '../../components/addUser/personal';
+
 const TabPane = Tabs.TabPane;
 
 class Add extends React.Component {
@@ -21,6 +23,8 @@ class Add extends React.Component {
   }
 
   render() {
+    let { addUser } = this.props;
+    let { basicDisabled, experienceDisabled, portrayalDisabled } = addUser;
     return (
       <App>
         <div>
@@ -31,11 +35,14 @@ class Add extends React.Component {
             <Breadcrumb.Item>添加用户</Breadcrumb.Item>
           </Breadcrumb>
         </div>
-        <div>
+        <div className={style.content}>
           <Tabs defaultActiveKey="1" tabPosition="left">
-            <TabPane tab="Tab 1" key="1">Tab 1</TabPane>
-            <TabPane tab="Tab 2" disabled key="2">Tab 2</TabPane>
-            <TabPane tab="Tab 3" key="3">Tab 3</TabPane>
+            <TabPane tab="个人信息" key="1">
+              <Personal />
+            </TabPane>
+            <TabPane tab="基本信息" disabled={basicDisabled} key="2">Tab 2</TabPane>
+            <TabPane tab="工作经历" disabled={experienceDisabled} key="3">Tab 3</TabPane>
+            <TabPane tab="员工画像" disabled={portrayalDisabled} key="4">Tab 3</TabPane>
           </Tabs>
         </div>
       </App>
