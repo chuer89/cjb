@@ -1,28 +1,25 @@
 import React from 'react';
-import { connect } from 'dva';
 import { Form, Icon, Input, Button, Radio } from 'antd';
 
 const FormItem = Form.Item;
 
-class PersonalForm extends React.Component {
+class BasicForm extends React.Component {
   componentDidMount() {
     // To disabled submit button at the beginning.
     this.props.form.validateFields();
   }
 
-  render() {
-    let { handerNext, form } = this.props;
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = form;
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  }
 
-    let handleSubmit = (e) => {
-      e.preventDefault();
-      this.props.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-        }
-      });
-      handerNext();
-    }
+  render() {
+    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
 
     const formItemLayout = {
       labelCol: {
@@ -34,7 +31,7 @@ class PersonalForm extends React.Component {
     };
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="姓名">
           {getFieldDecorator('email', {
             rules: [{
@@ -81,30 +78,15 @@ class PersonalForm extends React.Component {
   }
 }
 
-const WrappedPersonalForm = Form.create()(PersonalForm);
+const WrappedBasicForm = Form.create()(BasicForm);
 
-const Personal = ({ dispatch }) => {
-  let handerNext = () => {
-    dispatch({
-      type: 'addUser/save',
-      payload: {
-        basicDisabled: false,
-      }
-    })
-  };
-
-  let opt = {
-    handerNext,
-  };
-
+const Basic = () => {
   return (
     <div>
-      <div>个人信息</div>
-      <WrappedPersonalForm {...opt}/>
+      <div>基本信息</div>
+      <WrappedBasicForm />
     </div>
   );
 };
 
-export default connect((({ addUser }) => ({
-  addUser,
-})))(Personal);
+export default Basic;
