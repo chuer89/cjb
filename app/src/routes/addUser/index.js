@@ -24,8 +24,18 @@ class Add extends React.Component {
   }
 
   render() {
-    let { addUser } = this.props;
-    let { basicDisabled, experienceDisabled, portrayalDisabled } = addUser;
+    let { addUser, dispatch } = this.props;
+    let { basicDisabled, experienceDisabled, portrayalDisabled, activeTabsKey } = addUser;
+
+    let handerChange = (activeKey) => {
+      dispatch({
+        type: 'addUser/save',
+        payload: {
+          activeTabsKey: activeKey
+        }
+      });
+    }
+
     return (
       <App>
         <div>
@@ -37,7 +47,7 @@ class Add extends React.Component {
           </Breadcrumb>
         </div>
         <div className={style.content}>
-          <Tabs defaultActiveKey="1" tabPosition="left">
+          <Tabs activeKey={activeTabsKey} tabPosition="left" onChange={handerChange}>
             <TabPane tab="个人信息" key="1"><Personal /></TabPane>
             <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic /></TabPane>
             <TabPane tab="工作经历" disabled={experienceDisabled} key="3">Tab 3</TabPane>

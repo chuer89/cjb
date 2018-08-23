@@ -1,9 +1,33 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Radio } from 'antd';
+import { Form, Icon, Input, Button, Radio, DatePicker, Select } from 'antd';
+import locale from 'antd/lib/date-picker/locale/zh_CN';
+
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
+const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
+// 基本信息
 class BasicForm extends React.Component {
+  constructor(props) {
+    super(props);
+    // 设置 initial state
+    this.state = {
+      // 职业级别
+      professionLevel: [{
+        value: '普通店员', code: '0'
+      }, {
+        value: '店长', code: '1'
+      }, {
+        value: '经理', code: '2'
+      }, {
+        value: '其他', code: '3'
+      }]
+    }
+  }
+
   componentDidMount() {
     // To disabled submit button at the beginning.
     this.props.form.validateFields();
@@ -20,6 +44,21 @@ class BasicForm extends React.Component {
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+    let { professionLevel } = this.state;
+
+    let onChange = (date, dateString) => {
+      console.log(date, dateString);
+    }
+
+    let handleChange = (value) => {
+      console.log(value, 'v');
+    }
+    // 状态筛选
+    let renderProfessionLevel = professionLevel.map((item) => {
+      return (
+        <Option value={item.code} key={item.code}>{item.value}</Option>
+      )
+    });
 
     const formItemLayout = {
       labelCol: {
@@ -32,42 +71,45 @@ class BasicForm extends React.Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <FormItem {...formItemLayout} label="姓名">
-          {getFieldDecorator('email', {
+        <FormItem {...formItemLayout} label="入职日期">
+          {getFieldDecorator('ruDate', {
             rules: [{
-              required: true, message: '请输入姓名',
+              required: true, message: '请选择入职日期',
             }],
+            initialValue: moment(new Date, 'YYYY-MM-DD')
           })(
-            <Input placeholder="请输入姓名" autoComplete="off" maxLength="32"/>
+            <DatePicker onChange={onChange} locale={locale} />
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="用户性别">
+        <FormItem {...formItemLayout} label="职级">
+          {getFieldDecorator('level', {
+            rules: [{
+              required: true, message: '请选择职级',
+            }],
+          })(
+            <Select style={{ width: 120 }} onChange={handleChange}>
+              {renderProfessionLevel}
+            </Select>
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="在职状态">
           {getFieldDecorator('sex', {
             initialValue: '1',
-            rules: [{ required: true, message: '请选择性别' }]
+            rules: [{ required: true, message: '请选择在职状态' }]
           })(
             <Radio.Group>
-              <Radio value="1">男</Radio>
-              <Radio value="2">女</Radio>
+              <Radio value="1">在职</Radio>
+              <Radio value="2">离职</Radio>
             </Radio.Group>
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="联系方式">
-          {getFieldDecorator('phone', {
+        <FormItem {...formItemLayout} label="合同有效期">
+          {getFieldDecorator('heDate', {
             rules: [{
-              required: true, message: '请输入联系方式',
+              required: true, message: '请选择合同有效期',
             }],
           })(
-            <Input placeholder="请输入联系方式" autoComplete="off" maxLength="32"/>
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="身份证">
-          {getFieldDecorator('dell', {
-            rules: [{
-              required: true, message: '请输入身份证',
-            }],
-          })(
-            <Input placeholder="请输入身份证" autoComplete="off" maxLength="32"/>
+            <RangePicker onChange={onChange} locale={locale} />
           )}
         </FormItem>
         <FormItem>

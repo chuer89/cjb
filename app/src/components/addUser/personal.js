@@ -4,6 +4,7 @@ import { Form, Icon, Input, Button, Radio } from 'antd';
 
 const FormItem = Form.Item;
 
+// 个人信息
 class PersonalForm extends React.Component {
   componentDidMount() {
     // To disabled submit button at the beginning.
@@ -89,6 +90,7 @@ const Personal = ({ dispatch }) => {
       type: 'addUser/save',
       payload: {
         basicDisabled: false,
+        activeTabsKey: '2'
       }
     })
   };
