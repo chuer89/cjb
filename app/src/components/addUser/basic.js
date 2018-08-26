@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Radio, DatePicker, Select } from 'antd';
+import { Form, Button, Radio, DatePicker, Select } from 'antd';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 import moment from 'moment';
@@ -7,7 +7,7 @@ import 'moment/locale/zh-cn';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+const { RangePicker } = DatePicker;
 
 // 基本信息
 class BasicForm extends React.Component {
@@ -43,7 +43,7 @@ class BasicForm extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     let { professionLevel } = this.state;
 
     let onChange = (date, dateString) => {
@@ -76,7 +76,7 @@ class BasicForm extends React.Component {
             rules: [{
               required: true, message: '请选择入职日期',
             }],
-            initialValue: moment(new Date, 'YYYY-MM-DD')
+            initialValue: moment(new Date(), 'YYYY-MM-DD')
           })(
             <DatePicker onChange={onChange} locale={locale} />
           )}

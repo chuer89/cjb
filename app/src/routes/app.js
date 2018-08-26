@@ -41,10 +41,9 @@ class App extends React.Component {
     NProgress.start();
   }
 
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
+  onCollapse = (collapsed) => {
+    console.log(collapsed);
+    this.setState({ collapsed });
   }
 
   render() {
@@ -67,46 +66,54 @@ class App extends React.Component {
     // 内容样式
     let contentStyle = {
       // margin: '24px 16px', 
-      padding: 24, 
+      padding: 24,
       // background: '#fff', 
       minHeight: contentHeight,
     }
 
     return (
       <Layout>
-        <Sider
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-        >
-          <div className={style.logo} />
-          <Menu theme="dark" mode="inline" selectedKeys={selectedKeys}>
-            {renderMenus}
-          </Menu>
-        </Sider>
+        <Header className={style.headerBox} style={{'padding': '0 34px 0 0'}}>
+          <div className={style.headerItem}>
+            <div className={style.logo} />
+          </div>
+          <div className={style.headerItem}>
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              defaultSelectedKeys={['2']}
+              style={{ lineHeight: '64px' }}
+            >
+              <Menu.Item key="1">人事管理</Menu.Item>
+              <Menu.Item key="2">培训资料</Menu.Item>
+              <Menu.Item key="3">后台配置</Menu.Item>
+            </Menu>
+          </div>
+          <div style={{'float': 'right'}}>
+            <span className={style.userInfo}>
+              <Icon type="user" /><span>蒙扎特</span>
+            </span>
+          </div>
+        </Header>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}>
-            <div className={style.headerBox}>
-              <div className={style.headerItem}>
-                <Icon
-                  className={style.trigger}
-                  type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                  onClick={this.toggle}
-                />
-              </div>
-              <div className={style.headerItem + ' ' + style.userHeader}>
-                <span className={style.userInfo}>
-                  <Icon type="user" /><span>蒙扎特</span>
-                </span>
-              </div>
-            </div>
-          </Header>
-          <Content style={contentStyle}>
-            {children}
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            匠 ©2018
+          <Sider
+            theme="light"
+            collapsible
+            collapsed={this.state.collapsed}
+            onCollapse={this.onCollapse}
+          >
+            <Menu mode="inline" selectedKeys={selectedKeys}>
+              {renderMenus}
+            </Menu>
+          </Sider>
+          <Layout>
+            <Content style={contentStyle}>
+              {children}
+            </Content>
+            <Footer style={{ textAlign: 'center' }}>
+              匠 ©2018
           </Footer>
+          </Layout>
         </Layout>
       </Layout>
     );

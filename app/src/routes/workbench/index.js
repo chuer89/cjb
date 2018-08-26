@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
 import NProgress from 'nprogress';
-import { Card, Button, Tabs } from 'antd';
+import { Card, Tabs } from 'antd';
 
 const TabPane = Tabs.TabPane;
 

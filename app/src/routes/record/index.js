@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
 import NProgress from 'nprogress';
-import { Table, Icon, Divider, Button, Input, Select } from 'antd';
+import { Table, Button, Input, Select } from 'antd';
 import style from './record.less';
 import { Link } from 'dva/router';
 

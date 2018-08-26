@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Icon, Input, Button, Radio } from 'antd';
+import { Form, Input, Button, Radio } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -13,9 +13,10 @@ class PersonalForm extends React.Component {
 
   render() {
     let { handerNext, form } = this.props;
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = form;
+    const { getFieldDecorator } = form;
 
     let handleSubmit = (e) => {
+      console.log(1)
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
@@ -37,7 +38,7 @@ class PersonalForm extends React.Component {
     return (
       <Form onSubmit={handleSubmit}>
         <FormItem {...formItemLayout} label="姓名">
-          {getFieldDecorator('email', {
+          {getFieldDecorator('name', {
             rules: [{
               required: true, message: '请输入姓名',
             }],
