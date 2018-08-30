@@ -1,22 +1,21 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Input, Button, Radio } from 'antd';
+import { Form, Input, Button, Radio, DatePicker } from 'antd';
+import locale from 'antd/lib/date-picker/locale/zh_CN';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+import _ from 'lodash';
 
 const FormItem = Form.Item;
+const { RangePicker } = DatePicker;
 
 // 个人信息
 class PersonalForm extends React.Component {
-  componentDidMount() {
-    // To disabled submit button at the beginning.
-    this.props.form.validateFields();
-  }
-
   render() {
     let { handerNext, form } = this.props;
     const { getFieldDecorator } = form;
 
     let handleSubmit = (e) => {
-      console.log(1)
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
@@ -73,6 +72,26 @@ class PersonalForm extends React.Component {
             }],
           })(
             <Input placeholder="请输入身份证" autoComplete="off" maxLength="32"/>
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="身份证到期日期">
+          {getFieldDecorator('cardDate', {
+            rules: [{
+              required: true, message: '请选择身份证到期日期',
+            }],
+            initialValue: moment(new Date(), 'YYYY-MM-DD')
+          })(
+            <DatePicker locale={locale} />
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="健康证到期日期">
+          {getFieldDecorator('cardDate', {
+            rules: [{
+              required: true, message: '请选择健康证到期日期',
+            }],
+            initialValue: moment(new Date(), 'YYYY-MM-DD')
+          })(
+            <DatePicker locale={locale} />
           )}
         </FormItem>
         <FormItem>
