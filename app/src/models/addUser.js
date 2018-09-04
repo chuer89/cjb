@@ -4,7 +4,7 @@ export default {
   namespace: 'addUser',
 
   state: {
-    activeTabsKey: '1', // 选中面板
+    activeTabsKey: '4', // 选中面板
     basicDisabled: true, // 基本信息
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像

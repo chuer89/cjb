@@ -10,6 +10,7 @@ import { Link } from 'dva/router';
 import Personal from '../../components/addUser/personal'; // 个人信息
 import Basic from '../../components/addUser/basic'; // 基本信息
 import Experience from '../../components/addUser/experience'; // 工作经验
+import Portrayal from '../../components/addUser/portrayal'; // 用户画像
 
 const TabPane = Tabs.TabPane;
 
@@ -52,7 +53,7 @@ class Add extends React.Component {
             <TabPane tab="个人信息" key="1"><Personal /></TabPane>
             <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic /></TabPane>
             <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience /></TabPane>
-            <TabPane tab="员工画像" disabled={portrayalDisabled} key="4">Tab 3</TabPane>
+            <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal /></TabPane>
           </Tabs>
         </div>
       </App>
