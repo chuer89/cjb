@@ -35,14 +35,7 @@ export default {
     }, {
       title: '操作',
       key: 'handle',
-      render: (item) => {
-        // console.log(item)
-        return (
-          <div>
-            <span>编辑</span>
-          </div>
-        )
-      }
+      render: () => {},
     }],
 
     dataSource: [{

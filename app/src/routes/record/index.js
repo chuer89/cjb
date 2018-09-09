@@ -6,6 +6,7 @@ import NProgress from 'nprogress';
 import { Table, Button, Input, Select } from 'antd';
 import style from './record.less';
 import { Link } from 'dva/router';
+import _ from 'lodash';
 
 const Option = Select.Option;
 
@@ -68,6 +69,21 @@ class RecordList extends React.Component {
       )
     });
 
+    _.last(columns).render = (item) => {
+      // console.log(item)
+      return (
+        <div>
+          <span>编辑</span>
+          <Link target="_blank" to="/userdetails/1">详情</Link>
+        </div>
+      )
+    }
+
+    let tableOpt = {
+      dataSource,
+      columns,
+    }
+
     return (
       <App>
         <div className={style.content}>
@@ -113,7 +129,7 @@ class RecordList extends React.Component {
               </div>
             </div>
           </div>
-          <Table dataSource={dataSource} columns={columns} />
+          <Table {...tableOpt} />
         </div>
       </App>
     );
