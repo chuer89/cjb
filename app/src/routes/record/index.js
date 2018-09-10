@@ -73,7 +73,7 @@ class RecordList extends React.Component {
       // console.log(item)
       return (
         <div>
-          <span>编辑</span>
+          <span style={{'paddingRight': '5px'}}>编辑</span>
           <Link target="_blank" to="/userdetails/1">详情</Link>
         </div>
       )

@@ -42,7 +42,7 @@ class Dashboard extends React.Component {
     let renderPersonnel = personnelGeneral.map((item, index) => {
       return (
         <Col span={6} key={index} className={style.generalBox}>
-          <div className={style.generalItem} style={{'backgroundColor': item.color}}>
+          <div className={style.generalItem} style={{ 'backgroundColor': item.color }}>
             <h4>{item.name}</h4>
             <p>
               <span className={style.generalNumber}>{item.number}</span>
@@ -51,19 +51,38 @@ class Dashboard extends React.Component {
           </div>
         </Col>
       )
+    });
+
+    let allListData = [{
+      message: '今天重点新闻，宽松大翻领加上地方', date: '2018-02-11 12:33', isNew: true
+    }, {
+      message: '来到健身房阿斯顿发了；看见阿斯顿发爱上；两地分居', date: '2017-09-19 14:44'
+    }];
+    let renderAllList = allListData.map((item, index) => {
+      return (
+        <li key={index}>
+          <div className={style.messageListBox}>
+            <div className={style.newMessage} style={{'display': item.isNew ? 'block' : 'none'}}></div>
+            <div className={style.messageContent}>{item.message}</div>
+            <div className={style.messageDate}>{item.date}</div>
+          </div>
+        </li>
+      )
     })
 
     return (
       <App>
         <div className={style.itemBox}>
           <Card title="人事概况">
-            <Row style={{'padding': '24px 0'}}>{renderPersonnel}</Row>
+            <Row style={{ 'padding': '24px 0' }}>{renderPersonnel}</Row>
           </Card>
         </div>
         <div className={style.itemBox}>
           <Card loading={loading} title="代办事项">
             <Tabs tabPosition={'left'}>
-              <TabPane tab="全部" key="1">Content of Tab 1</TabPane>
+              <TabPane tab="全部" key="1">
+                <ul>{renderAllList}</ul>
+              </TabPane>
               <TabPane tab="预警" key="2">Content of Tab 2</TabPane>
               <TabPane tab="提醒" key="3">Content of Tab 3</TabPane>
             </Tabs>

@@ -5,7 +5,9 @@ import NProgress from 'nprogress';
 import ReactEcharts from 'echarts-for-react';
 import common from '../../common';
 import style from './index.less';
-import { Row, Col } from 'antd';
+import { Row, Col, Card } from 'antd';
+
+import Comments from './components/comments';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -56,9 +58,10 @@ class Dashboard extends React.Component {
       }
       return (
         <Col {...RowSpan3} key={index}>
-          <div className={style.split3} style={colStyle}>
-            <div className={style.title}>{item.title}</div>
-            <ReactEcharts option={option} />
+          <div className={style.splitBox} style={colStyle}>
+            <Card title={item.title}>
+              <ReactEcharts option={option} />
+            </Card>
           </div>
         </Col>
       )
@@ -85,11 +88,15 @@ class Dashboard extends React.Component {
 
     return (
       <App>
-        <Row>{renderTopPie}</Row>
         <div className={style.box}>
-          <div className={style.title}>流动分析</div>
-          <ReactEcharts style={{'height': '400px'}} option={lineOption} />
+          <Row>{renderTopPie}</Row>
         </div>
+        <div className={style.box}>
+          <Card title="流动分析">
+            <ReactEcharts style={{ 'height': '400px' }} option={lineOption} />
+          </Card>
+        </div>
+        <div className={style.box}><Comments /></div>
       </App>
     );
   }
