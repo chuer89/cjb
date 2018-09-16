@@ -20,7 +20,6 @@ class Modify extends React.Component {
       title,
       visible,
       onCancel,
-      inputKey,
       inputLabel,
       initialValue,
       callBack,
@@ -28,11 +27,9 @@ class Modify extends React.Component {
 
     let handleOk = () => {
       validateFieldsAndScroll((errors, values) => {
-        console.log('ok', errors, values)
         if (errors) {
           return
         }
-        console.log(callBack, 'fun', values)
         callBack(values.values);
       })
     };

@@ -1,22 +1,24 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Input, Row, Col, Icon } from 'antd'
+import { Button, Input, Row, Col, Icon, Modal } from 'antd'
 import styles from './index.less'
 import NProgress from 'nprogress';
 import _ from 'lodash';
+import { message } from 'antd';
 import services from './../../services/';
 
 import Modify from './components/modify';
 
+const confirm = Modal.confirm;
+
 NProgress.start();
 class Structure extends React.Component {
   state = {
-    brand: [],
+    valueBrandInput: '', // 添加品牌
     visibleModify: false,
     modifyTitle: '', // 弹框标题
-    modifyType: '',
     modifyLabel: '',
-    callBack: () => {},
+    callBack: () => { },
     initialValue: '',
   }
 
@@ -37,24 +39,45 @@ class Structure extends React.Component {
     }
   }
 
+  // 打开弹框
   handerOpenModify(payload) {
     _.extend(payload, {
       visibleModify: true,
     });
     this.save(payload);
   }
+  
+  // 操作回调
+  handerAjaxBack(data) {
+    let { dispatch } = this.props;
+    if (data.msg === 'success') {
+      message.success('操作成功');
+      dispatch({
+        type: 'structure/getOrganizations'
+      });
+    } else {
+      message.error(data.msg);
+    }
+  }
 
-  handleAddBrand() {
-    this.handerOpenModify({
-      modifyTitle: '添加品牌',
-    })
+  // 确定删除
+  handerShowDel(callBack) {
+    confirm({
+      title: '确定删除吗？',
+      // content: '',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        callBack();
+      },
+      onCancel() { },
+    });
   }
 
   // 修改品牌 弹框
   handerModifyBrand(bid, initialValue) {
     this.handerOpenModify({
       modifyTitle: '修改品牌',
-      modifyType: 'brand',
       modifyLabel: '请输入品牌名称',
       initialValue,
       callBack(values) {
@@ -62,9 +85,82 @@ class Structure extends React.Component {
           bid,
           bname: values,
         }
-        services.editCommonBrand(param).then(({ data }) => {
+        services.editCommonBrand(param)
+          .then(({ data }) => {
 
-        })
+          });
+      }
+    });
+  }
+
+  // 添加区域
+  addCommonArea(bid) {
+    let self = this;
+    this.handerOpenModify({
+      modifyTitle: '添加区域',
+      modifyLabel: '请输入区域名称',
+      initialValue: '',
+      callBack(values) {
+        let param = {
+          bid,
+          aname: values,
+        }
+        services.addCommonArea(param)
+          .then(({ data }) => {
+            self.handerAjaxBack(data);
+          });
+      }
+    });
+  }
+
+  // 更新区域
+  updateCommonAreaById(aid, initialValue) {
+    this.handerOpenModify({
+      modifyTitle: '修改区域',
+      modifyLabel: '请输入区域名称',
+      initialValue,
+      callBack(values) {
+        let param = {
+          aid,
+          aname: values,
+        }
+        services.updateCommonAreaById(param)
+          .then(({ data }) => {
+
+          });
+      }
+    });
+  }
+
+  // 删除区域
+  deleteCommonAreaById(aid) {
+    let self = this;
+    this.handerShowDel(() => {
+      services.deleteCommonAreaById({
+        aid,
+      }).then(({ data }) => {
+        self.handerAjaxBack(data);
+      });
+    });
+  }
+
+  // 添加门店
+  addCommonStore() {
+    let self = this;
+    let ajaxBack = this.handerAjaxBack;
+    this.handerOpenModify({
+      modifyTitle: '添加门店',
+      modifyLabel: '请输入门店名称',
+      initialValue: '',
+      callBack(values) {
+        // let param = {
+        //   bid,
+        //   aname: values,
+        // }
+        // services.addCommonArea(param)
+        //   .then(({ data }) => {
+        //     ajaxBack(data);
+        //   });
       }
     });
   }
@@ -72,9 +168,25 @@ class Structure extends React.Component {
   render() {
     let { structure } = this.props;
     let { storeStructure } = structure;
-    let { visibleModify, modifyTitle, modifyType, modifyLabel, callBack, initialValue } = this.state;
+    let { visibleModify, modifyTitle,
+      modifyLabel, callBack, initialValue, valueBrandInput } = this.state;
     let brandData = [];
     let self = this;
+
+    let handerChangeBrand = (e) => {
+      let value = e.target.value;
+      self.save({
+        valueBrandInput: value
+      });
+    }
+    // 添加品牌
+    let handleAddBrand = () => {
+      services.addCommonBrand({
+        bname: valueBrandInput
+      }).then(({ data }) => {
+
+      });
+    }
 
     let modifyOpt = {
       visible: visibleModify,
@@ -99,7 +211,9 @@ class Structure extends React.Component {
           renderArea = area.map((itemArea, indexArea) => {
             let { store } = itemArea;
             let renderStore = '';
+
             if (!_.isEmpty(store)) {
+              // 门店
               renderStore = store.map((itemStore, indexStore) => {
                 return (
                   <div key={indexStore} className={styles.storeBox}>
@@ -113,12 +227,16 @@ class Structure extends React.Component {
                 )
               })
             }
+
+            // 区域
             return (
               <div key={indexArea} className={styles.areaBox}>
                 <div className={styles.titleBox}>
                   <div className={styles.title}>{itemArea.aname}</div>
                   <div className={styles.operateBox}>
-                    <span>添加</span><span>编辑</span><span>删除</span>
+                    <span>添加</span>
+                    <span onClick={() => { self.updateCommonAreaById(itemArea.aid, itemArea.aname) }}>编辑</span>
+                    <span onClick={() => { self.deleteCommonAreaById(itemArea.aid) }}>删除</span>
                   </div>
                 </div>
                 <div>{renderStore}</div>
@@ -127,6 +245,7 @@ class Structure extends React.Component {
           });
         }
 
+        // 品牌
         return (
           <div key={index} className={styles.brandBox}>
             <div className={styles.titleBox}>
@@ -135,8 +254,8 @@ class Structure extends React.Component {
                 {item.bname}
               </div>
               <div className={styles.operateBox}>
-                <span>添加</span>
-                <span onClick={() => {self.handerModifyBrand(item.bid, item.bname)}}>编辑</span>
+                <span onClick={() => { self.addCommonArea(item.bid) }}>添加</span>
+                <span onClick={() => { self.handerModifyBrand(item.bid, item.bname) }}>编辑</span>
                 <span>删除</span>
               </div>
             </div>
@@ -158,10 +277,14 @@ class Structure extends React.Component {
         <div>
           <Row>
             <Col span={7}>
-              <Input onPressEnter={() => { self.handleAddBrand() }} autoComplete="off" placeholder="填写品牌名称" />
+              <Input value={valueBrandInput}
+                onChange={handerChangeBrand}
+                onPressEnter={handleAddBrand}
+                autoComplete="off"
+                placeholder="填写品牌名称" />
             </Col>
             <Col span={5} style={{ 'paddingLeft': '24px' }}>
-              <Button type="primary" onClick={() => { self.handleAddBrand() }} loading={false}>添加</Button>
+              <Button type="primary" onClick={handleAddBrand} loading={false}>添加</Button>
             </Col>
           </Row>
         </div>

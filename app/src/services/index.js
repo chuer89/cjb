@@ -110,6 +110,32 @@ let httpApi = {
 		return post('base', '/commonBrand/getCommonBrandList', param);
 	},
 
+	// 添加区域
+	addCommonArea(param = {}) {
+		return post('base', '/commonArea/addCommonArea', param);
+	},
+	// 删除区域
+	deleteCommonAreaById(param = {}) {
+		return post('base', '/commonArea/deleteCommonAreaById', param);
+	},
+	// 更新区域
+	updateCommonAreaById(param = {}) {
+		return post('base', '/commonArea/updateCommonAreaById', param);
+	},
+
+	// 添加门店
+	addCommonStore(param = {}) {
+		return post('base', '/commonStore/addCommonStore', param);
+	},
+	// 更新门店
+	updateCommonStoreById(param = {}) {
+		return post('base', '/commonStore/updateCommonStoreById', param);
+	},
+	// 删除门店
+	deleteCommonStoreById(param = {}) {
+		return post('base', '/commonStore/deleteCommonStoreById', param);
+	},
+
 	// 获取当前用户所在企业组织架构
 	getOrganizations(param = {}) {
 		return post('base', '/common/organizations', param);
