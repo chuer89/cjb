@@ -1,0 +1,88 @@
+import services from './../services/';
+import { message } from 'antd';
+import common from './../common';
+import { routerRedux } from 'dva/router';
+
+export default {
+
+  namespace: 'user',
+
+  state: {
+    userInfo: JSON.parse(localStorage.getItem('userInfo') || '{}'), // 个人详情
+    menus: JSON.parse(localStorage.getItem('menus') || '{}'), // 菜单权限
+  },
+
+  subscriptions: {
+    setup({ dispatch, history }) {  // eslint-disable-line
+			history.listen(({ pathname }) => {
+        if (pathname === '/login') {
+          common.clearLocalStorage();
+        }
+        console.log(pathname, 'paht');
+      });
+    }
+  },
+
+  effects: {
+    *fetch({ payload }, { call, put }) {  // eslint-disable-line
+      yield put({ type: 'save' });
+    },
+
+    *register({ payload }, { call, put }) {
+      let temp = yield call(services.register, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        message.success('注册成功，请登录');
+        yield put(routerRedux.push({
+          pathname: '/login'
+        }));
+      } else {
+        message.error(data.msg);
+      }
+    },
+
+    *login({ payload }, { call, put }) {
+      let userInfo = {};
+      let menus = [];
+      const temp = yield call(services.login, payload);
+      const { data } = temp;
+      if (data.msg === 'success') {
+        userInfo = data.data;
+
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        // yield put(routerRedux.push({
+        //   pathname: '/index'
+        // }));
+
+        yield call(services.getOrgInit, {});
+        
+        // 获取权限菜单
+        // let ajaxMenu = yield call(services.menus, {});
+        // if (ajaxMenu.data.msg === 'success') {
+        //   menus = ajaxMenu.data.data;
+          
+        //   localStorage.setItem('menus', JSON.stringify(menus));
+
+        //   yield put({
+        //     type: 'save',
+        //     payload: {
+        //       userInfo,
+        //       menus,
+        //     }
+        //   })
+        // } else {
+        //   message.error(ajaxMenu.data.msg);
+        // }
+      } else {
+        message.error(data.msg);
+      }
+    },
+  },
+
+  reducers: {
+    save(state, action) {
+      return { ...state, ...action.payload };
+    },
+  },
+
+};

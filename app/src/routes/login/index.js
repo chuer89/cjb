@@ -1,74 +1,78 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'dva'
 import { Button, Row, Form, Input } from 'antd'
 import styles from './index.less'
 import NProgress from 'nprogress';
+import { Link } from 'dva/router';
 
-const FormItem = Form.Item
+const FormItem = Form.Item;
 
-NProgress.start();
-const Login = ({
-  loading,
-  dispatch,
-  form: {
-    getFieldDecorator,
-    validateFieldsAndScroll,
-  },
-}) => {
-  NProgress.done();
-  function handleOk () {
-    validateFieldsAndScroll((errors, values) => {
-      if (errors) {
-        return
-      }
-      // dispatch({ type: 'login/login', payload: values })
-      window.location.href = '#/index'
-    })
+class Login extends React.Component {
+  state = {
   }
 
-  // <img alt="logo" src={config.logo} />
-  //       <span>{config.name}</span>
+  componentDidMount() {
+    NProgress.done();
+  }
 
-  return (
-    <div className={styles.form}>
-      <div className={styles.logo}>
-        
+  render() {
+    let {
+      dispatch,
+      form: {
+        getFieldDecorator,
+        validateFieldsAndScroll,
+      },
+    } = this.props;
+
+
+    let handleOk = () => {
+      validateFieldsAndScroll((errors, values) => {
+        if (errors) {
+          return
+        }
+        dispatch({
+          type: 'user/login',
+          payload: values
+        });
+      })
+    };
+
+    return (
+      <div className={styles.form}>
+        <div className={styles.logo}>
+          <div>CANJIANG餐匠</div>
+        </div>
+        <form>
+          <FormItem hasFeedback>
+            {getFieldDecorator('username', {
+              rules: [
+                {
+                  required: true, message: '请输入用户名'
+                },
+              ],
+            })(<Input size="large" onPressEnter={handleOk} autoComplete="off" placeholder="用户名" />)}
+          </FormItem>
+          <FormItem hasFeedback>
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  required: true, message: '请输入密码'
+                },
+              ],
+            })(<Input type="password" size="large" autoComplete="off" onPressEnter={handleOk} placeholder="密码" />)}
+          </FormItem>
+          <Row>
+            <Button type="primary" size="large" onClick={handleOk} loading={false}>登录</Button>
+          </Row>
+        </form>
+        <div style={{ 'paddingTop': '10px' }}>
+          <Link to="/register">去注册</Link>
+        </div>
       </div>
-      <form>
-        <FormItem hasFeedback>
-          {getFieldDecorator('username', {
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input onPressEnter={handleOk} placeholder="Username" />)}
-        </FormItem>
-        <FormItem hasFeedback>
-          {getFieldDecorator('password', {
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input type="password" onPressEnter={handleOk} placeholder="Password" />)}
-        </FormItem>
-        <Row>
-          <Button type="primary" onClick={handleOk} loading={loading.effects.login}>
-            Sign in
-          </Button>
-        </Row>
-
-      </form>
-    </div>
-  )
+    )
+  }
 }
 
-Login.propTypes = {
-  form: PropTypes.object,
-  dispatch: PropTypes.func,
-  loading: PropTypes.object,
-}
-
-export default connect(({ loading }) => ({ loading }))(Form.create()(Login))
+export default connect(({ user }) => ({
+  user,
+}))(Form.create()(Login));

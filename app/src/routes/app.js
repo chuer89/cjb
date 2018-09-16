@@ -1,4 +1,4 @@
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, BackTop, Popover } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import style from './app.less';
@@ -71,9 +71,19 @@ class App extends React.Component {
       minHeight: contentHeight,
     }
 
+    const userMenus = (
+      <div>
+        <div className={style.logout}>
+          <Link to="/login">
+            <Icon type="logout" theme="outlined" />退出
+          </Link>
+        </div>
+      </div>
+    );
+
     return (
       <Layout>
-        <Header className={style.headerBox} style={{'padding': '0 34px 0 0'}}>
+        <Header className={style.headerBox}>
           <div className={style.headerItem}>
             <div className={style.logo} />
           </div>
@@ -89,13 +99,15 @@ class App extends React.Component {
               <Menu.Item key="3">后台配置</Menu.Item>
             </Menu>
           </div>
-          <div style={{'float': 'right'}}>
-            <span className={style.userInfo}>
-              <Icon type="user" /><span>蒙扎特</span>
-            </span>
+          <div style={{ 'float': 'right' }}>
+            <Popover content={userMenus} placement="bottomRight">
+              <span className={style.userInfo}>
+                <Icon type="user" /><span>蒙扎特</span>
+              </span>
+            </Popover>
           </div>
         </Header>
-        <Layout>
+        <Layout style={{ 'paddingTop': '65px' }}>
           <Sider
             theme="light"
             collapsible
@@ -109,6 +121,7 @@ class App extends React.Component {
           <Layout>
             <Content style={contentStyle}>
               {children}
+              <BackTop />
             </Content>
             <Footer style={{ textAlign: 'center' }}>
               匠 ©2018

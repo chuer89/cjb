@@ -3,8 +3,7 @@ import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
 import NProgress from 'nprogress';
-import { Breadcrumb, Tabs } from 'antd';
-import { Link } from 'dva/router';
+import { Tabs } from 'antd';
 
 import Basic from './components/basic';
 import Expression from './components/expression';
@@ -24,7 +23,7 @@ class DetailsInfo extends React.Component {
   }
 
   render() {
-    let { details, dispatch } = this.props;
+    // let { details, dispatch } = this.props;
 
     let callback = (key) => {
 

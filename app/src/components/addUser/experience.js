@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Input, Button, Radio, DatePicker, Icon, Row, Col } from 'antd';
+import { Form, Input, Button, DatePicker, Icon, Row, Col } from 'antd';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
-import moment from 'moment';
 import 'moment/locale/zh-cn';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 // 工作经验
 const FormItem = Form.Item;

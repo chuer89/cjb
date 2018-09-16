@@ -1,6 +1,5 @@
 import React from 'react';
 // import { Row, Col } from 'antd';
-import _ from 'lodash';
 import style from './basic.less';
 
 // 基本信息

@@ -27,5 +27,10 @@ export default {
         }
       ]
     }
-  }
+  },
+
+  // 清除缓存数据
+  clearLocalStorage() {
+    localStorage.clear();
+  },
 }

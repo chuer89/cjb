@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Button, Radio, DatePicker, Select, Input, Checkbox, Row, Col } from 'antd';
+import { Form, Button, Radio, DatePicker, Select, Input, Checkbox, InputNumber } from 'antd';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -18,7 +18,6 @@ class BasicForm extends React.Component {
     super(props);
     // 设置 initial state
     this.state = {
-      leaveStatus: false, // 是否离职
       isRecommendChannel: false, // 是否内推
 
       // 职业级别
@@ -48,6 +47,15 @@ class BasicForm extends React.Component {
         value: '功夫', code: '2'
       }, {
         value: '寝室', code: '3'
+      }],
+
+      // 合同类型
+      contractType: [{
+        value: '固定期限', code: '1'
+      }, {
+        value: '非固定期限', code: '2'
+      }, {
+        value: '试用', code: '3'
       }]
     }
   }
@@ -63,26 +71,15 @@ class BasicForm extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        handerNext(values);
       }
-      handerNext();
-    });
-  }
-
-  handerChangeJob(e) {
-    let { value } = e.target;
-    let leaveStatus = false;
-    if (_.toString(value) === '2') {
-      leaveStatus = true;
-    }
-    this.setState({
-      leaveStatus
     });
   }
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    let { professionLevel, leaveStatus, 
-      invitationChannel, isRecommendChannel, storeRelevance } = this.state;
+    let { professionLevel, invitationChannel, 
+      isRecommendChannel, storeRelevance, contractType } = this.state;
     let self = this;
 
     const formItemLayout = {
@@ -103,6 +100,13 @@ class BasicForm extends React.Component {
     }
     // 状态筛选
     let renderProfessionLevel = professionLevel.map((item) => {
+      return (
+        <Option value={item.code} key={item.code}>{item.value}</Option>
+      )
+    });
+
+    // 合同类型
+    let renderContractType = contractType.map((item) => {
       return (
         <Option value={item.code} key={item.code}>{item.value}</Option>
       )
@@ -139,34 +143,6 @@ class BasicForm extends React.Component {
       )
     }
 
-    // 选择离职状态后
-    let renderLeave = '';
-    if (leaveStatus) {
-      renderLeave = (
-        <div>
-          <FormItem {...formItemLayout} label="离职日期">
-            {getFieldDecorator('leaveDate', {
-              rules: [{
-                required: true, message: '请选择离职日期',
-              }],
-              initialValue: moment(new Date(), 'YYYY-MM-DD')
-            })(
-              <DatePicker onChange={onChange} locale={locale} />
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="离职原因">
-            {getFieldDecorator('yuanyin', {
-              rules: [{
-                required: true, message: '请填写离职原因',
-              }],
-            })(
-              <TextArea rows={4} placeholder="请填写离职原因" autoComplete="off" maxLength="128" />
-            )}
-          </FormItem>
-        </div>
-      )
-    }
-
     // 店面关联
     let renderStoreRelevance = storeRelevance.map((item) => {
       return (
@@ -179,7 +155,7 @@ class BasicForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
-          {getFieldDecorator('ruDate', {
+          {getFieldDecorator('joinTime', {
             rules: [{
               required: true, message: '请选择入职日期',
             }],
@@ -189,31 +165,25 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="职级">
-          {getFieldDecorator('level', {
-            rules: [{
-              required: true, message: '请选择职级',
-            }],
-            initialValue: '0'
-          })(
+          {getFieldDecorator('position')(
             <Select style={{ width: 120 }} onChange={handleChange}>
               {renderProfessionLevel}
             </Select>
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="在职状态">
-          {getFieldDecorator('sex', {
-            initialValue: '1',
-            rules: [{ required: true, message: '请选择在职状态' }]
+        <FormItem {...formItemLayout} label="合同类型">
+          {getFieldDecorator('contractType', {
+            rules: [{
+              required: true, message: '请选择合同类型',
+            }],
           })(
-            <Radio.Group onChange={(e) => { self.handerChangeJob(e) }}>
-              <Radio value="1">在职</Radio>
-              <Radio value="2">离职</Radio>
-            </Radio.Group>
+            <Select style={{ width: 120 }}>
+              {renderContractType}
+            </Select>
           )}
         </FormItem>
-        {renderLeave}
         <FormItem {...formItemLayout} label="合同有效期">
-          {getFieldDecorator('heDate', {
+          {getFieldDecorator('contractDate', {
             rules: [{
               required: true, message: '请选择合同有效期',
             }],
@@ -222,21 +192,16 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="当前薪水">
-          {getFieldDecorator('xinshui', {
+          {getFieldDecorator('salary', {
             rules: [{
               required: true, message: '请输入当前薪水',
             }],
           })(
-            <Input placeholder="请输入当前薪水" autoComplete="off" maxLength="32" />
+            <InputNumber min={0} />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="应聘渠道">
-          {getFieldDecorator('qudao', {
-            rules: [{
-              required: true, message: '请选择应聘渠道',
-            }],
-            initialValue: '0'
-          })(
+          {getFieldDecorator('applyChannel')(
             <Select style={{ width: 120 }} onChange={handleChangeChannel}>
               {renderInvitationChannel}
             </Select>
@@ -244,9 +209,7 @@ class BasicForm extends React.Component {
         </FormItem>
         {renderRecommendChannel}
         <FormItem {...formItemLayout} label="店面关联">
-          {getFieldDecorator('guanlian', {
-            
-          })(
+          {getFieldDecorator('storeRelevance')(
             <Checkbox.Group style={{ width: '100%' }}>
               <div>{renderStoreRelevance}</div>
             </Checkbox.Group>
@@ -262,15 +225,18 @@ class BasicForm extends React.Component {
 
 const WrappedBasicForm = Form.create()(BasicForm);
 
-const Basic = ({ dispatch }) => {
+const Basic = ({ dispatch, addUser }) => {
+  let { addUserParam } = addUser;
+
   let handerNext = () => {
-    dispatch({
-      type: 'addUser/save',
-      payload: {
-        basicDisabled: false,
-        activeTabsKey: '3'
-      }
-    })
+    console.log(addUserParam, 'add');
+    // dispatch({
+    //   type: 'addUser/save',
+    //   payload: {
+    //     basicDisabled: false,
+    //     activeTabsKey: '3'
+    //   }
+    // })
   };
 
   let opt = {

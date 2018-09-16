@@ -16,6 +16,15 @@ const Routers = function ({ history, app }) {
       component: () => import('./routes/login/')
     },
     {
+      path: '/register', // 注册
+      component: () => import('./routes/register/')
+    },
+    {
+      path: '/initstructure', // 初始化组织架构
+      models: () => [import('./models/structure')],
+      component: () => import('./routes/initStructure/'),
+    },
+    {
       path: '/index', // 工作台
       models: () => [import('./models/example')],
       component: () => import('./routes/workbench/')

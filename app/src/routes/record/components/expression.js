@@ -1,9 +1,7 @@
 import React from 'react';
-import { Row, Col, Card, Table } from 'antd';
-import _ from 'lodash';
+import { Card, Table } from 'antd';
+// import _ from 'lodash';
 import style from './expression.less';
-
-const { Meta } = Card;
 
 // 个人成长
 class Expression extends React.Component {

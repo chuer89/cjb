@@ -1,17 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Button, Radio, DatePicker, Select, Input, Checkbox, Row, Col, Icon } from 'antd';
-import locale from 'antd/lib/date-picker/locale/zh_CN';
-import moment from 'moment';
+import { Form, Button, Row, Col, Icon } from 'antd';
 import 'moment/locale/zh-cn';
-import _ from 'lodash';
 import style from './add.less';
-
-const { TextArea } = Input;
-
-const FormItem = Form.Item;
-const Option = Select.Option;
-const { RangePicker } = DatePicker;
 
 // 用户画像
 class PortrayalForm extends React.Component {
