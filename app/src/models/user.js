@@ -50,29 +50,19 @@ export default {
         userInfo = data.data;
 
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        // yield put(routerRedux.push({
-        //   pathname: '/index'
-        // }));
 
-        yield call(services.getOrgInit, {});
-        
-        // 获取权限菜单
-        // let ajaxMenu = yield call(services.menus, {});
-        // if (ajaxMenu.data.msg === 'success') {
-        //   menus = ajaxMenu.data.data;
-          
-        //   localStorage.setItem('menus', JSON.stringify(menus));
-
-        //   yield put({
-        //     type: 'save',
-        //     payload: {
-        //       userInfo,
-        //       menus,
-        //     }
-        //   })
-        // } else {
-        //   message.error(ajaxMenu.data.msg);
-        // }
+        // 获取是否初始化企业架构
+        const initOrgAjax = yield call(services.getOrgInit, {});
+        const initOrgData = initOrgAjax.data;
+        let pathname = '/index';
+        if (initOrgData.msg === 'success') {
+          if (initOrgData.data.store) {
+            pathname = '/initstructure';
+          }
+        }
+        yield put(routerRedux.push({
+          pathname,
+        }));
       } else {
         message.error(data.msg);
       }

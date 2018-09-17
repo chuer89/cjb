@@ -6,8 +6,10 @@ import NProgress from 'nprogress';
 import _ from 'lodash';
 import { message } from 'antd';
 import services from './../../services/';
+import { Link } from 'dva/router';
 
 import Modify from './components/modify';
+import Footer from './../../components/footer';
 
 const confirm = Modal.confirm;
 
@@ -46,11 +48,19 @@ class Structure extends React.Component {
     });
     this.save(payload);
   }
-  
+  // 关闭弹框
+  handerCloseModify() {
+    this.save({
+      visibleModify: false,
+    });
+  }
+
   // 操作回调
   handerAjaxBack(data) {
     let { dispatch } = this.props;
+    let self = this;
     if (data.msg === 'success') {
+      self.handerCloseModify();
       message.success('操作成功');
       dispatch({
         type: 'structure/getOrganizations'
@@ -76,6 +86,7 @@ class Structure extends React.Component {
 
   // 修改品牌 弹框
   handerModifyBrand(bid, initialValue) {
+    let self = this;
     this.handerOpenModify({
       modifyTitle: '修改品牌',
       modifyLabel: '请输入品牌名称',
@@ -87,9 +98,20 @@ class Structure extends React.Component {
         }
         services.editCommonBrand(param)
           .then(({ data }) => {
-
+            self.handerAjaxBack(data);
           });
       }
+    });
+  }
+  // 删除品牌
+  deleteCommonBrandById(bid) {
+    let self = this;
+    this.handerShowDel(() => {
+      services.deleteCommonBrandById({
+        bid,
+      }).then(({ data }) => {
+        self.handerAjaxBack(data);
+      })
     });
   }
 
@@ -112,9 +134,9 @@ class Structure extends React.Component {
       }
     });
   }
-
   // 更新区域
   updateCommonAreaById(aid, initialValue) {
+    let self = this;
     this.handerOpenModify({
       modifyTitle: '修改区域',
       modifyLabel: '请输入区域名称',
@@ -126,12 +148,11 @@ class Structure extends React.Component {
         }
         services.updateCommonAreaById(param)
           .then(({ data }) => {
-
+            self.handerAjaxBack(data);
           });
       }
     });
   }
-
   // 删除区域
   deleteCommonAreaById(aid) {
     let self = this;
@@ -145,23 +166,53 @@ class Structure extends React.Component {
   }
 
   // 添加门店
-  addCommonStore() {
+  addCommonStore(bid, aid) {
     let self = this;
-    let ajaxBack = this.handerAjaxBack;
     this.handerOpenModify({
       modifyTitle: '添加门店',
       modifyLabel: '请输入门店名称',
       initialValue: '',
       callBack(values) {
-        // let param = {
-        //   bid,
-        //   aname: values,
-        // }
-        // services.addCommonArea(param)
-        //   .then(({ data }) => {
-        //     ajaxBack(data);
-        //   });
+        let param = {
+          bid,
+          aid,
+          sname: values,
+        }
+        services.addCommonStore(param)
+          .then(({ data }) => {
+            self.handerAjaxBack(data);
+          });
       }
+    });
+  }
+  // 更新门店
+  updateCommonStoreById(sid, initialValue) {
+    let self = this;
+    this.handerOpenModify({
+      modifyTitle: '修改门店',
+      modifyLabel: '请输入门店名称',
+      initialValue,
+      callBack(values) {
+        let param = {
+          sid,
+          sname: values,
+        }
+        services.updateCommonStoreById(param)
+          .then(({ data }) => {
+            self.handerAjaxBack(data);
+          });
+      }
+    });
+  }
+  // 删除门店
+  deleteCommonStoreById(sid) {
+    let self = this;
+    this.handerShowDel(() => {
+      services.deleteCommonStoreById({
+        sid,
+      }).then(({ data }) => {
+        self.handerAjaxBack(data);
+      });
     });
   }
 
@@ -172,6 +223,7 @@ class Structure extends React.Component {
       modifyLabel, callBack, initialValue, valueBrandInput } = this.state;
     let brandData = [];
     let self = this;
+    let homeDisabled = true;
 
     let handerChangeBrand = (e) => {
       let value = e.target.value;
@@ -181,10 +233,19 @@ class Structure extends React.Component {
     }
     // 添加品牌
     let handleAddBrand = () => {
+      if (!valueBrandInput) {
+        message.error('请填写品牌名称');
+        return false;
+      }
       services.addCommonBrand({
         bname: valueBrandInput
       }).then(({ data }) => {
-
+        if (data.msg === 'success') {
+          self.save({
+            valueBrandInput: ''
+          });
+        }
+        self.handerAjaxBack(data);
       });
     }
 
@@ -215,12 +276,14 @@ class Structure extends React.Component {
             if (!_.isEmpty(store)) {
               // 门店
               renderStore = store.map((itemStore, indexStore) => {
+                homeDisabled = false;
                 return (
                   <div key={indexStore} className={styles.storeBox}>
                     <div className={styles.titleBox}>
                       <div className={styles.title}>{itemStore.sname}</div>
                       <div className={styles.operateBox}>
-                        <span>编辑</span><span>删除</span>
+                        <span onClick={() => { self.updateCommonStoreById(itemStore.sid, itemStore.sname) }}>编辑门店</span>
+                        <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
                       </div>
                     </div>
                   </div>
@@ -234,9 +297,9 @@ class Structure extends React.Component {
                 <div className={styles.titleBox}>
                   <div className={styles.title}>{itemArea.aname}</div>
                   <div className={styles.operateBox}>
-                    <span>添加</span>
-                    <span onClick={() => { self.updateCommonAreaById(itemArea.aid, itemArea.aname) }}>编辑</span>
-                    <span onClick={() => { self.deleteCommonAreaById(itemArea.aid) }}>删除</span>
+                    <span onClick={() => { self.addCommonStore(item.bid, itemArea.aid) }}>添加门店</span>
+                    <span onClick={() => { self.updateCommonAreaById(itemArea.aid, itemArea.aname) }}>编辑区域</span>
+                    <span onClick={() => { self.deleteCommonAreaById(itemArea.aid) }}>删除区域</span>
                   </div>
                 </div>
                 <div>{renderStore}</div>
@@ -250,13 +313,12 @@ class Structure extends React.Component {
           <div key={index} className={styles.brandBox}>
             <div className={styles.titleBox}>
               <div className={styles.title}>
-                <Icon type="plus-circle" theme="outlined" />
                 {item.bname}
               </div>
               <div className={styles.operateBox}>
-                <span onClick={() => { self.addCommonArea(item.bid) }}>添加</span>
-                <span onClick={() => { self.handerModifyBrand(item.bid, item.bname) }}>编辑</span>
-                <span>删除</span>
+                <span onClick={() => { self.addCommonArea(item.bid) }}>添加区域</span>
+                <span onClick={() => { self.handerModifyBrand(item.bid, item.bname) }}>编辑品牌</span>
+                <span onClick={() => { self.deleteCommonBrandById(item.bid) }}>删除品牌</span>
               </div>
             </div>
             <div>{renderArea}</div>
@@ -267,28 +329,37 @@ class Structure extends React.Component {
     }
 
     return (
-      <div className={styles.content}>
-        <div>
-          <Modify {...modifyOpt} />
+      <div className={styles.contentBox}>
+        <div className={styles.content}>
+          <div>
+            <Modify {...modifyOpt} />
+          </div>
+          <div className={styles.contentTitleBox}>
+            <h3 className={styles.contentTitle}>初始化企业组织结构</h3>
+            <p className={styles.addTips}>例如（品牌-》区域-》门店），至少需要一个门店</p>
+          </div>
+          <div className={styles.addBtnBox}>
+            <Row>
+              <Col span={9}>
+                <Input value={valueBrandInput}
+                  onChange={handerChangeBrand}
+                  onPressEnter={handleAddBrand}
+                  autoComplete="off"
+                  placeholder="填写品牌名称" />
+              </Col>
+              <Col span={4} style={{ 'paddingLeft': '24px' }}>
+                <Button type="primary" onClick={handleAddBrand} loading={false}>添加</Button>
+              </Col>
+              <Col span={10} style={{ 'textAlign': 'right' }}>
+                <Link to="/index">
+                  <Button type="primary" disabled={homeDisabled}>进入首页 <Icon type="right" /></Button>
+                </Link>
+              </Col>
+            </Row>
+          </div>
+          <div>{renderStructure}</div>
         </div>
-        <div>
-          <h3>请初始化企业的组织结构，例如（品牌-》区域-》门店），至少需要一个门店</h3>
-        </div>
-        <div>
-          <Row>
-            <Col span={7}>
-              <Input value={valueBrandInput}
-                onChange={handerChangeBrand}
-                onPressEnter={handleAddBrand}
-                autoComplete="off"
-                placeholder="填写品牌名称" />
-            </Col>
-            <Col span={5} style={{ 'paddingLeft': '24px' }}>
-              <Button type="primary" onClick={handleAddBrand} loading={false}>添加</Button>
-            </Col>
-          </Row>
-        </div>
-        <div>{renderStructure}</div>
+        <Footer />
       </div>
     )
   }

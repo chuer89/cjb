@@ -1,46 +1,79 @@
 @import "../class";
-
-.content{
-  width: 1000px;
-  margin: 0 auto;
+.contentBox {
+  background: @bodyColor;
 }
 
-.titleBox{
+.content {
+  width: 1000px;
+  margin: 0 auto;
+  background: white;
+  padding: 32px 24px 24px 24px;
+  min-height: 85vh;
+}
+
+.contentTitleBox {
+  border-bottom: 1px solid @borderColor;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.contentTitle {
+  color: @linkFontColor;
+  font-weight: 400;
+  font-size: 28px;
+  text-shadow: 3px 3px 3px @fontGrayColor;
+}
+
+.addTips {
+  position: absolute;
+  right: 24px;
+  top: 25px;
+  color: @fontGrayColor;
+}
+
+.addBtnBox{
+  padding-bottom: 24px;
+}
+
+.titleBox {
   line-height: 42px;
   cursor: pointer;
   .clearfix;
-  &:hover{
+  &:hover {
     background: @borderColor;
   }
 }
 
-.operateBox{
+.operateBox {
   .fr;
   padding-right: 24px;
-  span{
+  span {
     color: @bgBlueColor;
     padding: 0 8px;
   }
 }
 
-.title{
+.title {
   .fl;
   color: @linkFontColor;
+  font-size: 16px;
 }
 
 @left: 24px;
-.brandBox{
-  .title{
+.brandBox {
+  .title {
     padding-left: @left;
   }
 }
-.areaBox{
-  .title{
+
+.areaBox {
+  .title {
     padding-left: @left * 2;
   }
 }
-.storeBox{
-  .title{
+
+.storeBox {
+  .title {
     padding-left: @left * 3;
   }
 }
