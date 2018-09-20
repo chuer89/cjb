@@ -15,6 +15,7 @@
     "babel-runtime": "^6.26.0",
     "dva": "^2.3.2",
     "dva-loading": "^2.0.4",
+    "dva-nprogress": "0.0.4",
     "echarts": "^4.1.0",
     "echarts-for-react": "^2.0.14",
     "lodash": "^4.17.10",

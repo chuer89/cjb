@@ -2,19 +2,13 @@ import React from 'react'
 import { connect } from 'dva'
 import { Button, Form, Input } from 'antd'
 import styles from './index.less'
-import NProgress from 'nprogress';
 import { Link } from 'dva/router';
 
 const FormItem = Form.Item
 
-NProgress.start();
 class Register extends React.Component {
   state = {
 
-  }
-
-  componentDidMount() {
-    NProgress.done();
   }
 
   render() {

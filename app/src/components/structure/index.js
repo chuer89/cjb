@@ -1,14 +1,12 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Input, Row, Col, Icon, Modal } from 'antd'
+import { Button, Input, Row, Col, Icon, Modal, message } from 'antd'
 import styles from './index.less'
 import _ from 'lodash';
-import { message } from 'antd';
 import services from './../../services/';
 import { Link } from 'dva/router';
 
-import Modify from './components/modify';
-import Footer from './../../components/footer';
+import Modify from './modify';
 
 const confirm = Modal.confirm;
 
@@ -217,7 +215,6 @@ class Structure extends React.Component {
       modifyLabel, callBack, initialValue, valueBrandInput } = this.state;
     let brandData = [];
     let self = this;
-    let homeDisabled = true;
 
     let handerChangeBrand = (e) => {
       let value = e.target.value;
@@ -270,7 +267,6 @@ class Structure extends React.Component {
             if (!_.isEmpty(store)) {
               // 门店
               renderStore = store.map((itemStore, indexStore) => {
-                homeDisabled = false;
                 return (
                   <div key={indexStore} className={styles.storeBox}>
                     <div className={styles.titleBox}>
@@ -323,37 +319,25 @@ class Structure extends React.Component {
     }
 
     return (
-      <div className={styles.contentBox}>
-        <div className={styles.content}>
-          <div>
-            <Modify {...modifyOpt} />
-          </div>
-          <div className={styles.contentTitleBox}>
-            <h3 className={styles.contentTitle}>初始化企业组织结构</h3>
-            <p className={styles.addTips}>例如（品牌-》区域-》门店），至少需要一个门店</p>
-          </div>
-          <div className={styles.addBtnBox}>
-            <Row>
-              <Col span={9}>
-                <Input value={valueBrandInput}
-                  onChange={handerChangeBrand}
-                  onPressEnter={handleAddBrand}
-                  autoComplete="off"
-                  placeholder="填写品牌名称" />
-              </Col>
-              <Col span={4} style={{ 'paddingLeft': '24px' }}>
-                <Button type="primary" onClick={handleAddBrand} loading={false}>添加</Button>
-              </Col>
-              <Col span={10} style={{ 'textAlign': 'right' }}>
-                <Link to="/1/index">
-                  <Button type="primary" disabled={homeDisabled}>进入首页 <Icon type="right" /></Button>
-                </Link>
-              </Col>
-            </Row>
-          </div>
-          <div>{renderStructure}</div>
+      <div>
+        <div>
+          <Modify {...modifyOpt} />
         </div>
-        <Footer />
+        <div className={styles.addBtnBox}>
+          <Row>
+            <Col span={9}>
+              <Input value={valueBrandInput}
+                onChange={handerChangeBrand}
+                onPressEnter={handleAddBrand}
+                autoComplete="off"
+                placeholder="填写品牌名称" />
+            </Col>
+            <Col span={4} style={{ 'paddingLeft': '24px' }}>
+              <Button type="primary" onClick={handleAddBrand} loading={false}>添加</Button>
+            </Col>
+          </Row>
+        </div>
+        <div>{renderStructure}</div>
       </div>
     )
   }

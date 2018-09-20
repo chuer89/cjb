@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
-import NProgress from 'nprogress';
 import ReactEcharts from 'echarts-for-react';
 import common from '../../common';
 import style from './index.less';
@@ -15,10 +14,6 @@ class Dashboard extends React.Component {
     // 设置 initial state
     this.state = {
     }
-  }
-
-  componentDidMount() {
-    NProgress.done();
   }
 
   render() {

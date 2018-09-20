@@ -24,31 +24,38 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/structure')],
       component: () => import('./routes/initStructure/'),
     },
+
     {
-      path: '/index', // 工作台
+      path: '/personnel/index', // 工作台
       models: () => [import('./models/example')],
       component: () => import('./routes/workbench/')
     },
     {
-      path: '/dashboard', // 仪表盘
+      path: '/personnel/dashboard', // 仪表盘
       models: () => [import('./models/dashboard')],
       component: () => import('./routes/dashboard/')
     },
     {
-      path: '/record', // 档案管理
+      path: '/personnel/record', // 档案管理
       models: () => [import('./models/record')],
       component: () => import('./routes/record/')
     },
     {
-      path: '/userdetails/:id', // 档案管理
+      path: '/personnel/userdetails/:id', // 档案管理
       models: () => [import('./models/details')],
       component: () => import('./routes/record/details.js')
     },
     {
-      path: '/addUser', // 添加用户
+      path: '/personnel/addUser', // 添加用户
       models: () => [import('./models/addUser')],
       component: () => import('./routes/addUser/')
     },
+
+    {
+      path: '/deploy/store', // 门店管理
+      models: () => [import('./models/structure')],
+      component: () => import('./routes/deploy/store/')
+    }
   ];
 
   return (

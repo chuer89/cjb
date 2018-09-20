@@ -2,11 +2,12 @@ import { Layout, Menu, Icon, BackTop, Popover } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import style from './app.less';
-import NProgress from 'nprogress';
 import { Link } from 'dva/router';
+import NProgress from 'nprogress';
 
 const { Header, Content, Footer, Sider } = Layout;
 
+// NProgress.start();
 class App extends React.Component {
   state = {
     collapsed: false,
@@ -15,30 +16,57 @@ class App extends React.Component {
     selectedKeys: [],
 
     menus: [{
-      path: '/index',
-      icon: 'desktop',
-      name: '工作台',
+      path: '/personnel/index', icon: 'desktop', name: '工作台',
     }, {
-      path: '/dashboard',
-      icon: 'pie-chart',
-      name: '仪表盘',
+      path: '/personnel/dashboard', icon: 'pie-chart', name: '仪表盘',
     }, {
-      path: '/record',
-      icon: 'copy',
-      name: '员工档案',
+      path: '/personnel/record', icon: 'copy', name: '员工档案',
+    }],
+
+    // 后台配置
+    deployMenus: [{
+      path: '/deploy/store', icon: 'hdd', name: '企业组织管理',
+    }],
+
+    defaultSelectedKeysNav: ['1'],
+    selectedKeysNav: [],
+    // 顶部导航
+    topNav: [{
+      key: '1', name: '人事管理', path: '/personnel/index'
+    }, {
+      key: '2', name: '培训资料', path: '/personnel/index',
+    }, {
+      key: '3', name: '后台配置', path: '/deploy/store'
     }]
   }
 
   UNSAFE_componentWillMount() {
-    let { defaultSelectedKeys } = this.state;
-    let { pathname } = this.props.app;
+    this._isMounted = true;
+
+    let { defaultSelectedKeys, defaultSelectedKeysNav } = this.state;
+    let { pathname, moduleName } = this.props.app;
     let selectedKeys = [pathname] || defaultSelectedKeys;
 
-    this.setState({
-      selectedKeys,
-    });
+    let selectedKeysNav = [moduleName] || defaultSelectedKeysNav;
 
-    NProgress.start();
+    this.save({
+      selectedKeys,
+      selectedKeysNav,
+    });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  save(payload) {
+    if (this._isMounted) {
+      this.setState(payload);
+    }
+  }
+
+  componentDidMount() {
+    // NProgress.done();
   }
 
   onCollapse = (collapsed) => {
@@ -47,12 +75,18 @@ class App extends React.Component {
   }
 
   render() {
-    let { children } = this.props;
+    let { children, app } = this.props;
     let contentHeight = document.body.clientHeight - 64 - 60;
-    let { menus, selectedKeys } = this.state;
+    let { menus, selectedKeys, topNav, selectedKeysNav, deployMenus } = this.state;
+    let { moduleName } = app;
+
+    let menusData = menus;
+    if (moduleName === '3') {
+      menusData = deployMenus;
+    }
 
     // 菜单组件
-    let renderMenus = menus.map((item) => {
+    let renderMenus = menusData.map((item) => {
       return (
         <Menu.Item key={item.path}>
           <Link to={item.path}>
@@ -81,6 +115,15 @@ class App extends React.Component {
       </div>
     );
 
+    // 顶部导航菜单
+    let renderTopNav = topNav.map((item, index) => {
+      return (
+        <Menu.Item key={item.key}>
+        <Link to={item.path}>{item.name}</Link>
+        </Menu.Item>
+      )
+    })
+
     return (
       <Layout>
         <Header className={style.headerBox}>
@@ -91,13 +134,9 @@ class App extends React.Component {
             <Menu
               theme="dark"
               mode="horizontal"
-              defaultSelectedKeys={['1']}
+              selectedKeys={selectedKeysNav}
               style={{ lineHeight: '64px' }}
-            >
-              <Menu.Item key="1">人事管理</Menu.Item>
-              <Menu.Item key="2">培训资料</Menu.Item>
-              <Menu.Item key="3">后台配置</Menu.Item>
-            </Menu>
+            >{renderTopNav}</Menu>
           </div>
           <div style={{ 'float': 'right' }}>
             <Popover content={userMenus} placement="bottomRight">

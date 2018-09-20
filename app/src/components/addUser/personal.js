@@ -34,7 +34,6 @@ class PersonalForm extends React.Component {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           values.idcardTime = moment(values.idcardTime).format('YYYY-MM-DD');
-          console.log('Received values of form: ', values);
           handerNext(values);
         }
       });

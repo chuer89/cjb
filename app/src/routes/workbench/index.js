@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
-import NProgress from 'nprogress';
 import { Card, Tabs, Row, Col } from 'antd';
 import style from './index.less';
 
@@ -17,11 +16,23 @@ class Dashboard extends React.Component {
     }
   }
 
+  UNSAFE_componentWillMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  save(payload) {
+    if (this._isMounted) {
+      this.setState(payload);
+    }
+  }
+
   componentDidMount() {
     let self = this;
-    NProgress.done();
     setTimeout(() => {
-      self.setState({
+      self.save({
         loading: false,
       })
     }, 2000)

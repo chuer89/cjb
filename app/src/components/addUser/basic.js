@@ -69,7 +69,21 @@ class BasicForm extends React.Component {
     e.preventDefault();
     let { form, handerNext } = this.props;
     form.validateFields((err, values) => {
+      console.log(values.contractDate, 'time')
+      let contractStarttime = '';
+      let contractEndtime = '';
+      let joinTime = '';
       if (!err) {
+        joinTime = moment(values.joinTime).format('YYYY-MM-DD');
+        contractStarttime = moment(values.contractDate[0]).format('YYYY-MM-DD');
+        contractEndtime = moment(values.contractDate[1]).format('YYYY-MM-DD');
+
+        _.extend(values, {
+          joinTime,
+          contractStarttime,
+          contractEndtime,
+        });
+
         console.log('Received values of form: ', values);
         handerNext(values);
       }
@@ -225,16 +239,26 @@ class BasicForm extends React.Component {
 
 const WrappedBasicForm = Form.create()(BasicForm);
 
-const Basic = ({ dispatch, addUser }) => {
+const Basic = ({ dispatch, addUser, loading }) => {
   let { addUserParam } = addUser;
 
-  let handerNext = () => {
+  console.log(loading, 'lading');
+
+  let handerNext = (values) => {
+    _.extend(addUserParam, values, {
+      contractDate: '',
+    });
     console.log(addUserParam, 'add');
+    dispatch({
+      type: 'addUser/addUser',
+      payload: addUserParam,
+    });
     // dispatch({
     //   type: 'addUser/save',
     //   payload: {
     //     basicDisabled: false,
-    //     activeTabsKey: '3'
+    //     activeTabsKey: '3',
+    //     addUserParam,
     //   }
     // })
   };
@@ -251,6 +275,7 @@ const Basic = ({ dispatch, addUser }) => {
   );
 };
 
-export default connect((({ addUser }) => ({
+export default connect((({ addUser, loading }) => ({
   addUser,
+  loading,
 })))(Basic);

@@ -87,6 +87,10 @@ let httpApi = {
 	addUser(param = {}) {
 		return post('base', '/user/addUser', param);
 	},
+	// 获取所有岗位
+	getPosition(param = {}) {
+		return post('base', '/position/getAll', param);
+	},
 
 	// 当前用户是否初始化组织架构
 	getOrgInit(param = {}) {

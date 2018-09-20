@@ -18,7 +18,6 @@ export default {
         if (pathname === '/login') {
           common.clearLocalStorage();
         }
-        console.log(pathname, 'paht');
       });
     }
   },
@@ -54,7 +53,7 @@ export default {
         // 获取是否初始化企业架构
         const initOrgAjax = yield call(services.getOrgInit, {});
         const initOrgData = initOrgAjax.data;
-        let pathname = '/index';
+        let pathname = '/personnel/index';
         if (initOrgData.msg === 'success') {
           if (initOrgData.data.store) {
             pathname = '/initstructure';
