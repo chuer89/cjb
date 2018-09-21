@@ -270,7 +270,10 @@ class Structure extends React.Component {
                 return (
                   <div key={indexStore} className={styles.storeBox}>
                     <div className={styles.titleBox}>
-                      <div className={styles.title}>{itemStore.sname}</div>
+                      <div className={styles.title}>
+                        <i className="iconfont">&#xe650;</i>
+                        {itemStore.sname}
+                      </div>
                       <div className={styles.operateBox}>
                         <span onClick={() => { self.updateCommonStoreById(itemStore.sid, itemStore.sname) }}>编辑门店</span>
                         <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
@@ -285,7 +288,10 @@ class Structure extends React.Component {
             return (
               <div key={indexArea} className={styles.areaBox}>
                 <div className={styles.titleBox}>
-                  <div className={styles.title}>{itemArea.aname}</div>
+                  <div className={styles.title}>
+                    <i className="iconfont">&#xe657;</i>
+                    {itemArea.aname}
+                  </div>
                   <div className={styles.operateBox}>
                     <span onClick={() => { self.addCommonStore(item.bid, itemArea.aid) }}>添加门店</span>
                     <span onClick={() => { self.updateCommonAreaById(itemArea.aid, itemArea.aname) }}>编辑区域</span>
@@ -303,6 +309,7 @@ class Structure extends React.Component {
           <div key={index} className={styles.brandBox}>
             <div className={styles.titleBox}>
               <div className={styles.title}>
+                <i className="iconfont">&#xe612;</i>
                 {item.bname}
               </div>
               <div className={styles.operateBox}>

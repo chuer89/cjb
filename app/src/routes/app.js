@@ -25,7 +25,9 @@ class App extends React.Component {
 
     // 后台配置
     deployMenus: [{
-      path: '/deploy/store', icon: 'hdd', name: '企业组织管理',
+      path: '/deploy/store', icon: 'hdd', name: '门店管理',
+    }, {
+      path: '/deploy/section', icon: 'team', name: '部门管理',
     }],
 
     defaultSelectedKeysNav: ['1'],
