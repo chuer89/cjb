@@ -2,7 +2,7 @@
 import { Modal, Form, Input } from 'antd';
 import React from 'react';
 import styles from './modify.less';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 const FormItem = Form.Item;
 
@@ -12,7 +12,6 @@ class Modify extends React.Component {
 
   render() {
     let {
-      dispatch,
       form: {
         getFieldDecorator,
         validateFieldsAndScroll,

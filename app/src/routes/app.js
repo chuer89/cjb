@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import React from 'react';
 import style from './app.less';
 import { Link } from 'dva/router';
-import NProgress from 'nprogress';
+// import NProgress from 'nprogress';
 
 const { Header, Content, Footer, Sider } = Layout;
 

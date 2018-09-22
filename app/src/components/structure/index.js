@@ -1,10 +1,9 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Input, Row, Col, Icon, Modal, message } from 'antd'
+import { Button, Input, Row, Col, Modal, message } from 'antd'
 import styles from './index.less'
 import _ from 'lodash';
 import services from './../../services/';
-import { Link } from 'dva/router';
 
 import Modify from './modify';
 
@@ -322,7 +321,7 @@ class Structure extends React.Component {
           </div>
         )
       })
-      console.log(brandData, '组织');
+      // console.log(brandData, '组织');
     }
 
     return (

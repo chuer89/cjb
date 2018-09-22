@@ -42,7 +42,6 @@ export default {
 
     *login({ payload }, { call, put }) {
       let userInfo = {};
-      let menus = [];
       const temp = yield call(services.login, payload);
       const { data } = temp;
       if (data.msg === 'success') {

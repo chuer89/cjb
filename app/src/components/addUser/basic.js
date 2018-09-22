@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Button, Radio, DatePicker, Select, Input, Checkbox, InputNumber } from 'antd';
+import { Form, Button, DatePicker, Select, Input, Checkbox, InputNumber } from 'antd';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import _ from 'lodash';
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 
 const FormItem = Form.Item;
 const Option = Select.Option;
