@@ -7,14 +7,21 @@ export default {
 
   state: {
     storeStructure: [], // 门店组织结构
+    sectionStructure: [], // 部门组织架构
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        dispatch({
-          type: 'getOrganizations',
-        });
+        if (pathname === '/deploy/section') { // 部门架构
+          dispatch({
+            type: 'getEnterpriseOrgInfoList',
+          });
+        } else if (pathname === '/deploy/store') { // 门店架构
+          dispatch({
+            type: 'getOrganizations',
+          });
+        }
       })
     },
   },
@@ -24,6 +31,7 @@ export default {
       yield put({ type: 'save' });
     },
 
+    // 获取门店
     *getOrganizations({ payload }, { call, put }) {
       const temp = yield call(services.getOrganizations, payload);
       let { data } = temp;
@@ -32,6 +40,20 @@ export default {
           type: 'save',
           payload: {
             storeStructure: data.data,
+          }
+        })
+      }
+    },
+
+    // 获取部门架构
+    *getEnterpriseOrgInfoList({ payload }, { call, put }) {
+      const temp = yield call(services.getUserOrganizations, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            sectionStructure: data.data,
           }
         })
       }

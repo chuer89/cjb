@@ -1,11 +1,8 @@
 import React from 'react'
 import { connect } from 'dva'
-// import { Button, Input, Row, Col, Icon, Modal, message } from 'antd'
 import styles from './index.less'
-// import _ from 'lodash';
 import App from '../../app';
-// import services from './../../services/';
-// import { Link } from 'dva/router';
+import Structure from './../../../components/structure/section';
 
 class Section extends React.Component {
   state = {
@@ -28,12 +25,12 @@ class Section extends React.Component {
   render() {
     return (
       <App>
-        <div className={styles.content}>
-          部门管理
-        </div>
+        <div className={styles.content}><Structure /></div>
       </App>
     )
   }
 }
 
-export default connect()(Section)
+export default connect(({ structure }) => ({
+  structure
+}))(Section)

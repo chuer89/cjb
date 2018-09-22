@@ -144,6 +144,19 @@ let httpApi = {
 	getOrganizations(param = {}) {
 		return post('base', '/common/organizations', param);
 	},
+
+	// 获取当前用户所在的部门架构
+	getUserOrganizations(param = {}) {
+		return post('base', '/common/user-organizations', param);
+	},
+	// 获取所有部门架构
+	getEnterpriseOrgInfoList(param = {}) {
+		return post('base', '/enterpriseOrgInfo/getEnterpriseOrgInfoList', param);
+	},
+	// 添加行政目录
+	addEnterpriseOrgInfo(param = {}) {
+		return post('base', '/enterpriseOrgInfo/addEnterpriseOrgInfo', param);
+	},
 };
 
 export default httpApi;
