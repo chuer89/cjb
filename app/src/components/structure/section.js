@@ -61,6 +61,20 @@ class Structure extends React.Component {
     }
   }
 
+  // 确定删除
+  handerShowDel(callBack) {
+    confirm({
+      title: '确定删除吗？',
+      // content: '',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        callBack();
+      },
+      onCancel() { },
+    });
+  }
+
   // 添加部门
   addEnterpriseOrgInfo() {
     let self = this;
@@ -81,6 +95,38 @@ class Structure extends React.Component {
     });
   }
 
+  // 修改品牌 弹框
+  handerModifySection(id, initialValue) {
+    let self = this;
+    this.handerOpenModify({
+      modifyTitle: '修改部门',
+      modifyLabel: '请输入部门名称',
+      initialValue,
+      callBack(values) {
+        let param = {
+          id,
+          name: values,
+        }
+        services.editEnterpriseOrgInfoById(param)
+          .then(({ data }) => {
+            self.handerAjaxBack(data);
+          });
+      }
+    });
+  }
+
+  // 删除行政部门
+  deleteEnterpriseOrgInfoById(id) {
+    let self = this;
+    this.handerShowDel(() => {
+      services.deleteEnterpriseOrgInfoById({
+        id,
+      }).then(({ data }) => {
+        self.handerAjaxBack(data);
+      });
+    });
+  }
+
   render() {
     let self = this;
     let { structure } = this.props;
@@ -88,7 +134,8 @@ class Structure extends React.Component {
     let { visibleModify, modifyTitle,
       modifyLabel, callBack, initialValue, valueInput } = this.state;
 
-    let handerChangeBrand = (e) => {
+    // 输入框监听
+    let handerChangeSection = (e) => {
       let value = e.target.value;
       self.save({
         valueInput: value
@@ -96,7 +143,7 @@ class Structure extends React.Component {
     }
 
     // 添加部门
-    let handleAddBrand = () => {
+    let handleAddSection = () => {
       if (!valueInput) {
         message.error('请填写部门名称');
         return false;
@@ -126,8 +173,8 @@ class Structure extends React.Component {
                 {item.name}
               </div>
               <div className={styles.operateBox}>
-                <span>编辑</span>
-                <span>删除</span>
+                <span onClick={(e) => {self.handerModifySection(item.id)}}>编辑</span>
+                <span onClick={(e) => {self.deleteEnterpriseOrgInfoById(item.id)}}>删除</span>
               </div>
             </div>
           </div>
@@ -157,13 +204,13 @@ class Structure extends React.Component {
           <Row>
             <Col span={9}>
               <Input value={valueInput}
-                onChange={handerChangeBrand}
-                onPressEnter={handleAddBrand}
+                onChange={handerChangeSection}
+                onPressEnter={handleAddSection}
                 autoComplete="off"
                 placeholder="填写部门名称" />
             </Col>
             <Col span={4} style={{ 'paddingLeft': '24px' }}>
-              <Button type="primary" onClick={handleAddBrand} loading={false}>添加</Button>
+              <Button type="primary" onClick={handleAddSection} loading={false}>添加</Button>
             </Col>
           </Row>
         </div>

@@ -157,6 +157,14 @@ let httpApi = {
 	addEnterpriseOrgInfo(param = {}) {
 		return post('base', '/enterpriseOrgInfo/addEnterpriseOrgInfo', param);
 	},
+	// 删除行政部门
+	deleteEnterpriseOrgInfoById(param = {}) {
+		return post('base', 'enterpriseOrgInfo/deleteEnterpriseOrgInfoById', param);
+	},
+	// 编辑行政部门
+	editEnterpriseOrgInfoById(param = {}) {
+		return post('base', 'enterpriseOrgInfo/editEnterpriseOrgInfoById', param);
+	},
 };
 
 export default httpApi;
