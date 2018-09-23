@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
 import NProgress from 'nprogress';
-import { Table, Button, Input, Select } from 'antd';
+import { Table, Button, Input, Select, Menu, Dropdown, Icon } from 'antd';
 import style from './record.less';
 import { Link } from 'dva/router';
 import _ from 'lodash';
@@ -71,10 +71,29 @@ class RecordList extends React.Component {
 
     _.last(columns).render = (item) => {
       // console.log(item)
+      let renderOperate = (
+        <Menu>
+          <Menu.Item>
+            <span className={style.operateBtn}>编辑资料</span>
+          </Menu.Item>
+          <Menu.Item>
+            <span className={style.operateBtn}>删除员工</span>
+          </Menu.Item>
+          <Menu.Item>
+            <span className={style.operateBtn}>菜单权限</span>
+          </Menu.Item>
+          <Menu.Item>
+            <Link target="_blank" to="/personnel/userdetails/1" className={style.operateBtn}>员工详情</Link>
+          </Menu.Item>
+        </Menu>
+      )
       return (
         <div>
-          <span style={{'paddingRight': '5px'}}>编辑</span>
-          <Link target="_blank" to="/userdetails/1">详情</Link>
+          <Dropdown overlay={renderOperate}>
+            <div>
+              处理<Icon type="down" />
+            </div>
+          </Dropdown>
         </div>
       )
     }

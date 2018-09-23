@@ -15,9 +15,18 @@ export default {
       history.listen(({ pathname }) => {
         if (pathname === '/deploy/section') { // 部门架构
           dispatch({
-            type: 'getEnterpriseOrgInfoList',
+            type: 'getUserOrganizations',
           });
-        } else if (pathname === '/deploy/store') { // 门店架构
+
+          dispatch({
+            type: 'getEnterpriseOrgInfoList',
+            payload: {
+              parent_id: -1,
+              length: 20,
+              start: 1,
+            }
+          })
+        } else if (pathname === '/deploy/store' || pathname === '/initstructure') { // 门店架构
           dispatch({
             type: 'getOrganizations',
           });
@@ -45,8 +54,12 @@ export default {
       }
     },
 
-    // 获取部门架构
     *getEnterpriseOrgInfoList({ payload }, { call, put }) {
+      const temp = yield call(services.getEnterpriseOrgInfoList, payload);
+    },
+
+    // 获取目前行政部门架构
+    *getUserOrganizations({ payload }, { call, put }) {
       const temp = yield call(services.getUserOrganizations, payload);
       let { data } = temp;
       if (data.msg === 'success') {

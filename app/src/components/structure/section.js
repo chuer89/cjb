@@ -75,26 +75,6 @@ class Structure extends React.Component {
     });
   }
 
-  // 添加部门
-  addEnterpriseOrgInfo() {
-    let self = this;
-    this.handerOpenModify({
-      modifyTitle: '添加区域',
-      modifyLabel: '请输入区域名称',
-      initialValue: '',
-      callBack(values) {
-        let param = {
-          parentId: -1,
-          aname: values,
-        }
-        services.addEnterpriseOrgInfo(param)
-          .then(({ data }) => {
-            self.handerAjaxBack(data);
-          });
-      }
-    });
-  }
-
   // 修改品牌 弹框
   handerModifySection(id, initialValue) {
     let self = this;
@@ -150,7 +130,7 @@ class Structure extends React.Component {
       }
       services.addEnterpriseOrgInfo({
         name: valueInput,
-        parent_id: -1,
+        parentId: -1,
       }).then(({ data }) => {
         if (data.msg === 'success') {
           self.save({
