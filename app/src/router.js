@@ -43,7 +43,7 @@ const Routers = function ({ history, app }) {
     {
       path: '/personnel/userdetails/:id', // 档案管理
       models: () => [import('./models/details')],
-      component: () => import('./routes/record/details.js')
+      component: () => import('./routes/record/details.js'),
     },
     {
       path: '/personnel/addUser', // 添加用户

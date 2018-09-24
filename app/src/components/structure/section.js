@@ -4,7 +4,6 @@ import { Button, Input, Row, Col, Modal, message } from 'antd'
 import styles from './index.less'
 import _ from 'lodash';
 import services from './../../services/';
-
 import Modify from './modify';
 
 const confirm = Modal.confirm;

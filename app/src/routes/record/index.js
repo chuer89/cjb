@@ -2,13 +2,15 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
-import NProgress from 'nprogress';
-import { Table, Button, Input, Select, Menu, Dropdown, Icon } from 'antd';
+import { Table, Button, Input, Select, Menu, Dropdown, Icon, Modal } from 'antd';
 import style from './record.less';
 import { Link } from 'dva/router';
 import _ from 'lodash';
 
+import ConfigMenus from './components/menusconfig'; // 配置菜单
+
 const Option = Select.Option;
+const confirm = Modal.confirm;
 
 class RecordList extends React.Component {
   constructor(props) {
@@ -35,21 +37,47 @@ class RecordList extends React.Component {
         value: '无固定期限', code: '2'
       }, {
         value: '试用', code: '3'
-      }]
+      }],
+
+      visibleConfigMenus: false,
     }
   }
 
-  componentDidMount() {
-    NProgress.done();
+  UNSAFE_componentWillMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  save(payload) {
+    if (this._isMounted) {
+      this.setState(payload);
+    }
+  }
+
+  // 删除员工
+  handerDel(callBack) {
+    confirm({
+      title: '确定删除吗？',
+      // content: '',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        callBack();
+      },
+      onCancel() { },
+    });
   }
 
   render() {
-    let { record } = this.props;
+    let self = this;
+    let { record, user } = this.props;
     let { columns, dataSource } = record;
     let inputStyle = {
       'width': '180px',
     }
-    let { statusData, contractType } = this.state;
+    let { statusData, contractType, visibleConfigMenus } = this.state;
 
     let handleChange = (value) => {
       console.log(value, 'v');
@@ -71,16 +99,30 @@ class RecordList extends React.Component {
 
     _.last(columns).render = (item) => {
       // console.log(item)
+      // 删除用户
+      let delUser = () => {
+        self.handerDel(() => {
+          console.log('删除')
+        });
+      }
+
+      // 打开菜单配置
+      let openConfigMenus = () => {
+        self.save({
+          visibleConfigMenus: true,
+        })
+      }
+
       let renderOperate = (
         <Menu>
           <Menu.Item>
             <span className={style.operateBtn}>编辑资料</span>
           </Menu.Item>
           <Menu.Item>
-            <span className={style.operateBtn}>删除员工</span>
+            <span className={style.operateBtn} onClick={delUser}>删除员工</span>
           </Menu.Item>
           <Menu.Item>
-            <span className={style.operateBtn}>菜单权限</span>
+            <span className={style.operateBtn} onClick={openConfigMenus}>菜单权限</span>
           </Menu.Item>
           <Menu.Item>
             <Link target="_blank" to="/personnel/userdetails/1" className={style.operateBtn}>员工详情</Link>
@@ -103,8 +145,25 @@ class RecordList extends React.Component {
       columns,
     }
 
+    // 配置菜单参数
+    let configMenusOpt = {
+      user,
+      visible: visibleConfigMenus,
+      onCancel() {
+        self.save({
+          visibleConfigMenus: false,
+        })
+      },
+      handleOk() {
+
+      },
+    }
+
     return (
       <App>
+        <div>
+          <ConfigMenus {...configMenusOpt} />
+        </div>
         <div className={style.content}>
           <div>
             <Link to="addUser">
@@ -155,6 +214,7 @@ class RecordList extends React.Component {
   }
 }
 
-export default connect((({ record }) => ({
+export default connect((({ record, user }) => ({
   record,
+  user,
 })))(RecordList);

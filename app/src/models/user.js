@@ -61,6 +61,19 @@ export default {
         yield put(routerRedux.push({
           pathname,
         }));
+
+        // 获取菜单
+        const menusAjax = yield call(services.menus, payload);
+        const menusData = menusAjax.data;
+        if (menusData.msg === 'success') {
+          localStorage.setItem('menus', JSON.stringify(menusData.data));
+          yield put({
+            type: 'save',
+            payload: {
+              menus: menusData.data,
+            }
+          })
+        }
       } else {
         message.error(data.msg);
       }
