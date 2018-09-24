@@ -5,6 +5,7 @@ import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import _ from 'lodash';
+import style from './add.less';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -181,7 +182,7 @@ const Personal = ({ dispatch, addUser }) => {
 
   return (
     <div>
-      <div>个人信息</div>
+      <div className={style.titleBox}>填写个人信息</div>
       <WrappedPersonalForm {...opt}/>
     </div>
   );

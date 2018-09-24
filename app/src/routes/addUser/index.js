@@ -7,6 +7,7 @@ import { Breadcrumb, Tabs } from 'antd';
 import style from './add.less';
 import { Link } from 'dva/router';
 
+import Department from '../../components/addUser/department'; // 员工归属
 import Personal from '../../components/addUser/personal'; // 个人信息
 import Basic from '../../components/addUser/basic'; // 基本信息
 import Experience from '../../components/addUser/experience'; // 工作经验
@@ -27,7 +28,7 @@ class Add extends React.Component {
 
   render() {
     let { addUser, dispatch } = this.props;
-    let { basicDisabled, experienceDisabled, portrayalDisabled, activeTabsKey } = addUser;
+    let { personalDisabled, basicDisabled, experienceDisabled, portrayalDisabled, activeTabsKey } = addUser;
 
     let handerChange = (activeKey) => {
       dispatch({
@@ -50,7 +51,8 @@ class Add extends React.Component {
         </div>
         <div className={style.content}>
           <Tabs activeKey={activeTabsKey} tabPosition="left" onChange={handerChange}>
-            <TabPane tab="个人信息" key="1"><Personal /></TabPane>
+            <TabPane tab="归属部门" key="0"><Department /></TabPane>
+            <TabPane tab="个人信息" key="1" disabled={personalDisabled}><Personal /></TabPane>
             <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic /></TabPane>
             <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience /></TabPane>
             <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal /></TabPane>

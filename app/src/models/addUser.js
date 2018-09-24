@@ -6,7 +6,8 @@ export default {
 
   state: {
     addUserParam: {}, // 添加员工参数
-    activeTabsKey: '1', // 选中面板
+    activeTabsKey: '0', // 选中面板
+    personalDisabled: true, // 个人信息
     basicDisabled: true, // 基本信息
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像
