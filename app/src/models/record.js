@@ -1,4 +1,7 @@
 // 档案管理
+import services from './../services/';
+import _ from 'lodash';
+
 export default {
 
   namespace: 'record',
@@ -57,6 +60,15 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
+      history.listen(({ pathname }) => {
+        dispatch({
+          type: 'getUserList',
+          payload: {
+            start: 1,
+            length: 30,
+          }
+        })
+      })
     },
   },
 
@@ -64,6 +76,11 @@ export default {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
       yield put({ type: 'save' });
     },
+
+    // 获取列表
+    *getUserList({ payload }, { call, put }) {
+      yield call(services.getUserList, payload);
+    }
   },
 
   reducers: {

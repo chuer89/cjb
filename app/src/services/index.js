@@ -87,6 +87,11 @@ let httpApi = {
 	addUser(param = {}) {
 		return post('base', '/user/addUser', param);
 	},
+	// 员工列表
+	getUserList(param = {}) {
+		return post('base', '/user/getUserList', param);
+	},
+	
 	// 获取所有岗位
 	getPosition(param = {}) {
 		return post('base', '/position/getAll', param);
