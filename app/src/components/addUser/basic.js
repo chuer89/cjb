@@ -5,6 +5,7 @@ import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import _ from 'lodash';
+import style from './add.less';
 
 // const { TextArea } = Input;
 
@@ -38,15 +39,6 @@ class BasicForm extends React.Component {
         value: '内推', code: '1'
       }, {
         value: '其他', code: '2'
-      }],
-
-      // 店面关联
-      storeRelevance: [{
-        value: '瑶池', code: '1'
-      }, {
-        value: '功夫', code: '2'
-      }, {
-        value: '寝室', code: '3'
       }],
 
       // 合同类型
@@ -93,7 +85,7 @@ class BasicForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     let { professionLevel, invitationChannel, 
-      isRecommendChannel, storeRelevance, contractType } = this.state;
+      isRecommendChannel, contractType } = this.state;
     let self = this;
 
     const formItemLayout = {
@@ -157,15 +149,6 @@ class BasicForm extends React.Component {
       )
     }
 
-    // 店面关联
-    let renderStoreRelevance = storeRelevance.map((item) => {
-      return (
-        <span key={item.code} style={{'paddingRight': '10px'}}>
-          <Checkbox value={item.code}>{item.value}</Checkbox>
-        </span>
-      )
-    })
-
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
@@ -222,15 +205,10 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
         {renderRecommendChannel}
-        <FormItem {...formItemLayout} label="店面关联">
-          {getFieldDecorator('storeRelevance')(
-            <Checkbox.Group style={{ width: '100%' }}>
-              <div>{renderStoreRelevance}</div>
-            </Checkbox.Group>
-          )}
-        </FormItem>
         <FormItem>
-          <Button type="primary" htmlType="submit">下一步</Button>
+          <div className={style.submitBtnBox}>
+            <Button block type="primary" htmlType="submit" size="large">下一步</Button>
+          </div>
         </FormItem>
       </Form>
     );

@@ -5,7 +5,6 @@ import _ from 'lodash';
 import style from './add.less';
 
 const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
 
 // 所属部门
 class DepartmentForm extends React.Component {
@@ -146,7 +145,9 @@ class DepartmentForm extends React.Component {
         </FormItem>
         {renderStuc}
         <FormItem>
-          <Button type="primary" htmlType="submit">下一步</Button>
+          <div className={style.submitBtnBox}>
+            <Button block type="primary" htmlType="submit" size="large">下一步</Button>
+          </div>
         </FormItem>
       </Form>
     );
