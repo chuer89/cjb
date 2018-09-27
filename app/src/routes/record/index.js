@@ -6,6 +6,7 @@ import { Table, Button, Input, Select, Menu, Dropdown, Icon, Modal } from 'antd'
 import style from './record.less';
 import { Link } from 'dva/router';
 import _ from 'lodash';
+import moment from 'moment';
 
 import ConfigMenus from './components/menusconfig'; // 配置菜单
 
@@ -73,15 +74,18 @@ class RecordList extends React.Component {
   render() {
     let self = this;
     let { record, user } = this.props;
-    let { columns, dataSource } = record;
+    let { columns, dataBody, indentSize } = record;
     let inputStyle = {
       'width': '180px',
     }
     let { statusData, contractType, visibleConfigMenus } = this.state;
+    let { records } = dataBody;
 
     let handleChange = (value) => {
       console.log(value, 'v');
     }
+
+    console.log(records, 'neir')
 
     // 状态筛选
     let renderSeleStatus = statusData.map((item) => {
@@ -141,8 +145,10 @@ class RecordList extends React.Component {
     }
 
     let tableOpt = {
-      dataSource,
+      rowKey: 'id',
+      dataSource: records || [],
       columns,
+      indentSize,
     }
 
     // 配置菜单参数

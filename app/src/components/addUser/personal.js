@@ -152,7 +152,9 @@ class PersonalForm extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          <Button type="primary" htmlType="submit">下一步</Button>
+          <div className={style.submitBtnBox}>
+            <Button block type="primary" htmlType="submit" size="large">下一步</Button>
+          </div>
         </FormItem>
       </Form>
     );

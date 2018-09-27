@@ -247,7 +247,7 @@ const Basic = ({ dispatch, addUser, loading }) => {
 
   return (
     <div>
-      <div>基本信息</div>
+      <div className={style.titleBox}>上传基本信息</div>
       <WrappedBasicForm {...opt} />
     </div>
   );

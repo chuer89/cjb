@@ -18,14 +18,14 @@ export default {
             type: 'getUserOrganizations',
           });
 
-          dispatch({
-            type: 'getEnterpriseOrgInfoList',
-            payload: {
-              parent_id: -1,
-              length: 20,
-              start: 1,
-            }
-          })
+          // dispatch({
+          //   type: 'getEnterpriseOrgInfoList',
+          //   payload: {
+          //     parent_id: -1,
+          //     length: 20,
+          //     start: 1,
+          //   }
+          // })
         } else if (pathname === '/deploy/store' || pathname === '/initstructure') { // 门店架构
           dispatch({
             type: 'getOrganizations',

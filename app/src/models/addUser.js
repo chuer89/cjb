@@ -16,6 +16,8 @@ export default {
     storeStructure: [], // 门店架构
     userOrganizations: [], // 行政部门组织架构
     departmentType: '1', // 部门类型 1门店 2行政
+
+    uid: '', // 操作当前的uid
   },
 
   subscriptions: {
@@ -49,6 +51,15 @@ export default {
     // 添加员工
     *addUser({ payload }, { call, put }) {
       let temp = yield call(services.addUser, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            uid: data.data.id,
+          }
+        })
+      }
     },
 
     // 获取目前行政部门架构

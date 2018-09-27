@@ -38,22 +38,10 @@ let post = (region, api, params = {}) => {
 	let ajax = axios(config);
 
 	ajax.then(({data}) => {
-		let disableAjax = localStorage.getItem('disableAjax');
-		if (data && data.status === 'ERROR') {
-			if (data.errorCode === '10010019' || data.errorCode === '10000019') {
-				
-				// 退出登录
-				// common.clickQuit();
-
-				if (disableAjax === 'true') {
-				
-				} else {
-					// message.info(data.errorMsg);
-					localStorage.setItem('disableAjax', 'true');
-				}
-			} else {
-				localStorage.setItem('disableAjax', 'false');
-			}
+		// 超时登录
+		if (data && data.code === 103) {
+			// 去登录
+			window.location.hash = '#/login';
 		}
 	}).catch(function () {
 		message.warning('服务器有误，请稍候再试。');
@@ -91,7 +79,7 @@ let httpApi = {
 	getUserList(param = {}) {
 		return post('base', '/user/getUserList', param);
 	},
-	
+
 	// 获取所有岗位
 	getPosition(param = {}) {
 		return post('base', '/position/getAll', param);
@@ -154,7 +142,7 @@ let httpApi = {
 	getUserOrganizations(param = {}) {
 		return post('base', '/common/user-organizations', param);
 	},
-	// 获取所有部门架构
+	// 获取所有部门架构（分页目录）
 	getEnterpriseOrgInfoList(param = {}) {
 		return post('base', '/enterpriseOrgInfo/getEnterpriseOrgInfoList', param);
 	},

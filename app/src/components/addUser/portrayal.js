@@ -102,7 +102,7 @@ const Portrayal = ({ dispatch }) => {
 
   return (
     <div>
-      <div>用户画像</div>
+      <div className={style.titleBox}>上传用户画像</div>
       <WrappedPortrayalForm {...opt} />
       <div><Button type="primary">提交</Button></div>
     </div>
