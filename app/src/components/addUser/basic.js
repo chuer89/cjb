@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
-import { Form, Button, DatePicker, Select, Input, Checkbox, InputNumber } from 'antd';
+import { Form, Button, DatePicker, Select, Input, InputNumber } from 'antd';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';

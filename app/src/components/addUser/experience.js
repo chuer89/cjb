@@ -1,9 +1,9 @@
 import React from 'react';
-import { connect } from 'dva';
 import { Form, Input, Button, DatePicker, Icon, Row, Col } from 'antd';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
-// import _ from 'lodash';
+import style from './add.less';
+import _ from 'lodash';
 
 // 工作经验
 const FormItem = Form.Item;
@@ -74,10 +74,21 @@ class DynamicFieldSet extends React.Component {
     e.preventDefault();
     let { form, handerNext } = this.props;
     form.validateFields((err, values) => {
+      let startdate = '';
+      let enddate = '';
+
       if (!err) {
         console.log('Received values of form: ', values);
+
+        // startdate = moment(values.contractDate[0]).format('YYYY-MM-DD');
+        // enddate = moment(values.contractDate[1]).format('YYYY-MM-DD');
+
+        _.extend(values, {
+          startdate,
+          enddate,
+        });
       }
-      handerNext();
+      handerNext(values);
     });
   }
 
@@ -109,36 +120,28 @@ class DynamicFieldSet extends React.Component {
           <Row>
             <Col span={7}>
               <FormItem {...formItemLayout}>
-                {getFieldDecorator('date_' + k, {
-                  
-                })(
+                {getFieldDecorator('date_' + k)(
                   <RangePicker locale={locale} />
                 )}
               </FormItem>
             </Col>
             <Col span={5}>
               <FormItem {...formItemLayout}>
-                {getFieldDecorator('name_' + k, {
-                  
-                })(
+                {getFieldDecorator('name_' + k)(
                   <Input placeholder="请输入公司名称" autoComplete="off" maxLength="32" />
                 )}
               </FormItem>
             </Col>
             <Col span={5}>
               <FormItem {...formItemLayout}>
-                {getFieldDecorator('ren_' + k, {
-                  
-                })(
+                {getFieldDecorator('ren_' + k)(
                   <Input placeholder="请输入证明人" autoComplete="off" maxLength="32" />
                 )}
               </FormItem>
             </Col>
             <Col span={5}>
               <FormItem {...formItemLayout}>
-                {getFieldDecorator('phone_' + k, {
-                  
-                })(
+                {getFieldDecorator('phone_' + k)(
                   <Input placeholder="请输入联系方式" autoComplete="off" maxLength="11" />
                 )}
               </FormItem>
@@ -161,7 +164,7 @@ class DynamicFieldSet extends React.Component {
     });
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Row>
+        <Row className={style.workTipsBox}>
           <Col span={7}>工作时间</Col>
           <Col span={5}>公司名称</Col>
           <Col span={5}>证明人</Col>
@@ -169,12 +172,14 @@ class DynamicFieldSet extends React.Component {
         </Row>
         {formItems}
         <FormItem {...formItemLayoutWithOutLabel}>
-          <Button type="dashed" disabled={disabledAdd} onClick={this.add} style={{ width: '60%' }}>
+          <Button type="dashed" size="large" disabled={disabledAdd} onClick={this.add} style={{ width: '30%' }}>
             <Icon type="plus" /> 添加工作经验
           </Button>
         </FormItem>
         <FormItem {...formItemLayoutWithOutLabel}>
-          <Button type="primary" htmlType="submit">下一步</Button>
+          <div className={style.submitBtnBox}>
+            <Button block type="primary" htmlType="submit" size="large">下一步</Button>
+          </div>
         </FormItem>
       </Form>
     );
@@ -183,30 +188,17 @@ class DynamicFieldSet extends React.Component {
 
 const WrappedDynamicFieldSet = Form.create()(DynamicFieldSet);
 
-const Personal = ({ dispatch }) => {
-  let handerNext = () => {
-    dispatch({
-      type: 'addUser/save',
-      payload: {
-        experienceDisabled: false,
-        portrayalDisabled: false,
-        activeTabsKey: '4'
-      }
-    })
-  };
-
+const Personal = ({ handerNext }) => {
   let opt = {
     handerNext,
   };
 
   return (
     <div>
-      <div>工作经历</div>
+      <div className={style.titleBox}>填写工作经历</div>
       <WrappedDynamicFieldSet {...opt} />
     </div>
   );
 };
 
-export default connect((({ addUser }) => ({
-  addUser,
-})))(Personal);
+export default Personal;

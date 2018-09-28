@@ -74,6 +74,11 @@ class Add extends React.Component {
         });
       }
     }
+    let experienceOpt = {
+      handerNext(values) {
+        // handerNextBase(values, '2');
+      }
+    }
 
     return (
       <App>
@@ -90,7 +95,7 @@ class Add extends React.Component {
             <TabPane tab="归属部门" key="0"><Department {...departmentOpt} /></TabPane>
             <TabPane tab="个人信息" key="1" disabled={personalDisabled}><Personal {...personalOpt} /></TabPane>
             <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic {...baseOpt} /></TabPane>
-            <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience /></TabPane>
+            <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience {...experienceOpt} /></TabPane>
             <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal /></TabPane>
           </Tabs>
         </div>

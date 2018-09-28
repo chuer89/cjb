@@ -22,7 +22,7 @@ class Edit extends React.Component {
 
   render() {
     let { editUser, dispatch } = this.props;
-    let { basicDisabled, experienceDisabled, portrayalDisabled, activeTabsKey, userParam } = editUser;
+    let { basicDisabled, experienceDisabled, portrayalDisabled, activeTabsKey, userParam, uid } = editUser;
 
     let handerChange = (activeKey) => {
       dispatch({
@@ -47,6 +47,13 @@ class Edit extends React.Component {
       }
     }
 
+    let experienceOpt = {
+      handerNext(values) {
+        _.extend(userParam, values);
+        console.log(userParam, uid)
+      }
+    }
+
     return (
       <App>
         <div>
@@ -61,7 +68,7 @@ class Edit extends React.Component {
           <Tabs activeKey={activeTabsKey} tabPosition="left" onChange={handerChange}>
             <TabPane tab="个人信息" key="1"><Personal {...personalOpt} /></TabPane>
             <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic /></TabPane>
-            <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience /></TabPane>
+            <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience {...experienceOpt} /></TabPane>
             <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal /></TabPane>
           </Tabs>
         </div>
