@@ -156,20 +156,8 @@ class DepartmentForm extends React.Component {
 
 const WrappedDepartmentForm = Form.create()(DepartmentForm);
 
-const Department = ({ dispatch, addUser }) => {
-  let { addUserParam, userOrganizations, departmentType, storeStructure } = addUser;
-
-  let handerNext = (values) => {
-    _.extend(addUserParam, values);
-    dispatch({
-      type: 'addUser/save',
-      payload: {
-        personalDisabled: false,
-        activeTabsKey: '1',
-        addUserParam,
-      }
-    })
-  };
+const Department = ({ dispatch, addUser, handerNext }) => {
+  let { userOrganizations, departmentType, storeStructure } = addUser;
 
   let opt = {
     handerNext,

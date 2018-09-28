@@ -19,33 +19,96 @@ class RecordList extends React.Component {
     // 设置 initial state
     this.state = {
       // 状态筛选
-      statusData: [{
-        value: '全部', code: '-1'
-      }, {
-        value: '离职', code: '1'
-      }, {
-        value: '在职', code: '2'
-      }, {
-        value: '待离职', code: '3'
-      }],
-
+      statusDataSele: {},
       // 合同类型
-      contractType: [{
-        value: '全部', code: '-1'
-      }, {
-        value: '固定期限', code: '1'
-      }, {
-        value: '无固定期限', code: '2'
-      }, {
-        value: '试用', code: '3'
-      }],
+      contractTypeSele: {},
+      warningSele: { // 预警信息
+        '0': '正常',
+        '1': '身份证',
+        '2': '健康证',
+        '3': '劳动合同',
+      },
 
       visibleConfigMenus: false,
+      columns: [],
     }
   }
 
   UNSAFE_componentWillMount() {
     this._isMounted = true;
+    let { record } = this.props;
+    let { statusData, contractType } = record;
+    let { warningSele } = this.state;
+
+    let statusDataSele = {};
+    _.forEach(statusData, (item) => {
+      statusDataSele['' + item.code] = item.value;
+    });
+
+    let contractTypeSele = {};
+    _.forEach(contractType, (item) => {
+      contractTypeSele['' + item.code] = item.value;
+    });
+
+    let columns = [{
+      title: '工号',
+      dataIndex: 'no',
+    }, {
+      title: '姓名',
+      dataIndex: 'name',
+    }, {
+      title: '状态',
+      dataIndex: 'status',
+      render: (item) => {
+        return (
+          <div>{statusDataSele[item] || ''}</div>
+        )
+      }
+    }, {
+      title: '合作类型',
+      dataIndex: 'contractType',
+      render: (item) => {
+        return (
+          <div>{contractTypeSele[item] || ''}</div>
+        )
+      }
+    }, {
+      title: '信息预警',
+      dataIndex: 'warning',
+      render: (item) => {
+        let value = '';
+        if (_.isArray(item)) {
+          _.forEach(item, (val) => {
+            value += warningSele[val] + ',';
+          });
+        }
+        return (
+          <div>{value}</div>
+        )
+      }
+    }, {
+      title: '入职时间',
+      dataIndex: 'joinTime',
+      render: (item) => {
+        return (
+          <div>{moment(item).format('YYYY-MM-DD')}</div>
+        )
+      }
+    }, {
+      title: '联系方式',
+      dataIndex: 'phone',
+    }, {
+      title: '操作',
+      key: 'handle',
+      align: 'center',
+      render: this.operateRender,
+    }];
+
+    this.setState({
+      columns,
+      statusDataSele,
+      contractTypeSele,
+    });
   }
   componentWillUnmount() {
     this._isMounted = false;
@@ -55,6 +118,51 @@ class RecordList extends React.Component {
     if (this._isMounted) {
       this.setState(payload);
     }
+  }
+
+  // 最后一列操作
+  operateRender(item) {
+    let self = this;
+    // console.log(item)
+    // 删除用户
+    let delUser = () => {
+      self.handerDel(() => {
+        console.log('删除')
+      });
+    }
+
+    // 打开菜单配置
+    let openConfigMenus = () => {
+      self.save({
+        visibleConfigMenus: true,
+      })
+    }
+
+    let renderOperate = (
+      <Menu>
+        <Menu.Item>
+          <Link to={'editUser/' + item.id} target="_blank" className={style.operateBtn}>编辑资料</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <span className={style.operateBtn} onClick={delUser}>删除员工</span>
+        </Menu.Item>
+        <Menu.Item>
+          <span className={style.operateBtn} onClick={openConfigMenus}>菜单权限</span>
+        </Menu.Item>
+        <Menu.Item>
+          <Link target="_blank" to="/personnel/userdetails/1" className={style.operateBtn}>员工详情</Link>
+        </Menu.Item>
+      </Menu>
+    )
+    return (
+      <div>
+        <Dropdown overlay={renderOperate}>
+          <div>
+            处理<Icon type="down" />
+          </div>
+        </Dropdown>
+      </div>
+    )
   }
 
   // 删除员工
@@ -74,11 +182,11 @@ class RecordList extends React.Component {
   render() {
     let self = this;
     let { record, user } = this.props;
-    let { columns, dataBody, indentSize } = record;
+    let { dataBody, indentSize, statusData, contractType } = record;
     let inputStyle = {
       'width': '180px',
     }
-    let { statusData, contractType, visibleConfigMenus } = this.state;
+    let { visibleConfigMenus, columns } = this.state;
     let { records } = dataBody;
 
     let handleChange = (value) => {
@@ -101,54 +209,14 @@ class RecordList extends React.Component {
       )
     });
 
-    _.last(columns).render = (item) => {
-      // console.log(item)
-      // 删除用户
-      let delUser = () => {
-        self.handerDel(() => {
-          console.log('删除')
-        });
-      }
-
-      // 打开菜单配置
-      let openConfigMenus = () => {
-        self.save({
-          visibleConfigMenus: true,
-        })
-      }
-
-      let renderOperate = (
-        <Menu>
-          <Menu.Item>
-            <span className={style.operateBtn}>编辑资料</span>
-          </Menu.Item>
-          <Menu.Item>
-            <span className={style.operateBtn} onClick={delUser}>删除员工</span>
-          </Menu.Item>
-          <Menu.Item>
-            <span className={style.operateBtn} onClick={openConfigMenus}>菜单权限</span>
-          </Menu.Item>
-          <Menu.Item>
-            <Link target="_blank" to="/personnel/userdetails/1" className={style.operateBtn}>员工详情</Link>
-          </Menu.Item>
-        </Menu>
-      )
-      return (
-        <div>
-          <Dropdown overlay={renderOperate}>
-            <div>
-              处理<Icon type="down" />
-            </div>
-          </Dropdown>
-        </div>
-      )
-    }
-
     let tableOpt = {
       rowKey: 'id',
       dataSource: records || [],
       columns,
       indentSize,
+      locale: {
+        emptyText: '暂无数据'
+      }
     }
 
     // 配置菜单参数
@@ -172,7 +240,7 @@ class RecordList extends React.Component {
         </div>
         <div className={style.content}>
           <div>
-            <Link to="addUser">
+            <Link to="addUser" target="_blank">
               <Button type="primary" icon="user-add" style={{ 'marginRight': '15px' }}>添加员工</Button>
             </Link>
             <Button type="primary" icon="usergroup-add">批量添加</Button>

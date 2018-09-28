@@ -50,6 +50,11 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/addUser')],
       component: () => import('./routes/addUser/')
     },
+    {
+      path: '/personnel/editUser/:id', // 编辑员工
+      models: () => [import('./models/editUser')],
+      component: () => import('./routes/personnel/user/editUser/')
+    },
 
     {
       path: '/deploy/store', // 门店管理

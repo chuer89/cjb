@@ -6,6 +6,7 @@ import NProgress from 'nprogress';
 import { Breadcrumb, Tabs } from 'antd';
 import style from './add.less';
 import { Link } from 'dva/router';
+import _ from 'lodash';
 
 import Department from '../../components/addUser/department'; // 员工归属
 import Personal from '../../components/addUser/personal'; // 个人信息
@@ -28,7 +29,8 @@ class Add extends React.Component {
 
   render() {
     let { addUser, dispatch } = this.props;
-    let { personalDisabled, basicDisabled, experienceDisabled, portrayalDisabled, activeTabsKey } = addUser;
+    let { personalDisabled, basicDisabled, experienceDisabled,
+      portrayalDisabled, activeTabsKey, addUserParam } = addUser;
 
     let handerChange = (activeKey) => {
       dispatch({
@@ -37,6 +39,40 @@ class Add extends React.Component {
           activeTabsKey: activeKey
         }
       });
+    }
+    let handerNextBase = (values, activeTabsKey) => {
+      _.extend(addUserParam, values);
+      dispatch({
+        type: 'addUser/save',
+        payload: {
+          basicDisabled: false,
+          activeTabsKey,
+          addUserParam,
+        }
+      })
+    }
+    
+    let departmentOpt = {
+      handerNext(values) {
+        handerNextBase(values, '1');
+      }
+    }
+    let personalOpt = {
+      handerNext(values) {
+        handerNextBase(values, '2');
+      }
+    }
+    let baseOpt = {
+      handerNext(values) {
+        // handerNextBase(values, '3');
+        _.extend(addUserParam, values, {
+          contractDate: '',
+        });
+        dispatch({
+          type: 'addUser/addUser',
+          payload: addUserParam,
+        });
+      }
     }
 
     return (
@@ -51,9 +87,9 @@ class Add extends React.Component {
         </div>
         <div className={style.content}>
           <Tabs activeKey={activeTabsKey} tabPosition="left" onChange={handerChange}>
-            <TabPane tab="归属部门" key="0"><Department /></TabPane>
-            <TabPane tab="个人信息" key="1" disabled={personalDisabled}><Personal /></TabPane>
-            <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic /></TabPane>
+            <TabPane tab="归属部门" key="0"><Department {...departmentOpt} /></TabPane>
+            <TabPane tab="个人信息" key="1" disabled={personalDisabled}><Personal {...personalOpt} /></TabPane>
+            <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic {...baseOpt} /></TabPane>
             <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience /></TabPane>
             <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal /></TabPane>
           </Tabs>

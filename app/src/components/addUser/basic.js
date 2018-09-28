@@ -52,11 +52,6 @@ class BasicForm extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // To disabled submit button at the beginning.
-    // this.props.form.validateFields();
-  }
-
   handleSubmit = (e) => {
     e.preventDefault();
     let { form, handerNext } = this.props;
@@ -217,29 +212,7 @@ class BasicForm extends React.Component {
 
 const WrappedBasicForm = Form.create()(BasicForm);
 
-const Basic = ({ dispatch, addUser, loading }) => {
-  let { addUserParam } = addUser;
-
-  console.log(loading, 'lading');
-
-  let handerNext = (values) => {
-    _.extend(addUserParam, values, {
-      contractDate: '',
-    });
-    console.log(addUserParam, 'add');
-    dispatch({
-      type: 'addUser/addUser',
-      payload: addUserParam,
-    });
-    // dispatch({
-    //   type: 'addUser/save',
-    //   payload: {
-    //     basicDisabled: false,
-    //     activeTabsKey: '3',
-    //     addUserParam,
-    //   }
-    // })
-  };
+const Basic = ({ handerNext }) => {
 
   let opt = {
     handerNext,
@@ -253,7 +226,4 @@ const Basic = ({ dispatch, addUser, loading }) => {
   );
 };
 
-export default connect((({ addUser, loading }) => ({
-  addUser,
-  loading,
-})))(Basic);
+export default Basic;

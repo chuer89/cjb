@@ -10,38 +10,26 @@ export default {
     dataBody: {}, // 内容
     indentSize: 20, // 
 
-    columns: [{
-      title: '工号',
-      dataIndex: 'no',
+    // 状态筛选
+    statusData: [{
+      value: '全部', code: '-1'
     }, {
-      title: '姓名',
-      dataIndex: 'name',
+      value: '离职', code: '1'
     }, {
-      title: '状态',
-      dataIndex: 'status',
+      value: '在职', code: '2'
     }, {
-      title: '合作类型',
-      dataIndex: 'contractType',
+      value: '待离职', code: '3'
+    }],
+
+    // 合同类型
+    contractType: [{
+      value: '全部', code: '-1'
     }, {
-      title: '信息预警',
-      dataIndex: 'warning',
+      value: '固定期限', code: '1'
     }, {
-      title: '入职时间',
-      dataIndex: 'joinTime',
-      render: (item) => {
-        console.log(item, 'time')
-        return (
-          <div>1</div>
-        )
-      }
+      value: '无固定期限', code: '2'
     }, {
-      title: '联系方式',
-      dataIndex: 'phone',
-    }, {
-      title: '操作',
-      key: 'handle',
-      align: 'center',
-      render: () => {},
+      value: '试用', code: '3'
     }],
   },
 

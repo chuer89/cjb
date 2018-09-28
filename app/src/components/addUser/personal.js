@@ -163,21 +163,7 @@ class PersonalForm extends React.Component {
 
 const WrappedPersonalForm = Form.create()(PersonalForm);
 
-const Personal = ({ dispatch, addUser }) => {
-  let { addUserParam } = addUser;
-
-  let handerNext = (values) => {
-    _.extend(addUserParam, values);
-    dispatch({
-      type: 'addUser/save',
-      payload: {
-        basicDisabled: false,
-        activeTabsKey: '2',
-        addUserParam,
-      }
-    })
-  };
-
+const Personal = ({ handerNext }) => {
   let opt = {
     handerNext,
   };
@@ -190,6 +176,4 @@ const Personal = ({ dispatch, addUser }) => {
   );
 };
 
-export default connect((({ addUser }) => ({
-  addUser,
-})))(Personal);
+export default Personal;

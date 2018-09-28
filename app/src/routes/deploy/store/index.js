@@ -9,6 +9,7 @@ import App from '../../app';
 
 import Structure from './../../../components/structure/';
 
+// 门店管理
 class StoreStru extends React.Component {
   state = {
     

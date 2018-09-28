@@ -23,14 +23,6 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        // dispatch({
-        //   type: 'getPosition',
-        //   payload: {
-        //     start: 0,
-        //     length: 20,
-        //   }
-        // })
-
         // 获取门店
         dispatch({
           type: 'getOrganizations',

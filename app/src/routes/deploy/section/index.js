@@ -4,6 +4,7 @@ import styles from './index.less'
 import App from '../../app';
 import Structure from './../../../components/structure/section';
 
+// 行政部门管理
 class Section extends React.Component {
   state = {
     
