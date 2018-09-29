@@ -62,7 +62,13 @@ class Edit extends React.Component {
           jsondata: JSON.stringify(param),
         }).then(({ data }) => {
           if (data.msg === 'success') {
-            
+            dispatch({
+              type: 'editUser/save',
+              payload: {
+                portrayalDisabled: false,
+                activeTabsKey: '4',
+              }
+            })
           } else {
             message.error(data.msg);
           }
@@ -83,7 +89,7 @@ class Edit extends React.Component {
 
     return (
       <App>
-        <div>
+        <div style={{'paddingBottom': '12px'}}>
           <Breadcrumb>
             <Breadcrumb.Item>
               <Link to="record">员工档案</Link>

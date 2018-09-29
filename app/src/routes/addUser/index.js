@@ -4,7 +4,6 @@ import { connect } from 'dva';
 import App from '../app';
 import NProgress from 'nprogress';
 import { Breadcrumb, Tabs, message } from 'antd';
-import style from './add.less';
 import { Link } from 'dva/router';
 import _ from 'lodash';
 import services from './../../services/';
@@ -91,7 +90,7 @@ class Add extends React.Component {
 
     return (
       <App>
-        <div>
+        <div style={{'paddingBottom': '12px'}}>
           <Breadcrumb>
             <Breadcrumb.Item>
               <Link to="record">员工档案</Link>
@@ -99,7 +98,7 @@ class Add extends React.Component {
             <Breadcrumb.Item>添加用户</Breadcrumb.Item>
           </Breadcrumb>
         </div>
-        <div className={style.content}>
+        <div className={'contentBox'}>
           <Tabs activeKey={activeTabsKey} tabPosition="left" onChange={handerChange}>
             <TabPane tab="归属部门" key="0"><Department {...departmentOpt} /></TabPane>
             <TabPane tab="个人信息" key="1" disabled={personalDisabled}><Personal {...personalOpt} /></TabPane>
