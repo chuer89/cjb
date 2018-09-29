@@ -75,6 +75,18 @@ let httpApi = {
 	addUser(param = {}) {
 		return post('base', '/user/addUser', param);
 	},
+	// 工作经验-添加
+	addUserWork(param = {}) {
+		return post('base', '/userWork/addUserWork', param);
+	},
+	// 获取工作经验
+	getUserWorkByUid(param = {}) {
+		return post('base', '/userWork/getUserWorkByUid', param);
+	},
+	// 删除工作经验
+	deleteUserWorkById(param = {}) {
+		return post('base', '/userWork/deleteUserWorkById', param);
+	},
 	// 员工列表
 	getUserList(param = {}) {
 		return post('base', '/user/getUserList', param);

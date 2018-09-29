@@ -3,10 +3,11 @@ import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
 import NProgress from 'nprogress';
-import { Breadcrumb, Tabs } from 'antd';
+import { Breadcrumb, Tabs, message } from 'antd';
 import style from './add.less';
 import { Link } from 'dva/router';
 import _ from 'lodash';
+import services from './../../services/';
 
 import Department from '../../components/addUser/department'; // 员工归属
 import Personal from '../../components/addUser/personal'; // 个人信息
@@ -75,8 +76,16 @@ class Add extends React.Component {
       }
     }
     let experienceOpt = {
-      handerNext(values) {
-        // handerNextBase(values, '2');
+      handerNext(param) {
+        services.addUserWork({
+          jsondata: JSON.stringify(param),
+        }).then(({ data }) => {
+          if (data.msg === 'success') {
+            
+          } else {
+            message.error(data.msg);
+          }
+        });
       }
     }
 

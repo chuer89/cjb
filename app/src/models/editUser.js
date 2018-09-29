@@ -14,6 +14,8 @@ export default {
     portrayalDisabled: true,  // 员工画像
 
     uid: '', // 操作当前的uid
+
+    userWork: [], // 工作经验
   },
 
   subscriptions: {
@@ -28,6 +30,13 @@ export default {
           payload: {
             uid,
           }
+        });
+
+        dispatch({
+          type: 'getUserWorkByUid',
+          payload: {
+            uid,
+          }
         })
       })
     },
@@ -39,14 +48,14 @@ export default {
     },
 
     // 添加员工
-    *addUser({ payload }, { call, put }) {
-      let temp = yield call(services.addUser, payload);
+    *getUserWorkByUid({ payload }, { call, put }) {
+      let temp = yield call(services.getUserWorkByUid, payload);
       let { data } = temp;
       if (data.msg === 'success') {
         yield put({
           type: 'save',
           payload: {
-            uid: data.data.id,
+            userWork: data.data,
           }
         })
       }

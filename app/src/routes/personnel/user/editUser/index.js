@@ -2,9 +2,10 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../../../app';
-import { Breadcrumb, Tabs } from 'antd';
+import { Breadcrumb, Tabs, message } from 'antd';
 import { Link } from 'dva/router';
 import _ from 'lodash';
+import services from './../../../../services/';
 
 import Personal from '../../../../components/addUser/personal'; // 个人信息
 import Basic from '../../../../components/addUser/basic'; // 基本信息
@@ -22,7 +23,9 @@ class Edit extends React.Component {
 
   render() {
     let { editUser, dispatch } = this.props;
-    let { basicDisabled, experienceDisabled, portrayalDisabled, activeTabsKey, userParam, uid } = editUser;
+    let { basicDisabled, experienceDisabled, 
+      portrayalDisabled, activeTabsKey, userParam, uid,
+      userWork } = editUser;
 
     let handerChange = (activeKey) => {
       dispatch({
@@ -48,9 +51,33 @@ class Edit extends React.Component {
     }
 
     let experienceOpt = {
-      handerNext(values) {
-        _.extend(userParam, values);
-        console.log(userParam, uid)
+      userWork,
+      handerNext(param) {
+        _.forEach(param, (item) => {
+          item.uid = uid;
+        });
+        console.log(param)
+        
+        services.addUserWork({
+          jsondata: JSON.stringify(param),
+        }).then(({ data }) => {
+          if (data.msg === 'success') {
+            
+          } else {
+            message.error(data.msg);
+          }
+        });
+      },
+      handerDel(id) {
+        services.deleteUserWorkById({
+          ids: JSON.stringify([id])
+        }).then(({ data }) => {
+          if (data.msg === 'success') {
+            
+          } else {
+            message.error(data.msg);
+          }
+        })
       }
     }
 

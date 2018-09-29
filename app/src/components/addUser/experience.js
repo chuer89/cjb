@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Button, DatePicker, Icon, Row, Col } from 'antd';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import 'moment/locale/zh-cn';
+import moment from 'moment';
 import style from './add.less';
 import _ from 'lodash';
 
@@ -21,7 +22,7 @@ class DynamicFieldSet extends React.Component {
   }
 
   remove = (k) => {
-    const { form } = this.props;
+    const { form, handerDel, userWork } = this.props;
     const { maxKeysLen } = this.state;
     // can use data-binding to get
     const keys = form.getFieldValue('keys');
@@ -40,6 +41,11 @@ class DynamicFieldSet extends React.Component {
       this.setState({
         disabledAdd: false,
       });
+    }
+
+    let id = _.get(userWork, k + '.id');
+    if (id) {
+      handerDel(id);
     }
   }
 
@@ -72,28 +78,49 @@ class DynamicFieldSet extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    let { form, handerNext } = this.props;
+    let { form, handerNext, userWork } = this.props;
     form.validateFields((err, values) => {
-      let startdate = '';
-      let enddate = '';
+      let { keys } = values;
+      let params = [];
 
       if (!err) {
         console.log('Received values of form: ', values);
 
-        // startdate = moment(values.contractDate[0]).format('YYYY-MM-DD');
-        // enddate = moment(values.contractDate[1]).format('YYYY-MM-DD');
+        _.forEach(keys, (item) => {
+          let date = values['date_' + item];
+          let employer = values['employer_' + item];
+          let certifierInfo = values['certifierInfo_' + item];
+          let certifier = values['certifier_' + item];
+          let startdate = '';
+          let enddate = '';
+          let id = _.get(userWork, item + '.id');
 
-        _.extend(values, {
-          startdate,
-          enddate,
-        });
+          if (!_.isEmpty(date)) {
+            startdate = moment(date[0]).format('YYYY-MM-DD');
+            enddate = moment(date[1]).format('YYYY-MM-DD');
+          }
+
+          let workParm = {
+            startdate,
+            enddate,
+            employer,
+            certifierInfo,
+            certifier,
+          }
+          if (id) {
+            workParm.id = id;
+          }
+
+          params.push(workParm);
+        })
       }
-      handerNext(values);
+      handerNext(params);
     });
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { userWork, form } = this.props;
+    const { getFieldDecorator, getFieldValue } = form;
     const { disabledAdd } = this.state;
     const formItemLayout = {
       // labelCol: {
@@ -112,36 +139,57 @@ class DynamicFieldSet extends React.Component {
       'fontSize': '20px',
       'paddingTop': '4px',
     }
-    getFieldDecorator('keys', { initialValue: ['1'] });
+
+    let initialValue = ['1'];
+    if (!_.isEmpty(userWork)) {
+      initialValue = [];
+      _.forEach(userWork, (item, index) => {
+        initialValue.push(index);
+      });
+    }
+
+    getFieldDecorator('keys', { initialValue });
     const keys = getFieldValue('keys');
     const formItems = keys.map((k, index) => {
+      let startdate = _.get(userWork, k + '.startdate');
+      let enddate = _.get(userWork, k + '.enddate');
+      let date = [moment(startdate), moment(enddate)];
+
       return (
         <div key={index}>
           <Row>
             <Col span={7}>
               <FormItem {...formItemLayout}>
-                {getFieldDecorator('date_' + k)(
+                {getFieldDecorator('date_' + k, {
+                  initialValue: startdate && date
+                })(
                   <RangePicker locale={locale} />
                 )}
               </FormItem>
             </Col>
             <Col span={5}>
               <FormItem {...formItemLayout}>
-                {getFieldDecorator('name_' + k)(
+                {getFieldDecorator('employer_' + k, {
+                  initialValue: _.get(userWork, k + '.employer')
+                })(
                   <Input placeholder="请输入公司名称" autoComplete="off" maxLength="32" />
                 )}
               </FormItem>
             </Col>
             <Col span={5}>
               <FormItem {...formItemLayout}>
-                {getFieldDecorator('ren_' + k)(
+                {getFieldDecorator('certifier_' + k, {
+                  initialValue: _.get(userWork, k + '.certifier')
+                })(
                   <Input placeholder="请输入证明人" autoComplete="off" maxLength="32" />
                 )}
               </FormItem>
             </Col>
             <Col span={5}>
               <FormItem {...formItemLayout}>
-                {getFieldDecorator('phone_' + k)(
+                {getFieldDecorator('certifierInfo_' + k, {
+                  initialValue: _.get(userWork, k + '.certifierInfo')
+                })(
                   <Input placeholder="请输入联系方式" autoComplete="off" maxLength="11" />
                 )}
               </FormItem>
@@ -188,9 +236,11 @@ class DynamicFieldSet extends React.Component {
 
 const WrappedDynamicFieldSet = Form.create()(DynamicFieldSet);
 
-const Personal = ({ handerNext }) => {
+const Personal = ({ handerNext, userWork, handerDel }) => {
   let opt = {
     handerNext,
+    userWork,
+    handerDel,
   };
 
   return (
