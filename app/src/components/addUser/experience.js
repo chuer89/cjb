@@ -112,9 +112,10 @@ class DynamicFieldSet extends React.Component {
           }
 
           params.push(workParm);
-        })
+
+          handerNext(params);
+        });
       }
-      handerNext(params);
     });
   }
 
@@ -161,7 +162,10 @@ class DynamicFieldSet extends React.Component {
             <Col span={7}>
               <FormItem {...formItemLayout}>
                 {getFieldDecorator('date_' + k, {
-                  initialValue: startdate && date
+                  initialValue: startdate && date,
+                  rules: [{
+                    required: true, message: '请选择时间段',
+                  }],
                 })(
                   <RangePicker locale={locale} />
                 )}
