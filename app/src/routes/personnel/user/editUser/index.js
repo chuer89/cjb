@@ -25,8 +25,9 @@ class Edit extends React.Component {
     let { editUser, dispatch } = this.props;
     let { basicDisabled, experienceDisabled, 
       portrayalDisabled, activeTabsKey, userParam, uid,
-      userWork } = editUser;
+      userWork, userDetails } = editUser;
 
+    // tab 切换
     let handerChange = (activeKey) => {
       dispatch({
         type: 'editUser/save',
@@ -36,7 +37,9 @@ class Edit extends React.Component {
       });
     }
 
+    // 个人信息
     let personalOpt = {
+      userDetails,
       handerNext(values) {
         _.extend(userParam, values);
         dispatch({
@@ -50,6 +53,7 @@ class Edit extends React.Component {
       }
     }
 
+    // 工作经验
     let experienceOpt = {
       userWork,
       handerNext(param) {

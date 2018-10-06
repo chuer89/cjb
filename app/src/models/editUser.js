@@ -8,7 +8,7 @@ export default {
   state: {
     userParam: {}, // 添加员工参数
 
-    activeTabsKey: '3', // 选中面板
+    activeTabsKey: '1', // 选中面板
     basicDisabled: true, // 基本信息
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像
@@ -16,6 +16,7 @@ export default {
     uid: '', // 操作当前的uid
 
     userWork: [], // 工作经验
+    userDetails: {}, // 用户详情资料
   },
 
   subscriptions: {
@@ -33,9 +34,9 @@ export default {
         });
 
         dispatch({
-          type: 'getUserWorkByUid',
+          type: 'getUserById',
           payload: {
-            uid,
+            id: uid,
           }
         })
       })
@@ -47,7 +48,21 @@ export default {
       yield put({ type: 'save' });
     },
 
-    // 添加员工
+    // 获取用户详情
+    *getUserById({ payload }, { call, put }) {
+      let temp = yield call(services.getUserById, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            userDetails: data.data,
+          }
+        })
+      }
+    },
+
+    // 获取工作经验
     *getUserWorkByUid({ payload }, { call, put }) {
       let temp = yield call(services.getUserWorkByUid, payload);
       let { data } = temp;

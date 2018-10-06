@@ -25,9 +25,13 @@ class PersonalForm extends React.Component {
   }
 
   render() {
-    let { handerNext, form } = this.props;
+    let { handerNext, form, userDetails } = this.props;
     const { getFieldDecorator } = form;
     const { education } = this.state;
+    userDetails = userDetails || {};
+
+    let { idcardTime } = userDetails;
+    let idcardTimeInit = moment(idcardTime) || '';
 
     let handleSubmit = (e) => {
       e.preventDefault();
@@ -55,6 +59,10 @@ class PersonalForm extends React.Component {
       },
     };
 
+    if (userDetails) {
+      console.log(userDetails)
+    }
+
     return (
       <Form onSubmit={handleSubmit}>
         <FormItem {...formItemLayout} label="姓名">
@@ -62,13 +70,14 @@ class PersonalForm extends React.Component {
             rules: [{
               required: true, message: '请输入姓名',
             }],
+            initialValue: userDetails.name,
           })(
             <Input placeholder="请输入姓名" autoComplete="off" maxLength="32"/>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="用户性别">
           {getFieldDecorator('gender', {
-            initialValue: '1',
+            initialValue: '' + userDetails.gender || '1',
           })(
             <Radio.Group>
               <Radio value="1">男</Radio>
@@ -78,6 +87,7 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="联系方式">
           {getFieldDecorator('phone', {
+            initialValue: userDetails.phone,
             rules: [{
               required: true, message: '请输入联系方式',
             }],
@@ -90,6 +100,7 @@ class PersonalForm extends React.Component {
             rules: [{
               required: true, message: '请输入身份证',
             }],
+            initialValue: userDetails.idcard,
           })(
             <Input placeholder="请输入身份证" autoComplete="off" maxLength="32"/>
           )}
@@ -99,19 +110,24 @@ class PersonalForm extends React.Component {
             rules: [{
               required: true, message: '请选择身份证到期日期',
             }],
+            initialValue: idcardTimeInit,
           })(
             <DatePicker locale={locale} />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="学历">
-          {getFieldDecorator('education')(
+          {getFieldDecorator('education', {
+            initialValue: userDetails.education,
+          })(
             <Select style={{ width: 120 }}>
               {renderEducation}
             </Select>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="婚姻状态">
-          {getFieldDecorator('marry')(
+          {getFieldDecorator('marry', {
+            initialValue: '' + userDetails.marry
+          })(
             <Radio.Group>
               <Radio value="1">已婚</Radio>
               <Radio value="0">未婚</Radio>
@@ -119,7 +135,9 @@ class PersonalForm extends React.Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="生育状态">
-          {getFieldDecorator('bear')(
+          {getFieldDecorator('bear', {
+            initialValue: ''+ userDetails.bear,
+          })(
             <Radio.Group>
               <Radio value="1">已育</Radio>
               <Radio value="0">未育</Radio>
@@ -131,22 +149,29 @@ class PersonalForm extends React.Component {
             rules: [{
               required: true, message: '请输入银行卡号',
             }],
+            initialValue: userDetails.bankCard
           })(
             <Input placeholder="请输入银行卡号" autoComplete="off" maxLength="32"/>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="特长">
-          {getFieldDecorator('specialty')(
+          {getFieldDecorator('specialty', {
+            initialValue: userDetails.specialty
+          })(
             <Input placeholder="请输入特长" autoComplete="off" maxLength="64"/>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="紧急联系人姓名">
-          {getFieldDecorator('emergencyContact')(
+          {getFieldDecorator('emergencyContact', {
+            initialValue: userDetails.emergencyContact,
+          })(
             <Input placeholder="请输入紧急联系人姓名" autoComplete="off" maxLength="32"/>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="紧急联系人联系方式">
-          {getFieldDecorator('emergencyContactPhone')(
+          {getFieldDecorator('emergencyContactPhone', {
+            initialValue: userDetails.emergencyContactPhone,
+          })(
             <Input placeholder="请输入紧急联系人联系方式" autoComplete="off" maxLength="11"/>
           )}
         </FormItem>
@@ -162,9 +187,10 @@ class PersonalForm extends React.Component {
 
 const WrappedPersonalForm = Form.create()(PersonalForm);
 
-const Personal = ({ handerNext }) => {
+const Personal = ({ handerNext, userDetails }) => {
   let opt = {
     handerNext,
+    userDetails,
   };
 
   return (

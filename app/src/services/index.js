@@ -75,6 +75,10 @@ let httpApi = {
 	addUser(param = {}) {
 		return post('base', '/user/addUser', param);
 	},
+	// 获取用户详情
+	getUserById(param = {}) {
+		return post('base', '/user/getUserById', param);
+	},
 	// 工作经验-添加
 	addUserWork(param = {}) {
 		return post('base', '/userWork/addUserWork', param);
