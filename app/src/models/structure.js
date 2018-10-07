@@ -17,15 +17,6 @@ export default {
           dispatch({
             type: 'getUserOrganizations',
           });
-
-          // dispatch({
-          //   type: 'getEnterpriseOrgInfoList',
-          //   payload: {
-          //     parent_id: -1,
-          //     length: 20,
-          //     start: 1,
-          //   }
-          // })
         } else if (pathname === '/deploy/store' || pathname === '/initstructure') { // 门店架构
           dispatch({
             type: 'getOrganizations',
@@ -52,10 +43,6 @@ export default {
           }
         })
       }
-    },
-
-    *getEnterpriseOrgInfoList({ payload }, { call, put }) {
-      const temp = yield call(services.getEnterpriseOrgInfoList, payload);
     },
 
     // 获取目前行政部门架构

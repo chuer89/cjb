@@ -53,7 +53,7 @@ class Structure extends React.Component {
       self.handerCloseModify();
       message.success('操作成功');
       dispatch({
-        type: 'structure/getEnterpriseOrgInfoList'
+        type: 'structure/getUserOrganizations'
       });
     } else {
       message.error(data.msg);

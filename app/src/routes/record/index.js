@@ -53,7 +53,7 @@ class RecordList extends React.Component {
 
     let columns = [{
       title: '工号',
-      dataIndex: 'no',
+      dataIndex: 'code',
     }, {
       title: '姓名',
       dataIndex: 'name',

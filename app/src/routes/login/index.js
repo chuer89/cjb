@@ -44,13 +44,13 @@ class Login extends React.Component {
         </div>
         <form>
           <FormItem hasFeedback>
-            {getFieldDecorator('username', {
+            {getFieldDecorator('phone', {
               rules: [
                 {
-                  required: true, message: '请输入用户名'
+                  required: true, message: '请输入手机号'
                 },
               ],
-            })(<Input size="large" onPressEnter={handleOk} autoComplete="off" placeholder="用户名" />)}
+            })(<Input size="large" onPressEnter={handleOk} autoComplete="off" placeholder="手机号" />)}
           </FormItem>
           <FormItem hasFeedback>
             {getFieldDecorator('password', {
