@@ -22,10 +22,11 @@ class Edit extends React.Component {
   }
 
   render() {
-    let { editUser, dispatch } = this.props;
+    let { editUser, dispatch, app } = this.props;
     let { basicDisabled, experienceDisabled, 
       portrayalDisabled, activeTabsKey, userParam, uid,
       userWork, userDetails } = editUser;
+    let { defaultImg } = app;
 
     // tab 切换
     let handerChange = (activeKey) => {
@@ -45,12 +46,42 @@ class Edit extends React.Component {
         dispatch({
           type: 'editUser/save',
           payload: {
-            basicDisabled: false,
             activeTabsKey: '2',
             userParam,
+            basicDisabled: false,
           }
-        })
+        });
       }
+    }
+
+    // 基本信息
+    let baseOpt = {
+      userDetails,
+      handerNext(values) {
+        _.extend(userParam, values, {
+          contractDate: '',
+          id: uid,
+        });
+
+        services.updateUser(userParam).then(({ data }) => {
+          if (data.msg === 'success') {
+            // 切换tab
+            dispatch({
+              type: 'editUser/save',
+              payload: {
+                experienceDisabled: false,
+                activeTabsKey: '3',
+              }
+            });
+            // 获取工作经验
+            dispatch({
+              type: 'editUser/getUserWorkByUid'
+            });
+          } else {
+            message.error(data.msg);
+          }
+        });
+      },
     }
 
     // 工作经验
@@ -60,7 +91,6 @@ class Edit extends React.Component {
         _.forEach(param, (item) => {
           item.uid = uid;
         });
-        console.log(param)
         
         services.addUserWork({
           jsondata: JSON.stringify(param),
@@ -91,6 +121,15 @@ class Edit extends React.Component {
       }
     }
 
+    // 员工画像
+    let portrayalOpt = {
+      action: services.addImg,
+      defaultImg,
+      handerNext() {
+        
+      }
+    }
+
     return (
       <App>
         <div style={{'paddingBottom': '12px'}}>
@@ -104,9 +143,9 @@ class Edit extends React.Component {
         <div className={'contentBox'}>
           <Tabs activeKey={activeTabsKey} tabPosition="left" onChange={handerChange}>
             <TabPane tab="个人信息" key="1"><Personal {...personalOpt} /></TabPane>
-            <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic /></TabPane>
+            <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic {...baseOpt} /></TabPane>
             <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience {...experienceOpt} /></TabPane>
-            <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal /></TabPane>
+            <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal {...portrayalOpt} /></TabPane>
           </Tabs>
         </div>
       </App>
@@ -114,6 +153,7 @@ class Edit extends React.Component {
   }
 }
 
-export default connect((({ editUser }) => ({
+export default connect((({ editUser, app }) => ({
   editUser,
+  app,
 })))(Edit);

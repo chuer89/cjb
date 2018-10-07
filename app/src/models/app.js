@@ -6,6 +6,7 @@ export default {
   state: {
     pathname: '/', // 路由
     moduleName: '', // 模块类型
+    defaultImg: require('../assets/img_default.png'), 
   },
 
   subscriptions: {

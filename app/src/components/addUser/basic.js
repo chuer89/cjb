@@ -77,10 +77,16 @@ class BasicForm extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    let { userDetails, form } = this.props;
+    const { getFieldDecorator } = form;
     let { professionLevel, invitationChannel, 
       isRecommendChannel, contractType } = this.state;
     let self = this;
+
+    userDetails = userDetails || {};
+    let { joinTime, contractStarttime, contractEndtime } = userDetails;
+    let joinTimeInit = moment(joinTime || new Date()) || '';
+    let contractDateInit = [moment(contractStarttime), moment(contractEndtime)];
 
     const formItemLayout = {
       labelCol: {
@@ -131,10 +137,11 @@ class BasicForm extends React.Component {
       renderRecommendChannel = (
         <div>
           <FormItem {...formItemLayout} label="推荐人">
-            {getFieldDecorator('tuijianren', {
+            {getFieldDecorator('referrer', {
               rules: [{
                 required: true, message: '请输入推荐人',
               }],
+              initialValue: userDetails.referrer,
             })(
               <Input placeholder="请输入推荐人" autoComplete="off" maxLength="32" />
             )}
@@ -150,13 +157,15 @@ class BasicForm extends React.Component {
             rules: [{
               required: true, message: '请选择入职日期',
             }],
-            initialValue: moment(new Date(), 'YYYY-MM-DD')
+            initialValue: joinTimeInit
           })(
             <DatePicker onChange={onChange} locale={locale} />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="职级">
-          {getFieldDecorator('position')(
+          {getFieldDecorator('position', {
+            initialValue: '' + (userDetails.position || ''),
+          })(
             <Select style={{ width: 120 }} onChange={handleChange}>
               {renderProfessionLevel}
             </Select>
@@ -167,6 +176,7 @@ class BasicForm extends React.Component {
             rules: [{
               required: true, message: '请选择合同类型',
             }],
+            initialValue: '' + (userDetails.contractType || '')
           })(
             <Select style={{ width: 120 }}>
               {renderContractType}
@@ -178,6 +188,7 @@ class BasicForm extends React.Component {
             rules: [{
               required: true, message: '请选择合同有效期',
             }],
+            initialValue: contractDateInit
           })(
             <RangePicker onChange={onChange} locale={locale} />
           )}
@@ -187,12 +198,15 @@ class BasicForm extends React.Component {
             rules: [{
               required: true, message: '请输入当前薪水',
             }],
+            initialValue: userDetails.salary
           })(
             <InputNumber min={0} />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="应聘渠道">
-          {getFieldDecorator('applyChannel')(
+          {getFieldDecorator('applyChannel', {
+            initialValue: '' + (userDetails.applyChannel || '')
+          })(
             <Select style={{ width: 120 }} onChange={handleChangeChannel}>
               {renderInvitationChannel}
             </Select>
@@ -211,10 +225,11 @@ class BasicForm extends React.Component {
 
 const WrappedBasicForm = Form.create()(BasicForm);
 
-const Basic = ({ handerNext }) => {
+const Basic = ({ handerNext, userDetails }) => {
 
   let opt = {
     handerNext,
+    userDetails,
   };
 
   return (

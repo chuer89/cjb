@@ -6,7 +6,7 @@ export default {
   namespace: 'editUser',
 
   state: {
-    userParam: {}, // 添加员工参数
+    userParam: {}, // 修改员工参数
 
     activeTabsKey: '1', // 选中面板
     basicDisabled: true, // 基本信息
@@ -33,12 +33,13 @@ export default {
           }
         });
 
+        // 用户详情
         dispatch({
           type: 'getUserById',
           payload: {
             id: uid,
           }
-        })
+        });
       })
     },
   },
@@ -63,8 +64,13 @@ export default {
     },
 
     // 获取工作经验
-    *getUserWorkByUid({ payload }, { call, put }) {
-      let temp = yield call(services.getUserWorkByUid, payload);
+    *getUserWorkByUid({ payload }, { call, put, select }) {
+      const { uid } = yield select(_ => _.editUser);
+      let param = {};
+      _.extend(param , payload, {
+        uid,
+      });
+      let temp = yield call(services.getUserWorkByUid, param);
       let { data } = temp;
       if (data.msg === 'success') {
         yield put({

@@ -52,20 +52,16 @@ let post = (region, api, params = {}) => {
 
 let httpApi = {
 	// 上传头像图片 公共接口
-	addImg: host['tarde'] + '/common/user/upload-head-img',
-	// 图片上传（签证资料、认证、审核资料） 公共接口
-	userUploadExt: host['tarde'] + '/common/user/upload-ext',
+	addImg: host['base'] + '/file/addFile',
 
 	// 登录
 	login(param = {}) {
 		return post('base', '/sso/login', param);
   },
-  
   // 注册
   register(param = {}) {
     return post('base', '/sso/register', param);
 	},
-	
 	// 获取菜单
 	menus(param = {}) {
 		return post('base', '/common/menus', param);
@@ -74,6 +70,10 @@ let httpApi = {
 	// 添加员工
 	addUser(param = {}) {
 		return post('base', '/user/addUser', param);
+	},
+	// 修改员工
+	updateUser(param = {}) {
+		return post('base', '/user/updateUserById', param);
 	},
 	// 获取用户详情
 	getUserById(param = {}) {
@@ -90,6 +90,10 @@ let httpApi = {
 	// 删除工作经验
 	deleteUserWorkById(param = {}) {
 		return post('base', '/userWork/deleteUserWorkById', param);
+	},
+	// 获取-员工画像
+	getUserPortrayalByUid(param = {}) {
+		return post('base', '/userPortrayal/getUserPortrayalByUid', param);
 	},
 	// 员工列表
 	getUserList(param = {}) {

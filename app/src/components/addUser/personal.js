@@ -28,8 +28,8 @@ class PersonalForm extends React.Component {
     let { handerNext, form, userDetails } = this.props;
     const { getFieldDecorator } = form;
     const { education } = this.state;
+    
     userDetails = userDetails || {};
-
     let { idcardTime } = userDetails;
     let idcardTimeInit = moment(idcardTime) || '';
 
@@ -59,10 +59,6 @@ class PersonalForm extends React.Component {
       },
     };
 
-    if (userDetails) {
-      console.log(userDetails)
-    }
-
     return (
       <Form onSubmit={handleSubmit}>
         <FormItem {...formItemLayout} label="姓名">
@@ -77,7 +73,7 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="用户性别">
           {getFieldDecorator('gender', {
-            initialValue: '' + userDetails.gender || '1',
+            initialValue: '' + (userDetails.gender || '1'),
           })(
             <Radio.Group>
               <Radio value="1">男</Radio>
@@ -117,7 +113,7 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="学历">
           {getFieldDecorator('education', {
-            initialValue: userDetails.education,
+            initialValue: '' + (userDetails.education || ''),
           })(
             <Select style={{ width: 120 }}>
               {renderEducation}
@@ -126,7 +122,7 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="婚姻状态">
           {getFieldDecorator('marry', {
-            initialValue: '' + userDetails.marry
+            initialValue: '' + (userDetails.marry || '')
           })(
             <Radio.Group>
               <Radio value="1">已婚</Radio>
@@ -136,7 +132,7 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="生育状态">
           {getFieldDecorator('bear', {
-            initialValue: ''+ userDetails.bear,
+            initialValue: ''+ (userDetails.bear || ''),
           })(
             <Radio.Group>
               <Radio value="1">已育</Radio>
