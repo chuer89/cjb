@@ -126,7 +126,7 @@ class Edit extends React.Component {
       action: services.addImg,
       defaultImg,
       handerNext() {
-        
+
       }
     }
 
@@ -135,7 +135,7 @@ class Edit extends React.Component {
         <div style={{'paddingBottom': '12px'}}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="record">员工档案</Link>
+              <Link to="/personnel/record">员工档案</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>编辑用户</Breadcrumb.Item>
           </Breadcrumb>

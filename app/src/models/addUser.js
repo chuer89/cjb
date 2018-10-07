@@ -40,20 +40,6 @@ export default {
       let temp = yield call(services.getPosition, payload);
     },
 
-    // 添加员工
-    *addUser({ payload }, { call, put }) {
-      let temp = yield call(services.addUser, payload);
-      let { data } = temp;
-      if (data.msg === 'success') {
-        yield put({
-          type: 'save',
-          payload: {
-            uid: data.data.id,
-          }
-        })
-      }
-    },
-
     // 获取目前行政部门架构
     *getUserOrganizations({ payload }, { call, put, select }) {
       const { userOrganizations } = yield select(_ => _.addUser);

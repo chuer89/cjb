@@ -34,13 +34,12 @@ export default {
         });
 
         // 用户详情
-        dispatch({
-          type: 'getUserById',
-          payload: {
-            id: uid,
-          }
-        });
-      })
+        if (uid) {
+          dispatch({
+            type: 'getUserById',
+          });
+        }
+      });
     },
   },
 
@@ -50,8 +49,13 @@ export default {
     },
 
     // 获取用户详情
-    *getUserById({ payload }, { call, put }) {
-      let temp = yield call(services.getUserById, payload);
+    *getUserById({ payload }, { call, put, select }) {
+      const { uid } = yield select(_ => _.editUser);
+      let param = {};
+      _.extend(param, payload, {
+        uid,
+      });
+      let temp = yield call(services.getUserById, param);
       let { data } = temp;
       if (data.msg === 'success') {
         yield put({
@@ -67,7 +71,7 @@ export default {
     *getUserWorkByUid({ payload }, { call, put, select }) {
       const { uid } = yield select(_ => _.editUser);
       let param = {};
-      _.extend(param , payload, {
+      _.extend(param, payload, {
         uid,
       });
       let temp = yield call(services.getUserWorkByUid, param);
@@ -79,6 +83,25 @@ export default {
             userWork: data.data,
           }
         })
+      }
+    },
+
+    // 员工画像获取
+    *getUserPortrayalByUid({ payload }, { call, put, select }) {
+      const { uid } = yield select(_ => _.editUser);
+      let param = {};
+      _.extend(param, payload, {
+        uid,
+      });
+      let temp = yield call(services.getUserPortrayalByUid, param);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        // yield put({
+        //   type: 'save',
+        //   payload: {
+        //     userWork: data.data,
+        //   }
+        // })
       }
     },
   },

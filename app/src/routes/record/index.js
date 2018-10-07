@@ -39,6 +39,7 @@ class RecordList extends React.Component {
     let { record } = this.props;
     let { statusData, contractType } = record;
     let { warningSele } = this.state;
+    let self = this;
 
     let statusDataSele = {};
     _.forEach(statusData, (item) => {
@@ -101,7 +102,9 @@ class RecordList extends React.Component {
       title: '操作',
       key: 'handle',
       align: 'center',
-      render: this.operateRender,
+      render(item) {
+        return self.operateRender(item);
+      },
     }];
 
     this.setState({
@@ -123,7 +126,7 @@ class RecordList extends React.Component {
   // 最后一列操作
   operateRender(item) {
     let self = this;
-    // console.log(item)
+    // console.log(item, this)
     // 删除用户
     let delUser = () => {
       self.handerDel(() => {
@@ -135,7 +138,7 @@ class RecordList extends React.Component {
     let openConfigMenus = () => {
       self.save({
         visibleConfigMenus: true,
-      })
+      });
     }
 
     let renderOperate = (
@@ -192,8 +195,6 @@ class RecordList extends React.Component {
     let handleChange = (value) => {
       console.log(value, 'v');
     }
-
-    console.log(records, 'neir')
 
     // 状态筛选
     let renderSeleStatus = statusData.map((item) => {

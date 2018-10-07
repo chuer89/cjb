@@ -2,7 +2,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
-import NProgress from 'nprogress';
 import { Breadcrumb, Tabs, message } from 'antd';
 import { Link } from 'dva/router';
 import _ from 'lodash';
@@ -20,14 +19,26 @@ class Add extends React.Component {
   constructor(props) {
     super(props);
     // 设置 initial state
-    this.state = {};
+    this.state = {
+      uid: '',
+    };
   }
 
-  componentDidMount() {
-    NProgress.done();
+  UNSAFE_componentWillMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+  save(payload) {
+    if (this._isMounted) {
+      this.setState(payload);
+    }
   }
 
   render() {
+    let self = this;
+    let { uid } = this.state;
     let { addUser, dispatch } = this.props;
     let { personalDisabled, basicDisabled, experienceDisabled,
       portrayalDisabled, activeTabsKey, addUserParam } = addUser;
@@ -40,47 +51,83 @@ class Add extends React.Component {
         }
       });
     }
-    let handerNextBase = (values, activeTabsKey) => {
-      _.extend(addUserParam, values);
-      dispatch({
-        type: 'addUser/save',
-        payload: {
-          basicDisabled: false,
-          activeTabsKey,
-          addUserParam,
-        }
-      })
-    }
     
+    // 归属
     let departmentOpt = {
       handerNext(values) {
-        handerNextBase(values, '1');
+        _.extend(addUserParam, values);
+        dispatch({
+          type: 'addUser/save',
+          payload: {
+            personalDisabled: false,
+            activeTabsKey: '1',
+            addUserParam,
+          }
+        });
       }
     }
+
+    // 个人信息
     let personalOpt = {
       handerNext(values) {
-        handerNextBase(values, '2');
+        _.extend(addUserParam, values);
+        dispatch({
+          type: 'addUser/save',
+          payload: {
+            activeTabsKey: '2',
+            basicDisabled: false,
+            addUserParam,
+          }
+        });
       }
     }
+    
+    // 基本信息
     let baseOpt = {
       handerNext(values) {
-        // handerNextBase(values, '3');
         _.extend(addUserParam, values, {
           contractDate: '',
         });
-        dispatch({
-          type: 'addUser/addUser',
-          payload: addUserParam,
+
+        services.addUser(addUserParam).then(({ data }) => {
+          if (data.msg === 'success') {
+            self.save({
+              uid: data.data.id,
+            });
+
+            // 切换tab
+            dispatch({
+              type: 'addUser/save',
+              payload: {
+                experienceDisabled: false,
+                activeTabsKey: '3',
+              }
+            });
+          } else {
+            message.error(data.msg);
+          }
         });
       }
     }
+
+    // 工作经历
     let experienceOpt = {
       handerNext(param) {
+        _.forEach(param, (item) => {
+          item.uid = uid;
+        });
+
         services.addUserWork({
           jsondata: JSON.stringify(param),
         }).then(({ data }) => {
           if (data.msg === 'success') {
-            
+            dispatch({
+              type: 'addUser/save',
+              payload: {
+                portrayalDisabled: false,
+                activeTabsKey: '4',
+              }
+            })
           } else {
             message.error(data.msg);
           }
@@ -93,7 +140,7 @@ class Add extends React.Component {
         <div style={{'paddingBottom': '12px'}}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="record">员工档案</Link>
+              <Link to="personnel/record">员工档案</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>添加用户</Breadcrumb.Item>
           </Breadcrumb>

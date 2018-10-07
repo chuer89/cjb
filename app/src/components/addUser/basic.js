@@ -138,9 +138,6 @@ class BasicForm extends React.Component {
         <div>
           <FormItem {...formItemLayout} label="推荐人">
             {getFieldDecorator('referrer', {
-              rules: [{
-                required: true, message: '请输入推荐人',
-              }],
               initialValue: userDetails.referrer,
             })(
               <Input placeholder="请输入推荐人" autoComplete="off" maxLength="32" />
