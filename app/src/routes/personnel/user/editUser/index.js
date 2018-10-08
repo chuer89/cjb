@@ -138,7 +138,7 @@ class Edit extends React.Component {
 
         services.addUserPortrayal(param).then(({ data }) => {
           if (data.msg === 'success') {
-            message.success('员工添加成功')
+            message.success('员工修改成功')
             dispatch(routerRedux.push({
               pathname: '/personnel/record'
             }));

@@ -75,6 +75,10 @@ let httpApi = {
 	addUser(param = {}) {
 		return post('base', '/user/addUser', param);
 	},
+	// 删除员工
+	deleteUserById(param = {}) {
+		return post('base', '/user/deleteUserById', param);
+	},
 	// 修改员工
 	updateUser(param = {}) {
 		return post('base', '/user/updateUserById', param);

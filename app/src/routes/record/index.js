@@ -2,11 +2,12 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
-import { Table, Button, Input, Select, Menu, Dropdown, Icon, Modal } from 'antd';
+import { Table, Button, Input, Select, Menu, Dropdown, Icon, Modal, message } from 'antd';
 import style from './record.less';
 import { Link } from 'dva/router';
 import _ from 'lodash';
 import moment from 'moment';
+import services from './../../services/';
 
 import ConfigMenus from './components/menusconfig'; // 配置菜单
 
@@ -126,11 +127,26 @@ class RecordList extends React.Component {
   // 最后一列操作
   operateRender(item) {
     let self = this;
+    let { dispatch } = this.props;
     // console.log(item, this)
     // 删除用户
     let delUser = () => {
       self.handerDel(() => {
-        console.log('删除')
+        services.deleteUserById({
+          id: item.id
+        }).then(({ data }) => {
+          if (data.msg === 'success') {
+            message.success('删除成功');
+            dispatch({
+              type: 'record/getUserList',
+              payload: {
+                start: 1,
+              }
+            });
+          } else {
+            message.error(data.msg);
+          }
+        })
       });
     }
 
@@ -153,7 +169,7 @@ class RecordList extends React.Component {
           <span className={style.operateBtn} onClick={openConfigMenus}>菜单权限</span>
         </Menu.Item>
         <Menu.Item>
-          <Link target="_blank" to="/personnel/userdetails/1" className={style.operateBtn}>员工详情</Link>
+          <Link target="_blank" to={'/personnel/userdetails/' + item.id} className={style.operateBtn}>员工详情</Link>
         </Menu.Item>
       </Menu>
     )

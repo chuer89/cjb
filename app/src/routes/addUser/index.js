@@ -6,6 +6,7 @@ import { Breadcrumb, Tabs, message } from 'antd';
 import { Link } from 'dva/router';
 import _ from 'lodash';
 import services from './../../services/';
+import { routerRedux } from 'dva/router';
 
 import Department from '../../components/addUser/department'; // 员工归属
 import Personal from '../../components/addUser/personal'; // 个人信息
@@ -39,7 +40,8 @@ class Add extends React.Component {
   render() {
     let self = this;
     let { uid } = this.state;
-    let { addUser, dispatch } = this.props;
+    let { addUser, dispatch, app } = this.props;
+    let { defaultImg } = app;
     let { personalDisabled, basicDisabled, experienceDisabled,
       portrayalDisabled, activeTabsKey, addUserParam } = addUser;
 
@@ -135,6 +137,28 @@ class Add extends React.Component {
       }
     }
 
+    // 员工画像
+    let portrayalOpt = {
+      action: services.addImg,
+      defaultImg,
+      handerNext(param) {
+        _.extend(param, {
+          uid,
+        });
+
+        services.addUserPortrayal(param).then(({ data }) => {
+          if (data.msg === 'success') {
+            message.success('员工添加成功')
+            dispatch(routerRedux.push({
+              pathname: '/personnel/record'
+            }));
+          } else {
+            message.error(data.msg);
+          }
+        });
+      }
+    }
+
     return (
       <App>
         <div style={{'paddingBottom': '12px'}}>
@@ -151,7 +175,7 @@ class Add extends React.Component {
             <TabPane tab="个人信息" key="1" disabled={personalDisabled}><Personal {...personalOpt} /></TabPane>
             <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic {...baseOpt} /></TabPane>
             <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience {...experienceOpt} /></TabPane>
-            <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal /></TabPane>
+            <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal {...portrayalOpt} /></TabPane>
           </Tabs>
         </div>
       </App>
@@ -159,6 +183,7 @@ class Add extends React.Component {
   }
 }
 
-export default connect((({ addUser }) => ({
+export default connect((({ addUser, app }) => ({
   addUser,
+  app,
 })))(Add);
