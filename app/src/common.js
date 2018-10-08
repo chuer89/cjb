@@ -33,4 +33,9 @@ export default {
   clearLocalStorage() {
     localStorage.clear();
   },
+
+  // 正则
+  reg: {
+    phone: /^\d{11}$/, // 手机号
+  }
 }

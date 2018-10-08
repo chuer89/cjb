@@ -53,7 +53,7 @@ export default {
       const { uid } = yield select(_ => _.editUser);
       let param = {};
       _.extend(param, payload, {
-        uid,
+        id: uid,
       });
       let temp = yield call(services.getUserById, param);
       let { data } = temp;

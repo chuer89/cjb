@@ -54,6 +54,10 @@ let httpApi = {
 	// 上传头像图片 公共接口
 	addImg: host['base'] + '/file/addFile',
 
+	// 获取多企业
+	checkupCompany(param = {}) {
+		return post('base', '/sso/checkup', param);
+	},
 	// 登录
 	login(param = {}) {
 		return post('base', '/sso/login', param);
