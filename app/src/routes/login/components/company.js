@@ -1,5 +1,6 @@
 import { Modal, Radio, message } from 'antd';
 import React from 'react';
+import style from './company.less';
 
 const RadioGroup = Radio.Group;
 
@@ -61,7 +62,7 @@ class Company extends React.Component {
         okText="进入系统"
         onOk={onOk}
         onCancel={onCancel}>
-        <div>
+        <div className={style.content}>
           <RadioGroup onChange={onChange}>
             {
               companyData.map((item, index) => {

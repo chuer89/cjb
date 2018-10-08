@@ -8,7 +8,7 @@ export default {
   state: {
     userParam: {}, // 修改员工参数
 
-    activeTabsKey: '1', // 选中面板
+    activeTabsKey: '4', // 选中面板
     basicDisabled: true, // 基本信息
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像

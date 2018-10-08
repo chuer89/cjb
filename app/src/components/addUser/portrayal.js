@@ -42,31 +42,48 @@ const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
           img = imgUrl;
         }
 
+        let renderImg = '';
+        if (!_.isEmpty(imgUrl)) {
+          if (_.isArray(imgUrl)) {
+            renderImg = imgUrl.map((item, index) => {
+              return (
+                <div key={index} className={style.addFileItem}>
+                  <img src={item} alt="" className={style.headImg} />
+                </div>
+              )
+            })
+          } else {
+            renderImg = (
+              <div className={style.addFileItem}>
+                <img src={img} alt="" className={style.headImg} />
+              </div>
+            )
+          }
+        }
+
         return (
           <div>
             <div className={style.addBox}>
-              <div className={style.addFileBox}>
-                <UploadField onFiles={(file) => {
-                  if (!_.isEmpty(file)) {
-                    // 文件限制5m
-                    if (file[0].size < 1024 * 1024 * 5) {
-                      onFiles(file);
-                    } else {
-                      message.error('文件最大5M，请压缩文件大小');
-                    }
+              {renderImg}
+              <UploadField className={style.addFileBox} onFiles={(file) => {
+                if (!_.isEmpty(file)) {
+                  // 文件限制5m
+                  if (file[0].size < 1024 * 1024 * 5) {
+                    onFiles(file);
+                  } else {
+                    message.error('文件最大5M，请压缩文件大小');
                   }
-                }} uploadProps={{
-                  accept: '.jpg,.jpeg,.png,.gif',
-                }}>
+                }
+              }} uploadProps={{
+                accept: '.jpg,.jpeg,.png,.gif',
+              }} style={{ 'float': 'left' }}>
+                <div className={style.addFileBox}>
                   <div className={style.addFileItemBox}>
                     <div><Icon type="upload" theme="outlined" style={{ 'fontSize': '20px' }} /></div>
                     <div>上传</div>
                   </div>
-                </UploadField>
-              </div>
-              <div className={style.addFileItem} style={{'display': imgUrl ? 'block': 'none'}}>
-                <img src={img} alt="" className={style.headImg} />
-              </div>
+                </div>
+              </UploadField>
             </div>
           </div>
         )
@@ -81,7 +98,24 @@ class PortrayalForm extends React.Component {
     super(props);
     // 设置 initial state
     this.state = {
+      idcardFront: '', // 身份证正面
+      idcardReverse: '', // 身份证反面
+      healthCertificateFront: '', // 健康证正面
+      healthCertificateReverse: '', // 健康证反面
+      contract: [], // 合同图片，数组
+    }
+  }
 
+  UNSAFE_componentWillMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  save(payload) {
+    if (this._isMounted) {
+      this.setState(payload);
     }
   }
 
@@ -96,24 +130,72 @@ class PortrayalForm extends React.Component {
   }
 
   render() {
-    let imgUrl = 'http://img1.gtimg.com/gd/pics/hv1/8/124/863/56148203.jpg';
     let { defaultImg, action } = this.props;
+    let { idcardFront, idcardReverse, healthCertificateFront,
+      healthCertificateReverse, contract } = this.state;
+    let self = this;
 
     // 身份证前照片
     let idcardFrontOpt = {
-      // imgUrl,
+      imgUrl: idcardFront,
       defaultImg,
       action,
       addFileImg(param) {
-        console.log(param, 'p');
+        self.save({
+          idcardFront: param.url,
+        });
       }
     }
+
+    let idcardReverseOpt = {
+      imgUrl: idcardReverse,
+      defaultImg,
+      action,
+      addFileImg(param) {
+        self.save({
+          idcardReverse: param.url,
+        });
+      }
+    }
+
+    let healthCertificateFrontOpt = {
+      imgUrl: healthCertificateFront,
+      defaultImg,
+      action,
+      addFileImg(param) {
+        self.save({
+          healthCertificateFront: param.url,
+        });
+      }
+    }
+
+    let healthCertificateReverseOpt = {
+      imgUrl: healthCertificateReverse,
+      defaultImg,
+      action,
+      addFileImg(param) {
+        self.save({
+          healthCertificateReverse: param.url,
+        });
+      }
+    }
+
+    let contractOpt = {
+      imgUrl: contract,
+      defaultImg,
+      action,
+      addFileImg(param) {
+        contract.push(param.url);
+      }
+    }
+
+    console.log(contract, 'lianj')
 
     return (
       <div>
         <Row>
           <Col span={6}>
-            <div className={style.portrayalLabel}>上传身份证：</div>
+            <div className={style.portrayalLabel}>上传身份证正面：</div>
           </Col>
           <Col span={15}>
             <UploadHead {...idcardFrontOpt} />
@@ -122,17 +204,28 @@ class PortrayalForm extends React.Component {
 
         <Row style={{ 'padding': '20px 0' }}>
           <Col span={6}>
-            <div className={style.portrayalLabel}>上传健康证快照：</div>
+            <div className={style.portrayalLabel}>上传身份证反面：</div>
           </Col>
           <Col span={15}>
-            <div className={style.addBox}>
-              <div className={style.addFileBox}>
-                <div className={style.addFileItemBox}>
-                  <div><Icon type="upload" theme="outlined" style={{ 'fontSize': '20px' }} /></div>
-                  <div>上传</div>
-                </div>
-              </div>
-            </div>
+            <UploadHead {...idcardReverseOpt} />
+          </Col>
+        </Row>
+
+        <Row>
+          <Col span={6}>
+            <div className={style.portrayalLabel}>上传健康证快照正面：</div>
+          </Col>
+          <Col span={15}>
+            <UploadHead {...healthCertificateFrontOpt} />
+          </Col>
+        </Row>
+
+        <Row style={{ 'padding': '20px 0' }}>
+          <Col span={6}>
+            <div className={style.portrayalLabel}>上传健康证快照反面：</div>
+          </Col>
+          <Col span={15}>
+            <UploadHead {...healthCertificateReverseOpt} />
           </Col>
         </Row>
 
@@ -141,14 +234,7 @@ class PortrayalForm extends React.Component {
             <div className={style.portrayalLabel}>上传合同快照：</div>
           </Col>
           <Col span={15}>
-            <div className={style.addBox}>
-              <div className={style.addFileBox}>
-                <div className={style.addFileItemBox}>
-                  <div><Icon type="upload" theme="outlined" style={{ 'fontSize': '20px' }} /></div>
-                  <div>上传</div>
-                </div>
-              </div>
-            </div>
+            <UploadHead {...contractOpt} />
           </Col>
         </Row>
       </div>
