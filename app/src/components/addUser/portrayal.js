@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'dva';
 import { Form, Button, Row, Col, Icon, message } from 'antd';
 import 'moment/locale/zh-cn';
 import style from './add.less';
@@ -8,7 +7,7 @@ import _ from 'lodash';
 
 // 上传
 const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
-  let img = imgUrl || defaultImg;
+  let img = imgUrl;
 
   return (
     <Uploader
@@ -25,9 +24,7 @@ const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
       onComplete={({ response }) => {
         let { msg, data } = response;
         if (msg === 'success') {
-          addFileImg({
-            url: data.path,
-          });
+          addFileImg(data);
         }
       }}
       //upload on file selection, otherwise use `startUpload`
@@ -36,7 +33,7 @@ const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
       {({ onFiles, progress, complete }) => {
 
         if (progress && !complete) {
-          img = defaultImg;
+          img = {path: defaultImg};
         }
         if (complete) {
           img = imgUrl;
@@ -48,14 +45,14 @@ const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
             renderImg = imgUrl.map((item, index) => {
               return (
                 <div key={index} className={style.addFileItem}>
-                  <img src={item} alt="" className={style.headImg} />
+                  <img src={item.path} alt="" className={style.headImg} />
                 </div>
               )
             })
           } else {
             renderImg = (
               <div className={style.addFileItem}>
-                <img src={img} alt="" className={style.headImg} />
+                <img src={img.path} alt="" className={style.headImg} />
               </div>
             )
           }
@@ -65,25 +62,27 @@ const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
           <div>
             <div className={style.addBox}>
               {renderImg}
-              <UploadField className={style.addFileBox} onFiles={(file) => {
-                if (!_.isEmpty(file)) {
-                  // 文件限制5m
-                  if (file[0].size < 1024 * 1024 * 5) {
-                    onFiles(file);
-                  } else {
-                    message.error('文件最大5M，请压缩文件大小');
+              <div className={style.addFileItemClone}>
+                <UploadField onFiles={(file) => {
+                  if (!_.isEmpty(file)) {
+                    // 文件限制5m
+                    if (file[0].size < 1024 * 1024 * 5) {
+                      onFiles(file);
+                    } else {
+                      message.error('文件最大5M，请压缩文件大小');
+                    }
                   }
-                }
-              }} uploadProps={{
-                accept: '.jpg,.jpeg,.png,.gif',
-              }} style={{ 'float': 'left' }}>
-                <div className={style.addFileBox}>
-                  <div className={style.addFileItemBox}>
-                    <div><Icon type="upload" theme="outlined" style={{ 'fontSize': '20px' }} /></div>
-                    <div>上传</div>
+                }} uploadProps={{
+                  accept: '.jpg,.jpeg,.png,.gif',
+                }}>
+                  <div className={style.addFileBox}>
+                    <div className={style.addFileItemBox}>
+                      <div><Icon type="upload" theme="outlined" style={{ 'fontSize': '20px' }} /></div>
+                      <div>上传</div>
+                    </div>
                   </div>
-                </div>
-              </UploadField>
+                </UploadField>
+              </div>
             </div>
           </div>
         )
@@ -98,11 +97,13 @@ class PortrayalForm extends React.Component {
     super(props);
     // 设置 initial state
     this.state = {
-      idcardFront: '', // 身份证正面
-      idcardReverse: '', // 身份证反面
-      healthCertificateFront: '', // 健康证正面
-      healthCertificateReverse: '', // 健康证反面
+      idcardFront: {}, // 身份证正面
+      idcardReverse: {}, // 身份证反面
+      healthCertificateFront: {}, // 健康证正面
+      healthCertificateReverse: {}, // 健康证反面
       contract: [], // 合同图片，数组
+
+      isInit: false,
     }
   }
 
@@ -119,18 +120,28 @@ class PortrayalForm extends React.Component {
     }
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    let { form } = this.props;
-    form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
+  componentDidUpdate() {
+    let { portrayalImg } = this.props;
+    let { isInit } = this.state;
+    let { idcardFront, idcardReverse, healthCertificateFront,
+      healthCertificateReverse, contract } = portrayalImg || {};
+    if(!_.isEmpty(portrayalImg) && !isInit) {
+      this.save({
+        isInit: true,
+
+        idcardFront, 
+        idcardReverse,
+        healthCertificateFront,
+        healthCertificateReverse,
+        contract,
+      });
+
+      // console.log(this.props.portrayalImg)
+    }
   }
 
   render() {
-    let { defaultImg, action } = this.props;
+    let { defaultImg, action, handerNext } = this.props;
     let { idcardFront, idcardReverse, healthCertificateFront,
       healthCertificateReverse, contract } = this.state;
     let self = this;
@@ -142,7 +153,7 @@ class PortrayalForm extends React.Component {
       action,
       addFileImg(param) {
         self.save({
-          idcardFront: param.url,
+          idcardFront: param,
         });
       }
     }
@@ -153,7 +164,7 @@ class PortrayalForm extends React.Component {
       action,
       addFileImg(param) {
         self.save({
-          idcardReverse: param.url,
+          idcardReverse: param,
         });
       }
     }
@@ -164,7 +175,7 @@ class PortrayalForm extends React.Component {
       action,
       addFileImg(param) {
         self.save({
-          healthCertificateFront: param.url,
+          healthCertificateFront: param,
         });
       }
     }
@@ -175,7 +186,7 @@ class PortrayalForm extends React.Component {
       action,
       addFileImg(param) {
         self.save({
-          healthCertificateReverse: param.url,
+          healthCertificateReverse: param,
         });
       }
     }
@@ -185,11 +196,24 @@ class PortrayalForm extends React.Component {
       defaultImg,
       action,
       addFileImg(param) {
-        contract.push(param.url);
+        contract.push(param);
       }
     }
 
-    console.log(contract, 'lianj')
+    let handerSubmit = () => {
+      let _contract = [];
+      _.forEach(contract, (item) => {
+        _contract.push(item.id);
+      });
+
+      handerNext({
+        idcardFront: idcardFront && idcardFront.id, 
+        idcardReverse: idcardReverse && idcardReverse.id, 
+        healthCertificateFront: healthCertificateFront && healthCertificateFront.id,
+        healthCertificateReverse: healthCertificateReverse && healthCertificateReverse.id, 
+        contract: JSON.stringify(_contract),
+      });
+    }
 
     return (
       <div>
@@ -237,6 +261,10 @@ class PortrayalForm extends React.Component {
             <UploadHead {...contractOpt} />
           </Col>
         </Row>
+
+        <div className={style.submitBtnBox} style={{ 'paddingTop': '24px' }}>
+          <Button block type="primary" onClick={handerSubmit} size="large">提交</Button>
+        </div>
       </div>
     )
   }
@@ -244,20 +272,19 @@ class PortrayalForm extends React.Component {
 
 const WrappedPortrayalForm = Form.create()(PortrayalForm);
 
-const Portrayal = ({ handerNext, defaultImg, action }) => {
+const Portrayal = ({ dispatch, handerNext, defaultImg, action, portrayalImg }) => {
   let opt = {
+    dispatch,
     handerNext,
     defaultImg,
     action,
+    portrayalImg,
   };
 
   return (
     <div>
       <div className={style.titleBox}>上传用户画像</div>
       <WrappedPortrayalForm {...opt} />
-      <div className={style.submitBtnBox} style={{ 'paddingTop': '24px' }}>
-        <Button block type="primary" size="large">提交</Button>
-      </div>
     </div>
   );
 };

@@ -99,6 +99,10 @@ let httpApi = {
 	getUserPortrayalByUid(param = {}) {
 		return post('base', '/userPortrayal/getUserPortrayalByUid', param);
 	},
+	// 员工画像添加
+	addUserPortrayal(param = {}) {
+		return post('base', '/userPortrayal/addUserPortrayal', param);
+	},
 	// 员工列表
 	getUserList(param = {}) {
 		return post('base', '/user/getUserList', param);

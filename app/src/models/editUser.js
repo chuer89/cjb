@@ -8,7 +8,7 @@ export default {
   state: {
     userParam: {}, // 修改员工参数
 
-    activeTabsKey: '4', // 选中面板
+    activeTabsKey: '1', // 选中面板
     basicDisabled: true, // 基本信息
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像
@@ -17,6 +17,8 @@ export default {
 
     userWork: [], // 工作经验
     userDetails: {}, // 用户详情资料
+
+    portrayalImg: {}, // 员工画像资料
   },
 
   subscriptions: {
@@ -26,18 +28,24 @@ export default {
         let pathnameLen = _pathname.length;
         let uid = _pathname[pathnameLen - 1];
 
-        dispatch({
-          type: 'save',
-          payload: {
-            uid,
-          }
-        });
-
-        // 用户详情
-        if (uid) {
+        if (_.toNumber(uid)) {
           dispatch({
-            type: 'getUserById',
+            type: 'save',
+            payload: {
+              uid,
+            }
           });
+  
+          // 用户详情
+          if (uid) {
+            dispatch({
+              type: 'getUserById',
+            });
+  
+            dispatch({
+              type: 'getUserPortrayalByUid'
+            });
+          }
         }
       });
     },
@@ -95,13 +103,33 @@ export default {
       });
       let temp = yield call(services.getUserPortrayalByUid, param);
       let { data } = temp;
+      let { userPortrayal, files } = data.data;
       if (data.msg === 'success') {
-        // yield put({
-        //   type: 'save',
-        //   payload: {
-        //     userWork: data.data,
-        //   }
-        // })
+        let filesObj = {};
+        _.forEach(files, (item) => {
+          filesObj[item.id] = item;
+        });
+        let { idcardFront, idcardReverse, healthCertificateFront,
+          healthCertificateReverse, contract } = userPortrayal || {};
+
+        let _contract = JSON.parse(contract || '[]');
+        let contractData = [];
+        _.forEach(_contract, (item) => {
+          contractData.push(filesObj[item]);
+        });
+        
+        yield put({
+          type: 'save',
+          payload: {
+            portrayalImg: {
+              idcardFront: filesObj[idcardFront],
+              idcardReverse: filesObj[idcardReverse],
+              healthCertificateFront: filesObj[healthCertificateFront],
+              healthCertificateReverse: filesObj[healthCertificateReverse],
+              contract: contractData,
+            }
+          }
+        })
       }
     },
   },

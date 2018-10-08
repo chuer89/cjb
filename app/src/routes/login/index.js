@@ -17,7 +17,7 @@ class Login extends React.Component {
 
     phone: '',
     password: '',
-    eid: '',
+    index: '',
     userType: '',
   }
 
@@ -49,7 +49,7 @@ class Login extends React.Component {
             // 如果当前只有一个角色，默认直接登录
             if (companyData.length === 1) {
               self.handerEntery({
-                eid: companyData[0].eid,
+                index: companyData[0].index,
                 userType: companyData[0].userType,
               });
             } else {
@@ -66,7 +66,7 @@ class Login extends React.Component {
     }
   }
 
-  handerEntery({ eid, userType }) {
+  handerEntery({ index, userType }) {
     let { dispatch } = this.props;
     let { phone, password } = this.state;
     dispatch({
@@ -74,7 +74,7 @@ class Login extends React.Component {
       payload: {
         phone, 
         password, 
-        eid, 
+        index, 
         userType,
       },
     });
@@ -95,9 +95,9 @@ class Login extends React.Component {
     let companyOpt = {
       visible: visibleCompany,
       companyData,
-      handleOk({ eid, userType }) {
+      handleOk({ index, userType }) {
         self.handerEntery({
-          eid, 
+          index, 
           userType
         });
       },

@@ -34,7 +34,7 @@ class Company extends React.Component {
       });
     }
     let onOk = () => {
-      let eid = '';
+      let index = '';
       let userType = '';
       let arr = [];
 
@@ -42,11 +42,11 @@ class Company extends React.Component {
         message.error('请选择身份角色');
       } else {
         arr = value.split('_');
-        eid = arr[0];
+        index = arr[0];
         userType = arr[1];
 
         handleOk({
-          eid,
+          index,
           userType,
         });
       }
@@ -67,7 +67,7 @@ class Company extends React.Component {
             {
               companyData.map((item, index) => {
                 return (
-                  <Radio key={index} value={item.eid + '_' + item.userType}>{item.name}</Radio>
+                  <Radio key={index} value={item.index + '_' + item.userType}>{item.name}</Radio>
                 )
               })
             }

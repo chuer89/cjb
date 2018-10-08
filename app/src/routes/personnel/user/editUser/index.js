@@ -6,6 +6,7 @@ import { Breadcrumb, Tabs, message } from 'antd';
 import { Link } from 'dva/router';
 import _ from 'lodash';
 import services from './../../../../services/';
+import { routerRedux } from 'dva/router';
 
 import Personal from '../../../../components/addUser/personal'; // 个人信息
 import Basic from '../../../../components/addUser/basic'; // 基本信息
@@ -25,7 +26,7 @@ class Edit extends React.Component {
     let { editUser, dispatch, app } = this.props;
     let { basicDisabled, experienceDisabled, 
       portrayalDisabled, activeTabsKey, userParam, uid,
-      userWork, userDetails } = editUser;
+      userWork, userDetails, portrayalImg } = editUser;
     let { defaultImg } = app;
 
     // tab 切换
@@ -102,7 +103,11 @@ class Edit extends React.Component {
                 portrayalDisabled: false,
                 activeTabsKey: '4',
               }
-            })
+            });
+
+            dispatch({
+              type: 'editUser/getUserPortrayalByUid',
+            });
           } else {
             message.error(data.msg);
           }
@@ -125,8 +130,22 @@ class Edit extends React.Component {
     let portrayalOpt = {
       action: services.addImg,
       defaultImg,
-      handerNext() {
+      portrayalImg,
+      handerNext(param) {
+        _.extend(param, {
+          uid,
+        });
 
+        services.addUserPortrayal(param).then(({ data }) => {
+          if (data.msg === 'success') {
+            message.success('员工添加成功')
+            dispatch(routerRedux.push({
+              pathname: '/personnel/record'
+            }));
+          } else {
+            message.error(data.msg);
+          }
+        });
       }
     }
 
