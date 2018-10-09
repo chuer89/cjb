@@ -36,13 +36,13 @@ const Routers = function ({ history, app }) {
       component: () => import('./routes/dashboard/')
     },
     {
-      path: '/personnel/record', // 档案管理
+      path: '/personnel/record', // 档案管理 - 列表
       models: () => [import('./models/record')],
       component: () => import('./routes/record/')
     },
     {
-      path: '/personnel/userdetails/:id', // 档案管理
-      models: () => [import('./models/details')],
+      path: '/personnel/userdetails/:id', // 档案管理 - 详情
+      models: () => [import('./models/editUser')],
       component: () => import('./routes/record/details.js'),
     },
     {

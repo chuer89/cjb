@@ -9,6 +9,8 @@ class Basic extends React.Component {
   }
 
   render() {
+    let { userDetails, defaultHead } = this.props;
+    console.log(userDetails, 'xinxi')
     let importantData = [{
       label: '姓名', value: '张三'
     }, {
@@ -63,13 +65,11 @@ class Basic extends React.Component {
       )
     });
 
-    let headImg = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536430268198&di=4e617a9e23a3239bc4ed40ba0ecbaa2d&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201408%2F08%2F20140808143427_y8P3S.jpeg';
-
     return (
       <div>
         <div className={style.firstBox}>
           <div className={style.firstItemHead}>
-            <img className={style.headImg} src={headImg} alt=""/>
+            <img className={style.headImg} src={defaultHead} alt=""/>
           </div>
           <div className={style.firstItem}>{renderImportant}</div>
         </div>

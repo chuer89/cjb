@@ -42,9 +42,9 @@ export default {
               type: 'getUserById',
             });
   
-            dispatch({
-              type: 'getUserPortrayalByUid'
-            });
+            // dispatch({
+            //   type: 'getUserPortrayalByUid'
+            // });
           }
         }
       });

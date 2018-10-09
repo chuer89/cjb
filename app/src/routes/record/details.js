@@ -2,7 +2,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
-import NProgress from 'nprogress';
 import { Tabs } from 'antd';
 
 import Basic from './components/basic';
@@ -18,12 +17,10 @@ class DetailsInfo extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    NProgress.done();
-  }
-
   render() {
-    // let { details, dispatch } = this.props;
+    let { editUser, dispatch, app } = this.props;
+    let { userDetails } = editUser;
+    let { defaultHead } = app;
 
     let callback = (key) => {
 
@@ -31,15 +28,19 @@ class DetailsInfo extends React.Component {
 
     let contentStyle = {
       'background': 'white',
-      // 'height': '100vh',
       'padding': '15px',
+    }
+
+    let basicOpt = {
+      userDetails,
+      defaultHead,
     }
 
     return (
       <App>
         <div style={contentStyle}>
           <Tabs defaultActiveKey="1" onChange={callback}>
-            <TabPane tab="基本信息" key="1"><Basic /></TabPane>
+            <TabPane tab="基本信息" key="1"><Basic {...basicOpt} /></TabPane>
             <TabPane tab="个人成长" key="2"><Expression /></TabPane>
             <TabPane tab="员工画像" key="3"><Picture /></TabPane>
           </Tabs>
@@ -49,6 +50,7 @@ class DetailsInfo extends React.Component {
   }
 }
 
-export default connect((({ details }) => ({
-  details,
+export default connect((({ editUser, app }) => ({
+  editUser,
+  app,
 })))(DetailsInfo);
