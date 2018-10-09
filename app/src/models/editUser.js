@@ -19,6 +19,8 @@ export default {
     userDetails: {}, // 用户详情资料
 
     portrayalImg: {}, // 员工画像资料
+
+    salaryRecord: [], // 工作调整记录
   },
 
   subscriptions: {
@@ -132,6 +134,25 @@ export default {
         })
       }
     },
+
+    // 工作记录
+    *getUserSalaryRecordByUid({ payload }, { call, put, select }) {
+      const { uid } = yield select(_ => _.editUser);
+      let param = {};
+      _.extend(param, payload, {
+        uid,
+      });
+      let temp = yield call(services.getUserSalaryRecordByUid, param);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            salaryRecord: data.data,
+          }
+        })
+      }
+    }
   },
 
   reducers: {

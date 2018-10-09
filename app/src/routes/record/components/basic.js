@@ -5,18 +5,33 @@ import style from './basic.less';
 // 基本信息
 class Basic extends React.Component {
   state = {
+    // 性别
+    gender: {
+      '1': '男', '2': '女', '0': '未知',
+    },
 
+    // 学历
+    education: {
+      '1': '大学', '2': '高中', '3': '初中', '4': '其他',
+    },
+
+    // 婚姻
+    marry: {
+      '1': '已婚', '0': '未婚',
+    }
   }
 
   render() {
     let { userDetails, defaultHead } = this.props;
+    let { gender, education, marry } = this.state;
+
     console.log(userDetails, 'xinxi')
     let importantData = [{
-      label: '姓名', value: '张三'
+      label: '姓名', value: userDetails.name,
     }, {
-      label: '性别', value: '男'
+      label: '性别', value: gender[userDetails.gender] || '--',
     }, {
-      label: '电话', value: '13922229382'
+      label: '电话', value: userDetails.phone,
     }];
     let renderImportant = importantData.map((item, index) => {
       return (
@@ -28,19 +43,19 @@ class Basic extends React.Component {
     });
 
     let data = [{
-      label: '学历', value: '大学'
+      label: '学历', value: education[userDetails.education] || '--',
     }, {
-      label: '年龄', value: '23'
+      label: '年龄', value: '缺字段'
     }, {
-      label: '出生日期', value: '2016-08-10'
+      label: '出生日期', value: 'xx'
     }, {
-      label: '身份证', value: '51089239293837272'
+      label: '身份证', value: userDetails.idcard || '--',
     }, {
-      label: '银行卡号', value: '302928919282849393'
+      label: '银行卡号', value: userDetails.bankCard || '--',
     }, {
-      label: '婚姻状况', value: '已婚'
+      label: '婚姻状况', value: marry[userDetails.marry] || '--',
     }, {
-      label: '特长', value: '游泳、涉嫌'
+      label: '特长', value: userDetails.specialty || '--',
     }];
     
     let isOdd = false;

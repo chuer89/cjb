@@ -111,6 +111,10 @@ let httpApi = {
 	getUserList(param = {}) {
 		return post('base', '/user/getUserList', param);
 	},
+	// 工资记录-获取
+	getUserSalaryRecordByUid(param = {}) {
+		return post('base', '/userSalaryRecord/getUserSalaryRecordByUid', param);
+	},
 
 	// 获取所有岗位
 	getPosition(param = {}) {

@@ -10,7 +10,8 @@ class Expression extends React.Component {
   }
 
   render() {
-
+    let { salaryRecord } = this.props;
+    
     const dataSource = [{
       key: '1',
       name: '胡彦斌',
