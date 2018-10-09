@@ -2,6 +2,7 @@
 import { message } from 'antd';
 import axios from 'axios';
 import _ from 'lodash';
+import qs from 'qs';
 
 // 测试环境地址
 let host = {
@@ -25,17 +26,10 @@ let post = (region, api, params = {}) => {
 	});
 
 	let url = (host[region] || '') + api;
-	let config = {
-		url,
-		params,
-		method: 'post',
-		headers: {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-	}
 
 	// let ajax = request(url, config);
-	let ajax = axios(config);
+	// let ajax = axios(config);
+	let ajax  = axios.post(url, qs.stringify(params));
 
 	ajax.then(({data}) => {
 		// 超时登录
@@ -114,6 +108,10 @@ let httpApi = {
 	// 工资记录-获取
 	getUserSalaryRecordByUid(param = {}) {
 		return post('base', '/userSalaryRecord/getUserSalaryRecordByUid', param);
+	},
+	// 工作调整 - 添加
+	addUserSalaryRecord(param = {}) {
+		return post('base', '/userSalaryRecord/addUserSalaryRecord', param);
 	},
 
 	// 获取所有岗位

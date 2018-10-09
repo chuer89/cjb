@@ -1,69 +1,35 @@
 import React from 'react';
-import { Card, Table } from 'antd';
 // import _ from 'lodash';
 import style from './expression.less';
+import { connect } from 'dva';
+
+import SalaryRecord from './growup/salaryRecord';
 
 // 个人成长
 class Expression extends React.Component {
   state = {
-
   }
 
   render() {
-    let { salaryRecord } = this.props;
-    
-    const dataSource = [{
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号'
-    }, {
-      key: '2',
-      name: '胡彦祖',
-      age: 42,
-      address: '西湖区湖底公园1号'
-    }];
-
-    const columns = [{
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
-    }, {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age',
-    }, {
-      title: '住址',
-      dataIndex: 'address',
-      key: 'address',
-    }];
-
-    let data = [{
-      title: '工资调整记录',
-      isLoading: false,
-      dataSource,
-      columns,
-    }, {
-      title: '奖惩记录',
-      isLoading: true,
-      dataSource,
-      columns,
-    }];
-
-    let renderData = data.map((item, index) => {
-      return (
-        <div key={index} className={style.itemBox}>
-          <Card title={item.title} loading={item.isLoading}>
-            <Table dataSource={item.dataSource} columns={item.columns} />
-          </Card>
-        </div>
-      )
-    });
-
+    let { editUser, dispatch } = this.props;
+    let { uid, salaryRecord } = editUser;
+    let opt = {
+      uid,
+      salaryRecord,
+      upSalaryList() {
+        dispatch({
+          type: 'editUser/getUserSalaryRecordByUid'
+        });
+      }
+    }
     return (
-      <div>{renderData}</div>
+      <div>
+        <div className={style.itemBox}><SalaryRecord {...opt} /></div>
+      </div>
     );
   }
 };
 
-export default Expression;
+export default connect((({ editUser }) => ({
+  editUser,
+})))(Expression);

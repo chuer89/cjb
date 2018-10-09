@@ -19,14 +19,20 @@ class DetailsInfo extends React.Component {
 
   render() {
     let { editUser, dispatch, app } = this.props;
-    let { userDetails, salaryRecord } = editUser;
+    let { userDetails, portrayalImg } = editUser;
     let { defaultHead } = app;
 
     let callback = (key) => {
       console.log(key);
-      dispatch({
-        type: 'editUser/getUserSalaryRecordByUid'
-      })
+      if (key === '3') {
+        dispatch({
+          type: 'editUser/getUserPortrayalByUid'
+        })
+      } else if (key === '2') {
+        dispatch({
+          type: 'editUser/getUserSalaryRecordByUid'
+        });
+      }
     }
 
     let contentStyle = {
@@ -38,8 +44,9 @@ class DetailsInfo extends React.Component {
       userDetails,
       defaultHead,
     }
-    let expressionOpt = {
-      salaryRecord,
+
+    let pictureOpt = {
+      portrayalImg,
     }
 
     return (
@@ -47,8 +54,8 @@ class DetailsInfo extends React.Component {
         <div style={contentStyle}>
           <Tabs defaultActiveKey="1" onChange={callback}>
             <TabPane tab="基本信息" key="1"><Basic {...basicOpt} /></TabPane>
-            <TabPane tab="个人成长" key="2"><Expression {...expressionOpt} /></TabPane>
-            <TabPane tab="员工画像" key="3"><Picture /></TabPane>
+            <TabPane tab="个人成长" key="2"><Expression /></TabPane>
+            <TabPane tab="员工画像" key="3"><Picture {...pictureOpt} /></TabPane>
           </Tabs>
         </div>
       </App>

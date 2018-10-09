@@ -25,7 +25,6 @@ class Basic extends React.Component {
     let { userDetails, defaultHead } = this.props;
     let { gender, education, marry } = this.state;
 
-    console.log(userDetails, 'xinxi')
     let importantData = [{
       label: '姓名', value: userDetails.name,
     }, {

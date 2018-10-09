@@ -10,15 +10,15 @@ class Picture extends React.Component {
   }
 
   render() {
-    let headImg = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536430268198&di=4e617a9e23a3239bc4ed40ba0ecbaa2d&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201408%2F08%2F20140808143427_y8P3S.jpeg';
+    let { portrayalImg } = this.props;
+    let { idcardFront, idcardReverse, healthCertificateFront,
+      healthCertificateReverse, contract } = portrayalImg;
     let data = [{
-      title: '身份证采集', imgList: [{}, {}]
+      title: '身份证采集', imgList: [idcardFront || {}, idcardReverse || {}],
     }, {
-      title: '健康证采集', imgList: [{}]
+      title: '健康证采集', imgList: [healthCertificateFront || {}, healthCertificateReverse || {}],
     }, {
-      title: '合同采集', imgList: [{}]
-    }, {
-      title: '其他', imgList: [{}]
+      title: '合同采集', imgList: contract || [],
     }];
     let renderData = data.map((item, index) => {
       return (
@@ -26,10 +26,13 @@ class Picture extends React.Component {
           <h3 className={style.title}>{item.title}</h3>
           <div className={style.itemBox}>
             {
-              item.imgList.map((img, imgIndex) => {
+              item.imgList.map((item, imgIndex) => {
+                if (!item.path) {
+                  return '';
+                }
                 return (
                   <div className={style.imgBox} key={imgIndex}>
-                    <img src={headImg} alt=""/>
+                    <img src={item.path} alt=""/>
                   </div>
                 )
               })
