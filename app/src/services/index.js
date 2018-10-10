@@ -192,6 +192,39 @@ let httpApi = {
 	editEnterpriseOrgInfoById(param = {}) {
 		return post('base', 'enterpriseOrgInfo/editEnterpriseOrgInfoById', param);
 	},
+
+	// 年龄分布
+	chartAge(param = {}) {
+		return post('base', '/statistics/age', param);
+	},
+	// 学历分布
+	chartEducation(param = {}) {
+		return post('base', '/statistics/education', param);
+	},
+	// 性别分布
+	chartGender(param = {}) {
+		return post('base', '/statistics/gender', param);
+	},
+	// 招聘渠道
+	chartApplyChannel(param = {}) {
+		return post('base', '/statistics/applyChannel', param);
+	},
+	// 离职率
+	chartResignation(param = {}) {
+		return post('base', '/statistics/resignation', param);
+	},
+	// 兼职全职分布
+	chartJobType(param = {}) {
+		return post('base', '/statistics/jobType', param);
+	},
+	// 满编率
+	chartOnJobProportion(param = {}) {
+		return post('base', '/statistics/onJobProportion', param);
+	},
+	// 员工流动
+	chartUserTurnover(param = {}) {
+		return post('base', '/statistics/userTurnover', param);
+	},
 };
 
 export default httpApi;

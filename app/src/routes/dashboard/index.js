@@ -5,6 +5,7 @@ import ReactEcharts from 'echarts-for-react';
 import common from '../../common';
 import style from './index.less';
 import { Row, Col, Card } from 'antd';
+import _ from 'lodash';
 
 import Comments from './components/comments';
 
@@ -13,35 +14,108 @@ class Dashboard extends React.Component {
     super(props);
     // 设置 initial state
     this.state = {
+      month: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
     }
   }
 
   render() {
+    let { dispatch, dashboard } = this.props;
+    let { month } = this.state;
+    let { chartAge, chartEducation, chartGender, chartApplyChannel,
+      chartResignation, chartJobType, chartOnJobProportion, chartUserTurnover } = dashboard;
+
     let RowSpan3 = {
       span: 8,
     };
+    let RowSpan2 = {
+      span: 12,
+    }
+
+    // 年龄分布
+    let agePie = [];
+    if (_.isArray(chartAge.data)) {
+      _.forEach(chartAge.data, (item) => {
+        agePie.push({
+          name: item.name,
+          value: item.num,
+        });
+      })
+    }
+
+    // 学历分布
+    let educationPie = [];
+    if (_.isArray(chartEducation.data)) {
+      _.forEach(chartEducation.data, (item) => {
+        educationPie.push({
+          name: item.name,
+          value: item.num,
+        });
+      });
+    }
+
+    // 性别分布
+    let genderPie = [];
+    if (_.isArray(chartGender.data)) {
+      _.forEach(chartGender.data, (item) => {
+        genderPie.push({
+          name: item.name,
+          value: item.num,
+        });
+      });
+    }
+
+    // 招聘渠道
+    let applyChannelPie = [];
+    if (_.isArray(chartApplyChannel.data)) {
+      _.forEach(chartApplyChannel.data, (item) => {
+        applyChannelPie.push({
+          name: item.name,
+          value: item.num,
+        });
+      });
+    }
+
+    // 离职率
+    let resignationPie = [];
+    if (_.isArray(chartResignation.data)) {
+      _.forEach(chartResignation.data, (item) => {
+        resignationPie.push({
+          name: item.name,
+          value: item.num,
+        });
+      });
+    }
+
+    // 兼职全职分布
+    let jobTypePie = [];
+    if (_.isArray(chartJobType.data)) {
+      _.forEach(chartJobType.data, (item) => {
+        jobTypePie.push({
+          name: item.name,
+          value: item.num,
+        });
+      });
+    }
+
+    let onJobProportionPie = [];
+    if (_.isArray(chartOnJobProportion.data)) {
+      _.forEach(chartOnJobProportion.data, (item) => {
+        onJobProportionPie.push({
+          name: item.name,
+          value: item.num,
+        });
+      });
+    }
 
     let topPie = [{
       title: '年龄分布',
-      data: [
-        { value: 23, name: '80后' },
-        { value: 53, name: '90后' },
-        { value: 13, name: '70后' },
-      ]
+      data: agePie,
     }, {
       title: '学历分布',
-      data: [
-        { value: 23, name: '大学' },
-        { value: 53, name: '初中' },
-        { value: 13, name: '其他' },
-        { value: 33, name: '高中' },
-      ]
+      data: educationPie,
     }, {
       title: '性别分布',
-      data: [
-        { value: 23, name: '男' },
-        { value: 53, name: '女' },
-      ]
+      data: genderPie,
     }];
     let renderTopPie = topPie.map((item, index) => {
       let option = common.getPieOption(item.data);
@@ -62,20 +136,98 @@ class Dashboard extends React.Component {
       )
     });
 
+    let pieData = [{
+      title: '招聘渠道',
+      data: applyChannelPie,
+    }, {
+      title: '离职率',
+      data: resignationPie,
+    }];
+    let renderPieQudao = pieData.map((item, index) => {
+      let option = common.getPieOption(item.data);
+      let colStyle = {};
+      if (index === 1) {
+        colStyle = {
+          'marginRight': '0',
+        }
+      }
+      return (
+        <Col {...RowSpan2} key={index}>
+          <div className={style.splitBox} style={colStyle}>
+            <Card title={item.title}>
+              <ReactEcharts option={option} />
+            </Card>
+          </div>
+        </Col>
+      )
+    });
+
+    let pieZhi = [{
+      title: '兼职全职分布',
+      data: jobTypePie,
+    }, {
+      title: '满编率',
+      data: onJobProportionPie
+    }];
+    let renderPieZhi = pieZhi.map((item, index) => {
+      let option = common.getPieOption(item.data);
+      let colStyle = {};
+      if (index === 1) {
+        colStyle = {
+          'marginRight': '0',
+        }
+      }
+      return (
+        <Col {...RowSpan2} key={index}>
+          <div className={style.splitBox} style={colStyle}>
+            <Card title={item.title}>
+              <ReactEcharts option={option} />
+            </Card>
+          </div>
+        </Col>
+      )
+    });
+
+    let xAxisData = [];
+    let inService = []; // 在职
+    let outService = []; // 离职
+    if (_.isArray(chartUserTurnover)) {
+      _.forEach(chartUserTurnover, (item = {}, index) => {
+        // let _in = item.in;
+        // let _out = item.out;
+
+        // xAxisData.push(month[index] + '月');
+
+        // console.log(_in, _out, index)
+        
+        // if (_in) {
+        //   inService.push(_in);
+        // }
+        // if (_out) {
+        //   outService.push(_out);
+        // }
+      });
+    }
     let lineOption = {
       xAxis: {
-        // type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        data: xAxisData,
+        // boundaryGap: false,
       },
       tooltip: {
-        trigger: 'item',
+        trigger: 'axis',
         formatter: '{b} : {c}'
       },
       yAxis: {
         type: 'value'
       },
       series: [{
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        name: '在职',
+        data: inService,
+        type: 'line',
+        smooth: true
+      }, {
+        name: '离职',
+        data: outService,
         type: 'line',
         smooth: true
       }]
@@ -85,6 +237,12 @@ class Dashboard extends React.Component {
       <App>
         <div className={style.box}>
           <Row>{renderTopPie}</Row>
+        </div>
+        <div className={style.box}>
+          <Row>{renderPieQudao}</Row>
+        </div>
+        <div className={style.box}>
+          <Row>{renderPieZhi}</Row>
         </div>
         <div className={style.box}>
           <Card title="流动分析">
@@ -97,4 +255,6 @@ class Dashboard extends React.Component {
   }
 }
 
-export default connect()(Dashboard);
+export default connect((({ dashboard }) => ({
+  dashboard,
+})))(Dashboard);
