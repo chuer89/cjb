@@ -16,6 +16,7 @@ app.use(nprogressDva());
 // 3. Model
 app.model(require('./models/app').default);
 app.model(require('./models/user').default);
+app.model(require('./models/structure').default);
 
 // 4. Router
 app.router(require('./router').default);

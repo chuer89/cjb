@@ -13,7 +13,6 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        console.log(pathname)
         if (pathname === '/personnel/index') {
           dispatch({
             type: 'workUserinfo',

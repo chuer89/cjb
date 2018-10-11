@@ -21,7 +21,7 @@ const Routers = function ({ history, app }) {
     },
     {
       path: '/initstructure', // 初始化组织架构
-      models: () => [import('./models/structure')],
+      // models: () => [import('./models/structure')],
       component: () => import('./routes/initStructure/'),
     },
 
@@ -58,11 +58,11 @@ const Routers = function ({ history, app }) {
 
     {
       path: '/deploy/store', // 门店管理
-      models: () => [import('./models/structure')],
+      // models: () => [import('./models/structure')],
       component: () => import('./routes/deploy/store/')
     }, {
       path: '/deploy/section', // 部门管理
-      models: () => [import('./models/structure')],
+      // models: () => [import('./models/structure')],
       component: () => import('./routes/deploy/section/')
     }
   ];

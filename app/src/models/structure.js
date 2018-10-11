@@ -13,15 +13,23 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        if (pathname === '/deploy/section') { // 部门架构
-          dispatch({
-            type: 'getUserOrganizations',
-          });
-        } else if (pathname === '/deploy/store' || pathname === '/initstructure') { // 门店架构
-          dispatch({
-            type: 'getOrganizations',
-          });
-        }
+        // if (pathname === '/deploy/section') { // 部门架构
+        //   dispatch({
+        //     type: 'getUserOrganizations',
+        //   });
+        // } else if (pathname === '/deploy/store' || pathname === '/initstructure') { // 门店架构
+        //   dispatch({
+        //     type: 'getOrganizations',
+        //   });
+        // }
+
+        dispatch({
+          type: 'getUserOrganizations',
+        });
+
+        dispatch({
+          type: 'getOrganizations',
+        });
       })
     },
   },

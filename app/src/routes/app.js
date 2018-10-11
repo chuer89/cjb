@@ -3,11 +3,10 @@ import { connect } from 'dva';
 import React from 'react';
 import style from './app.less';
 import { Link } from 'dva/router';
-// import NProgress from 'nprogress';
+import DeptSele  from '../components/seleDept/';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-// NProgress.start();
 class App extends React.Component {
   state = {
     collapsed: false,
@@ -39,7 +38,9 @@ class App extends React.Component {
       key: '2', name: '培训资料', path: '/personnel/index',
     }, {
       key: '3', name: '后台配置', path: '/deploy/store'
-    }]
+    }],
+
+    deptData: [], // 筛选部门信息
   }
 
   UNSAFE_componentWillMount() {
@@ -67,20 +68,18 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // NProgress.done();
-  }
-
   onCollapse = (collapsed) => {
     console.log(collapsed);
     this.setState({ collapsed });
   }
 
   render() {
-    let { children, app } = this.props;
+    let { children, app, user, structure } = this.props;
     let contentHeight = document.body.clientHeight - 64 - 60;
-    let { menus, selectedKeys, topNav, selectedKeysNav, deployMenus } = this.state;
+    let { menus, selectedKeys, topNav, selectedKeysNav, deployMenus, collapsed } = this.state;
     let { moduleName } = app;
+    let { userInfo } = user;
+    let { userType } = userInfo;
 
     let menusData = menus;
     if (moduleName === '3') {
@@ -121,16 +120,28 @@ class App extends React.Component {
     let renderTopNav = topNav.map((item, index) => {
       return (
         <Menu.Item key={item.key}>
-        <Link to={item.path}>{item.name}</Link>
+          <Link to={item.path}>{item.name}</Link>
         </Menu.Item>
       )
-    })
+    });
+
+    let handerChangeDept = (value) => {
+      console.log(value)
+    }
+    let deptOpt = {
+      structure,
+      userType,
+      onChange: handerChangeDept,
+    }
 
     return (
       <Layout>
         <Header className={style.headerBox}>
           <div className={style.headerItem}>
-            <div className={style.logo} />
+            <div className={style.logo}>匠</div>
+          </div>
+          <div className={style.headerItem} style={{ margin: '0 28px 0 28px' }}>
+            <DeptSele {...deptOpt}/>
           </div>
           <div className={style.headerItem}>
             <Menu
@@ -143,7 +154,7 @@ class App extends React.Component {
           <div style={{ 'float': 'right' }}>
             <Popover content={userMenus} placement="bottomRight">
               <span className={style.userInfo}>
-                <Icon type="user" /><span>蒙扎特</span>
+                <Icon type="user" /><span>{userInfo.username || ''}</span>
               </span>
             </Popover>
           </div>
@@ -152,14 +163,15 @@ class App extends React.Component {
           <Sider
             theme="light"
             collapsible
-            collapsed={this.state.collapsed}
+            collapsed={collapsed}
             onCollapse={this.onCollapse}
+            style={{ position: 'fixed', height: '100vh' }}
           >
             <Menu mode="inline" selectedKeys={selectedKeys}>
               {renderMenus}
             </Menu>
           </Sider>
-          <Layout>
+          <Layout style={{ marginLeft: collapsed ? '80px' : '200px' }}>
             <Content style={contentStyle}>
               {children}
               <BackTop />
@@ -174,6 +186,8 @@ class App extends React.Component {
   }
 }
 
-export default connect((({ app }) => ({
+export default connect((({ app, user, structure }) => ({
   app,
+  user,
+  structure,
 })))(App);

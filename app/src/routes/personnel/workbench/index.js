@@ -106,13 +106,13 @@ class Dashboard extends React.Component {
           </Card>
         </div>
         <div className={style.itemBox}>
-          <Card loading={loading} title="代办事项">
+          <Card loading={loading} title="代办事项（样本数据）">
             <Tabs tabPosition={'left'}>
               <TabPane tab="全部" key="1">
                 <ul>{renderAllList}</ul>
               </TabPane>
-              <TabPane tab="预警" key="2">Content of Tab 2</TabPane>
-              <TabPane tab="提醒" key="3">Content of Tab 3</TabPane>
+              <TabPane tab="预警" key="2"><div>暂无数据</div></TabPane>
+              <TabPane tab="提醒" key="3"><div>暂无数据</div></TabPane>
             </Tabs>
           </Card>
         </div>

@@ -6,13 +6,13 @@ const Comments = () => {
   let data = [{
     star: 5, percent: 85,
   }, {
-    star: 4, percent: 60,
+    star: 4, percent: 96,
   }, {
-    star: 3, percent: 32,
+    star: 3, percent: 44,
   }, {
-    star: 2, percent: 44,
+    star: 2, percent: 2,
   }, {
-    star: 1, percent: 8,
+    star: 1, percent: 0,
   }];
   let renderData = data.map((item, index) => {
     return (
@@ -31,7 +31,7 @@ const Comments = () => {
   });
 
   return (
-    <Card title="员工满意度">
+    <Card title="员工满意度（样本数据）">
       <div className={style.content}>{renderData}</div>
     </Card>
   )
