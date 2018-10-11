@@ -225,6 +225,15 @@ let httpApi = {
 	chartUserTurnover(param = {}) {
 		return post('base', '/statistics/userTurnover', param);
 	},
+
+	// 工作台 - 人员信息
+	workUserinfo(param = {}) {
+		return post('base', '/workbench/userinfo', param);
+	},
+	// 工作台 - 员工关怀
+	workusercare(param = {}) {
+		return post('base', '/workbench/usercare', param);
+	},
 };
 
 export default httpApi;

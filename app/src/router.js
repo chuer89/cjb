@@ -27,8 +27,8 @@ const Routers = function ({ history, app }) {
 
     {
       path: '/personnel/index', // 工作台
-      models: () => [import('./models/example')],
-      component: () => import('./routes/workbench/')
+      models: () => [import('./models/work')],
+      component: () => import('./routes/personnel/workbench/')
     },
     {
       path: '/personnel/dashboard', // 仪表盘

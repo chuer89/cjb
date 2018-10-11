@@ -10,6 +10,7 @@ export default {
   state: {
     userInfo: JSON.parse(localStorage.getItem('userInfo') || '{}'), // 个人详情
     menus: JSON.parse(localStorage.getItem('menus') || '{}'), // 菜单权限
+    dept: '', // 部门信息
   },
 
   subscriptions: {

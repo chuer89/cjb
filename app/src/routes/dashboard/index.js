@@ -192,30 +192,22 @@ class Dashboard extends React.Component {
     let inService = []; // 在职
     let outService = []; // 离职
     if (_.isArray(chartUserTurnover)) {
-      _.forEach(chartUserTurnover, (item = {}, index) => {
-        // let _in = item.in;
-        // let _out = item.out;
+      _.forEach(chartUserTurnover, (item, index) => {
+        let { entry, out } = item || {};
 
-        // xAxisData.push(month[index] + '月');
-
-        // console.log(_in, _out, index)
-        
-        // if (_in) {
-        //   inService.push(_in);
-        // }
-        // if (_out) {
-        //   outService.push(_out);
-        // }
+        xAxisData.push(month[index] + '月');
+        inService.push(entry || undefined);
+        outService.push(out || undefined);
       });
     }
     let lineOption = {
       xAxis: {
         data: xAxisData,
-        // boundaryGap: false,
+        boundaryGap: false,
       },
       tooltip: {
         trigger: 'axis',
-        formatter: '{b} : {c}'
+        // formatter: '{b} : {c}'
       },
       yAxis: {
         type: 'value'
@@ -242,12 +234,12 @@ class Dashboard extends React.Component {
           <Row>{renderPieQudao}</Row>
         </div>
         <div className={style.box}>
-          <Row>{renderPieZhi}</Row>
-        </div>
-        <div className={style.box}>
           <Card title="流动分析">
             <ReactEcharts style={{ 'height': '400px' }} option={lineOption} />
           </Card>
+        </div>
+        <div className={style.box}>
+          <Row>{renderPieZhi}</Row>
         </div>
         <div className={style.box}><Comments /></div>
       </App>

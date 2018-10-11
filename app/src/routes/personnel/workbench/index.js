@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'dva';
-import App from '../app';
+import App from '../../app';
 import { Card, Tabs, Row, Col } from 'antd';
 import style from './index.less';
+import { Link } from 'dva/router';
 
 const TabPane = Tabs.TabPane;
 
@@ -40,14 +41,17 @@ class Dashboard extends React.Component {
 
   render() {
     let { loading } = this.state;
+    let { work } = this.props;
+    let { workUserinfo, workusercare } = work;
+
     let personnelGeneral = [{
-      name: '在职', number: '230', color: 'rgb(100, 234, 145)'
+      name: '在职', number: workUserinfo.all, color: 'rgb(100, 234, 145)'
     }, {
-      name: '全职', number: '630', color: 'rgb(143, 201, 251)'
+      name: '全职', number: workUserinfo.full, color: 'rgb(143, 201, 251)'
     }, {
-      name: '实习', number: '730', color: 'rgb(216, 151, 235)'
+      name: '实习', number: workUserinfo.practice, color: 'rgb(216, 151, 235)'
     }, {
-      name: '兼职', number: '82', color: 'rgb(246, 152, 153)'
+      name: '兼职', number: workUserinfo.part, color: 'rgb(246, 152, 153)'
     }];
 
     let renderPersonnel = personnelGeneral.map((item, index) => {
@@ -73,13 +77,26 @@ class Dashboard extends React.Component {
       return (
         <li key={index}>
           <div className={style.messageListBox}>
-            <div className={style.newMessage} style={{'display': item.isNew ? 'block' : 'none'}}></div>
+            <div className={style.newMessage} style={{ 'display': item.isNew ? 'block' : 'none' }}></div>
             <div className={style.messageContent}>{item.message}</div>
             <div className={style.messageDate}>{item.date}</div>
           </div>
         </li>
       )
-    })
+    });
+
+    let renderUserCare = (
+      <div>暂无数据</div>
+    )
+    if (!_.isEmpty(workusercare)) {
+      renderUserCare = workusercare.map((item, index) => {
+        return (
+          <div key={index}>
+            <Link to={'editUser/' + item.id} target="_blank">{item.name}</Link>
+          </div>
+        )
+      });
+    }
 
     return (
       <App>
@@ -99,9 +116,14 @@ class Dashboard extends React.Component {
             </Tabs>
           </Card>
         </div>
+        <div className={style.itemBox}>
+          <Card title="员工关怀">{renderUserCare}</Card>
+        </div>
       </App>
     );
   }
 }
 
-export default connect()(Dashboard);
+export default connect((({ work }) => ({
+  work,
+})))(Dashboard);
