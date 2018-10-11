@@ -80,22 +80,22 @@ class DeptSele extends React.Component {
     renderResult = deptData.map((item) => {
       return (
         <div key={item.value}>
-          <div>{item.label}</div>
+          <div className={styles.title}>{item.label}</div>
           {
             item.children.map((bItem) => {
               return (
-                <div key={bItem.value}>
-                  <div>{bItem.label}</div>
+                <div key={bItem.value} className={styles.brandBox}>
+                  <div className={styles.title}><i className="iconfont">&#xe612;</i>{bItem.label}</div>
                   {
                     bItem.children.map((aItem) => {
                       return (
-                        <div key={aItem.value}>
-                          <div>{aItem.label}</div>
+                        <div key={aItem.value} className={styles.areaBox}>
+                          <div className={styles.title}><i className="iconfont">&#xe657;</i>{aItem.label}</div>
                           {
                             aItem.children.map((sItem) => {
                               return (
-                                <div key={sItem.value}>
-                                  <div>{sItem.label}</div>
+                                <div key={sItem.value} className={styles.storeBox}>
+                                  <div className={styles.title}><i className="iconfont">&#xe650;</i>{sItem.label}</div>
                                 </div>
                               )
                             })
@@ -112,7 +112,7 @@ class DeptSele extends React.Component {
       )
     });
 
-    console.log(storeStructure, deptData)
+    console.log(storeStructure, deptData, userType)
 
     return (
       <div className={styles.seleDeptBox}>
