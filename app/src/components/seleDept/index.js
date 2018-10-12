@@ -1,12 +1,10 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { Icon, Cascader } from 'antd';
 import _ from 'lodash';
-import styles from './index.less';
 
 // 筛选部门
 class DeptSele extends React.Component {
   state = {
-    seleResult: '筛选部门',
   }
 
   UNSAFE_componentWillMount() {
@@ -23,9 +21,8 @@ class DeptSele extends React.Component {
   }
 
   render() {
-    let { structure, userType, onChange } = this.props;
+    let { structure, userType, onChange, defaultValue } = this.props;
     let { storeStructure, sectionStructure } = structure;
-    let { seleResult } = this.state;
 
     // userType 0：企业账号；1：员工账号 2: 直属部门
     // 类型（1门店类 2直属部门类）
@@ -66,64 +63,57 @@ class DeptSele extends React.Component {
       });
     }
 
+    let sChildren = [];
+    if (!_.isEmpty(sectionStructure)) {
+      _.forEach(sectionStructure, (item) => {
+        sChildren.push({
+          value: '2.' + item.id,
+          label: item.name,
+        });
+      })
+    }
+
     if (userType === 1) {
       deptData = [{
-        value: '',
+        value: '1',
         label: '门店',
         children: bChildren
       }];
+    } else if (userType === 0) {
+      deptData = [{
+        value: '1',
+        label: '门店',
+        children: bChildren
+      }, {
+        value: '2',
+        label: '直属部门',
+        children: sChildren,
+      }];
+    } else if (userType === 2) {
+      deptData = [{
+        value: '2',
+        label: '直属部门',
+        children: sChildren,
+      }];
     }
 
-    let renderResult = (
-      <div>无筛选部门</div>
-    );
-    renderResult = deptData.map((item) => {
-      return (
-        <div key={item.value}>
-          <div className={styles.title}>{item.label}</div>
-          {
-            item.children.map((bItem) => {
-              return (
-                <div key={bItem.value} className={styles.brandBox}>
-                  <div className={styles.title}><i className="iconfont">&#xe612;</i>{bItem.label}</div>
-                  {
-                    bItem.children.map((aItem) => {
-                      return (
-                        <div key={aItem.value} className={styles.areaBox}>
-                          <div className={styles.title}><i className="iconfont">&#xe657;</i>{aItem.label}</div>
-                          {
-                            aItem.children.map((sItem) => {
-                              return (
-                                <div key={sItem.value} className={styles.storeBox}>
-                                  <div className={styles.title}><i className="iconfont">&#xe650;</i>{sItem.label}</div>
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              )
-            })
-          }
-        </div>
-      )
-    });
-
-    console.log(storeStructure, deptData, userType)
+    let deptOpt = {
+      options: deptData,
+      onChange,
+      placeholder: '选择部门',
+      notFoundContent: '无筛选部门',
+      expandTrigger: 'hover',
+      changeOnSelect: userType === 1 ? false : true,
+      defaultValue,
+    }
 
     return (
-      <div className={styles.seleDeptBox}>
-        <div className={styles.seleBox}>
-          <span>{seleResult}</span><Icon type="down" theme="outlined" />
-        </div>
-        <div className={styles.seleResultBox}>{renderResult}</div>
+      <div>
+        <Cascader {...deptOpt} getPopupContainer={() => document.getElementById('js_sele_dept')} />
+        <div id="js_sele_dept"></div>
       </div>
     )
   }
 }
-
 
 export default DeptSele;

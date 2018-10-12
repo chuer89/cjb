@@ -4,6 +4,7 @@ import React from 'react';
 import style from './app.less';
 import { Link } from 'dva/router';
 import DeptSele  from '../components/seleDept/';
+import _ from 'lodash';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -78,7 +79,7 @@ class App extends React.Component {
     let contentHeight = document.body.clientHeight - 64 - 60;
     let { menus, selectedKeys, topNav, selectedKeysNav, deployMenus, collapsed } = this.state;
     let { moduleName } = app;
-    let { userInfo } = user;
+    let { userInfo, dept } = user;
     let { userType } = userInfo;
 
     let menusData = menus;
@@ -125,13 +126,29 @@ class App extends React.Component {
       )
     });
 
+    // 选择部门
     let handerChangeDept = (value) => {
-      console.log(value)
+      console.log(value, 'xuanzhong')
+      let dept = _.last(value);
+      localStorage.setItem('dept', dept);
+      // window.location.reload();
+    }
+    
+    // 默认部门
+    let defaultValue = [];
+    let deptSplit = [];
+    if (dept) {
+      deptSplit = dept.split('.');
+      _.forEach(deptSplit, (item) => {
+        let _last = _.last(defaultValue) || '';
+        defaultValue.push((_last && _last + '.') + item);
+      });
     }
     let deptOpt = {
       structure,
       userType,
       onChange: handerChangeDept,
+      defaultValue,
     }
 
     return (

@@ -10,7 +10,7 @@ export default {
   state: {
     userInfo: JSON.parse(localStorage.getItem('userInfo') || '{}'), // 个人详情
     menus: JSON.parse(localStorage.getItem('menus') || '{}'), // 菜单权限
-    dept: '', // 部门信息
+    dept: localStorage.getItem('dept') || '', // 部门信息
   },
 
   subscriptions: {
@@ -59,9 +59,6 @@ export default {
             pathname = '/initstructure';
           }
         }
-        yield put(routerRedux.push({
-          pathname,
-        }));
 
         // 获取菜单
         const menusAjax = yield call(services.menus, payload);
@@ -72,8 +69,14 @@ export default {
             type: 'save',
             payload: {
               menus: menusData.data,
+              userInfo,
+              dept: '',
             }
-          })
+          });
+
+          yield put(routerRedux.push({
+            pathname,
+          }));
         }
       } else {
         message.error(data.msg);
