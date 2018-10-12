@@ -50,7 +50,7 @@ class Config extends React.Component {
   }
 
   render() {
-    let { user, visible, onCancel } = this.props;
+    let { user, visible, onCancel, orgIndex } = this.props;
     let { menus } = user;
     let self = this;
 
@@ -67,21 +67,20 @@ class Config extends React.Component {
 
         if (!_.isEmpty(item.tree)) {
           renderTree = item.tree.map((itemTree) => {
-            let { id, index } = itemTree;
+            let { id } = itemTree;
             let handerChange = (e) => {
               let checked = e.target.checked;
               if (checked) {
                 self.handerAdd({
                   mid: id,
-                  orgIndex: index,
+                  orgIndex,
                 });
               } else {
                 self.handerDel({
                   mid: id,
-                  orgIndex: index,
+                  orgIndex,
                 });
               }
-              console.log(checked, id, index, 'qieh')
             }
             return (
               <div key={itemTree.id} className={style.itemMenus}>

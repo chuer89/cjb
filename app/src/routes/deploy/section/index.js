@@ -3,6 +3,7 @@ import { connect } from 'dva'
 import styles from './index.less'
 import App from '../../app';
 import Structure from './../../../components/structure/section';
+import services from './../../../services/';
 
 import ConfigMenus from './components/menusconfig'; // 配置菜单
 
@@ -10,7 +11,7 @@ import ConfigMenus from './components/menusconfig'; // 配置菜单
 class Section extends React.Component {
   state = {
     visibleConfigMenus: false,
-    mid: '',
+    orgIndex: '',
   }
 
   UNSAFE_componentWillMount() {
@@ -28,19 +29,25 @@ class Section extends React.Component {
 
   render() {
     let { user } = this.props;
-    let { visibleConfigMenus } = this.state;
+    let { visibleConfigMenus, orgIndex } = this.state;
     let self = this;
 
     // 打开菜单配置
-    let openConfigMenus = (mid) => {
+    let openConfigMenus = (orgIndex) => {
+      services.getEnterpriseOrgMenuByOrgId({
+        orgIndex
+      }).then(({ data }) => {
+
+      });
       self.save({
         visibleConfigMenus: true,
-        mid,
+        orgIndex,
       });
     }
     let configMenusOpt = {
       user, 
-      visible: visibleConfigMenus, 
+      visible: visibleConfigMenus,
+      orgIndex,
       onCancel() {
         self.save({
           visibleConfigMenus: false,

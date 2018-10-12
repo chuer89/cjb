@@ -136,7 +136,7 @@ class App extends React.Component {
     let menusIndex = _.findIndex(myMenus, {key: moduleName});
     let menusData = myMenus[menusIndex].children;
 
-    // console.log(myMenus, menus)
+    console.log(myMenus, menus)
 
     // 菜单组件
     let renderMenus = menusData.map((item) => {
@@ -179,10 +179,10 @@ class App extends React.Component {
 
     // 选择部门
     let handerChangeDept = (value) => {
-      console.log(value, 'xuanzhong')
+      // console.log(value, 'xuanzhong')
       let dept = _.last(value);
       localStorage.setItem('dept', dept);
-      // window.location.reload();
+      window.location.reload();
     }
     
     // 默认部门

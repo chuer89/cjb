@@ -153,7 +153,7 @@ class Structure extends React.Component {
                 {item.name}
               </div>
               <div className={styles.operateBox}>
-                <span onClick={(e) => {openConfigMenus(item.id)}}>配置菜单</span>
+                <span onClick={(e) => {openConfigMenus(item.index)}}>配置菜单</span>
                 <span onClick={(e) => {self.handerModifySection(item.id)}}>编辑</span>
                 <span onClick={(e) => {self.deleteEnterpriseOrgInfoById(item.id)}}>删除</span>
               </div>

@@ -64,6 +64,10 @@ let httpApi = {
 	menus(param = {}) {
 		return post('base', '/common/menus', param);
 	},
+	// 获取直属部门菜单权限
+	getEnterpriseOrgMenuByOrgId(param = {}){
+		return post('base', '/enterpriseOrgMenu/getEnterpriseOrgMenuByOrgId', param);
+	},
 	// 添加菜单权限
 	addEnterpriseOrgMenu(param = {}) {
 		return post('base', '/enterpriseOrgMenu/addEnterpriseOrgMenu', param);
