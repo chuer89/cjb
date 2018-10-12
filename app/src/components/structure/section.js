@@ -8,6 +8,7 @@ import Modify from './modify';
 
 const confirm = Modal.confirm;
 
+// 部门组织架构
 class Structure extends React.Component {
   state = {
     valueInput: '', // 添加品牌
@@ -108,7 +109,7 @@ class Structure extends React.Component {
 
   render() {
     let self = this;
-    let { structure } = this.props;
+    let { structure, openConfigMenus } = this.props;
     let { sectionStructure } = structure;
     let { visibleModify, modifyTitle,
       modifyLabel, callBack, initialValue, valueInput } = this.state;
@@ -142,7 +143,7 @@ class Structure extends React.Component {
 
     let renderStructure = '';
     if (!_.isEmpty(sectionStructure)) {
-      console.log(sectionStructure, 'str');
+      // console.log(sectionStructure, 'str');
       renderStructure = sectionStructure.map((item, index) => {
         return (
           <div key={index} className={styles.areaBox}>
@@ -152,6 +153,7 @@ class Structure extends React.Component {
                 {item.name}
               </div>
               <div className={styles.operateBox}>
+                <span onClick={(e) => {openConfigMenus(item.id)}}>配置菜单</span>
                 <span onClick={(e) => {self.handerModifySection(item.id)}}>编辑</span>
                 <span onClick={(e) => {self.deleteEnterpriseOrgInfoById(item.id)}}>删除</span>
               </div>

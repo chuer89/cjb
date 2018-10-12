@@ -5,6 +5,7 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import _ from 'lodash';
 import style from './add.less';
+import common from './../../common';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -86,9 +87,10 @@ class PersonalForm extends React.Component {
             initialValue: userDetails.phone,
             rules: [{
               required: true, message: '请输入联系方式',
+              pattern: common.reg.phone, message: '请输入正常的手机号',
             }],
           })(
-            <Input placeholder="请输入联系方式" autoComplete="off" maxLength="32"/>
+            <Input placeholder="请输入联系方式" autoComplete="off" maxLength="11"/>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="身份证">

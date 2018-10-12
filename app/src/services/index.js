@@ -64,6 +64,14 @@ let httpApi = {
 	menus(param = {}) {
 		return post('base', '/common/menus', param);
 	},
+	// 添加菜单权限
+	addEnterpriseOrgMenu(param = {}) {
+		return post('base', '/enterpriseOrgMenu/addEnterpriseOrgMenu', param);
+	},
+	// 删除菜单权限
+	deleteEnterpriseOrgMenuById(param = {}) {
+		return post('base', '/enterpriseOrgMenu/deleteEnterpriseOrgMenuById', param);
+	},
 
 	// 添加员工
 	addUser(param = {}) {

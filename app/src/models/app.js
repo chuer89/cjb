@@ -15,11 +15,11 @@ export default {
       history.listen(({ pathname }) => {
         let moduleName = '';
         if (pathname.indexOf('/deploy/') >= 0) { // 后台配置
-          moduleName = '3';
+          moduleName = 'service-config';
         } else if (pathname.indexOf('/personnel/') >= 0) { // 人事管理
-          moduleName = '1';
+          moduleName = 'user-console';
         } else if (pathname.indexOf('/cultivate/') >= 0) { // 培训资料
-          moduleName = '2';
+          moduleName = 'train';
         }
 
         dispatch({

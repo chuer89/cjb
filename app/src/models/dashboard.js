@@ -63,10 +63,10 @@ export default {
 
     // 获取年龄分布
     *chartAge({ payload }, { call, put, select }) {
-      const { userInfo } = yield select(_ => _.user);
+      const { dept } = yield select(_ => _.user);
       let param = {};
       _.extend(param, payload, {
-        dept: userInfo.index,
+        dept,
       });
       let temp = yield call(services.chartAge, param);
       let { data } = temp;
@@ -82,10 +82,10 @@ export default {
 
     // 学历分布
     *chartEducation({ payload }, { call, put, select }) {
-      const { userInfo } = yield select(_ => _.user);
+      const { dept } = yield select(_ => _.user);
       let param = {};
       _.extend(param, payload, {
-        dept: userInfo.index,
+        dept,
       });
       let temp = yield call(services.chartEducation, param);
       let { data } = temp;
@@ -101,10 +101,10 @@ export default {
 
     // 性别分布
     *chartGender({ payload }, { call, put, select }) {
-      const { userInfo } = yield select(_ => _.user);
+      const { dept } = yield select(_ => _.user);
       let param = {};
       _.extend(param, payload, {
-        dept: userInfo.index,
+        dept,
       });
       let temp = yield call(services.chartGender, param);
       let { data } = temp;
@@ -120,10 +120,10 @@ export default {
 
     // 招聘渠道
     *chartApplyChannel({ payload }, { call, put, select }) {
-      const { userInfo } = yield select(_ => _.user);
+      const { dept } = yield select(_ => _.user);
       let param = {};
       _.extend(param, payload, {
-        dept: userInfo.index,
+        dept,
       });
       let temp = yield call(services.chartApplyChannel, param);
       let { data } = temp;
@@ -139,10 +139,10 @@ export default {
 
     // 离职率
     *chartResignation({ payload }, { call, put, select }) {
-      const { userInfo } = yield select(_ => _.user);
+      const { dept } = yield select(_ => _.user);
       let param = {};
       _.extend(param, payload, {
-        dept: userInfo.index,
+        dept,
       });
       let temp = yield call(services.chartResignation, param);
       let { data } = temp;
@@ -158,10 +158,10 @@ export default {
 
     // 兼职全职分布
     *chartJobType({ payload }, { call, put, select }) {
-      const { userInfo } = yield select(_ => _.user);
+      const { dept } = yield select(_ => _.user);
       let param = {};
       _.extend(param, payload, {
-        dept: userInfo.index,
+        dept,
       });
       let temp = yield call(services.chartJobType, param);
       let { data } = temp;
@@ -177,10 +177,10 @@ export default {
 
     // 满编率
     *chartOnJobProportion({ payload }, { call, put, select }) {
-      const { userInfo } = yield select(_ => _.user);
+      const { dept } = yield select(_ => _.user);
       let param = {};
       _.extend(param, payload, {
-        dept: userInfo.index,
+        dept,
       });
       let temp = yield call(services.chartOnJobProportion, param);
       let { data } = temp;
@@ -196,10 +196,10 @@ export default {
 
     // 员工流动
     *chartUserTurnover({ payload }, { call, put, select }) {
-      const { userInfo } = yield select(_ => _.user);
+      const { dept } = yield select(_ => _.user);
       let param = {};
       _.extend(param, payload, {
-        dept: userInfo.index,
+        dept,
       });
       let temp = yield call(services.chartUserTurnover, param);
       let { data } = temp;

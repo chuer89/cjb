@@ -125,12 +125,18 @@ class Dashboard extends React.Component {
           'marginRight': '0',
         }
       }
+      let renderEcharts = (
+        <div className={style.notData}>暂无数据</div>
+      )
+      if (!_.isEmpty(item.data)) {
+        renderEcharts = (
+          <ReactEcharts option={option} />
+        )
+      }
       return (
         <Col {...RowSpan3} key={index}>
           <div className={style.splitBox} style={colStyle}>
-            <Card title={item.title}>
-              <ReactEcharts option={option} />
-            </Card>
+            <Card title={item.title}>{renderEcharts}</Card>
           </div>
         </Col>
       )
@@ -151,12 +157,18 @@ class Dashboard extends React.Component {
           'marginRight': '0',
         }
       }
+      let renderEcharts = (
+        <div className={style.notData}>暂无数据</div>
+      )
+      if (!_.isEmpty(item.data)) {
+        renderEcharts = (
+          <ReactEcharts option={option} />
+        )
+      }
       return (
         <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
-            <Card title={item.title}>
-              <ReactEcharts option={option} />
-            </Card>
+            <Card title={item.title}>{renderEcharts}</Card>
           </div>
         </Col>
       )
@@ -177,12 +189,18 @@ class Dashboard extends React.Component {
           'marginRight': '0',
         }
       }
+      let renderEcharts = (
+        <div className={style.notData}>暂无数据</div>
+      )
+      if (!_.isEmpty(item.data)) {
+        renderEcharts = (
+          <ReactEcharts option={option} />
+        )
+      }
       return (
         <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
-            <Card title={item.title}>
-              <ReactEcharts option={option} />
-            </Card>
+            <Card title={item.title}>{renderEcharts}</Card>
           </div>
         </Col>
       )

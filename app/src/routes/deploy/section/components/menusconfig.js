@@ -1,8 +1,9 @@
 // 档案管理列表
 import React from 'react';
-import { Modal, Tabs, Checkbox } from 'antd';
+import { Modal, Tabs, Checkbox, message } from 'antd';
 import style from './config.less';
 import _ from 'lodash';
+import services from './../../../../services/';
 
 const TabPane = Tabs.TabPane;
 
@@ -26,9 +27,34 @@ class Config extends React.Component {
     }
   }
 
+  // 配置菜单-添加
+  handerAdd(param) {
+    services.addEnterpriseOrgMenu(param).then(({data}) => {
+      if (data.msg === 'success') {
+        // message.success('注册成功，请登录');
+      } else {
+        message.error(data.msg);
+      }
+    })
+  }
+
+  // 配置菜单-删除
+  handerDel(param) {
+    services.deleteEnterpriseOrgMenuById(param).then(({data}) => {
+      if (data.msg === 'success') {
+        // message.success('注册成功，请登录');
+      } else {
+        message.error(data.msg);
+      }
+    })
+  }
+
   render() {
-    let { user, visible, onCancel, handleOk } = this.props;
+    let { user, visible, onCancel } = this.props;
     let { menus } = user;
+    let self = this;
+
+    // console.log(menus, 'menus')
 
     let renderStructure = '';
     let renderTab = '';
@@ -41,9 +67,21 @@ class Config extends React.Component {
 
         if (!_.isEmpty(item.tree)) {
           renderTree = item.tree.map((itemTree) => {
+            let { id, index } = itemTree;
             let handerChange = (e) => {
               let checked = e.target.checked;
-              console.log(checked, 'qieh')
+              if (checked) {
+                self.handerAdd({
+                  mid: id,
+                  orgIndex: index,
+                });
+              } else {
+                self.handerDel({
+                  mid: id,
+                  orgIndex: index,
+                });
+              }
+              console.log(checked, id, index, 'qieh')
             }
             return (
               <div key={itemTree.id} className={style.itemMenus}>
@@ -55,7 +93,7 @@ class Config extends React.Component {
 
         return (
           <TabPane tab={item.name} key={item.id}>
-            <div className={style.menusBox}>{renderTree}</div>
+            <div className={style.menusBox} style={{overflow: 'hidden'}}>{renderTree}</div>
           </TabPane>
         )
       });
@@ -70,9 +108,7 @@ class Config extends React.Component {
         width={600}
         destroyOnClose={true}
         visible={visible}
-        cancelText="取消"
-        okText="确定"
-        onOk={handleOk}
+        footer={null}
         onCancel={onCancel}>
         <div className={style.contentBox}>
           {renderStructure}

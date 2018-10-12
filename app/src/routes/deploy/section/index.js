@@ -4,10 +4,13 @@ import styles from './index.less'
 import App from '../../app';
 import Structure from './../../../components/structure/section';
 
+import ConfigMenus from './components/menusconfig'; // 配置菜单
+
 // 行政部门管理
 class Section extends React.Component {
   state = {
-    
+    visibleConfigMenus: false,
+    mid: '',
   }
 
   UNSAFE_componentWillMount() {
@@ -24,14 +27,38 @@ class Section extends React.Component {
   }
 
   render() {
+    let { user } = this.props;
+    let { visibleConfigMenus } = this.state;
+    let self = this;
+
+    // 打开菜单配置
+    let openConfigMenus = (mid) => {
+      self.save({
+        visibleConfigMenus: true,
+        mid,
+      });
+    }
+    let configMenusOpt = {
+      user, 
+      visible: visibleConfigMenus, 
+      onCancel() {
+        self.save({
+          visibleConfigMenus: false,
+        })
+      },
+    }
     return (
       <App>
-        <div className={styles.content}><Structure /></div>
+        <div className={styles.content}><Structure openConfigMenus={openConfigMenus}/></div>
+        <div>
+          <ConfigMenus {...configMenusOpt} />
+        </div>
       </App>
     )
   }
 }
 
-export default connect(({ structure }) => ({
-  structure
+export default connect(({ structure, user }) => ({
+  structure,
+  user,
 }))(Section)

@@ -15,7 +15,7 @@ class App extends React.Component {
     defaultSelectedKeys: ['/index'],
     selectedKeys: [],
 
-    menus: [{
+    menusNav: [{
       path: '/personnel/index', icon: 'desktop', name: '工作台',
     }, {
       path: '/personnel/dashboard', icon: 'pie-chart', name: '仪表盘',
@@ -30,7 +30,7 @@ class App extends React.Component {
       path: '/deploy/section', icon: 'team', name: '部门管理',
     }],
 
-    defaultSelectedKeysNav: ['1'],
+    defaultSelectedKeysNav: ['user-console'],
     selectedKeysNav: [],
     // 顶部导航
     topNav: [{
@@ -40,6 +40,36 @@ class App extends React.Component {
     }, {
       key: '3', name: '后台配置', path: '/deploy/store'
     }],
+
+    // 菜单的自定义字段
+    menusOwnData: {
+      'user-console': {
+        path: '/personnel/index',
+      },
+      'console': {
+        icon: 'desktop', path: '/personnel/index'
+      },
+      'summary': {
+        icon: 'pie-chart', path: '/personnel/dashboard',
+      },
+      'user': {
+        icon: 'copy', path: '/personnel/record',
+      },
+
+      'train': {
+        path: '/personnel/index',
+      },
+
+      'service-config': {
+        path: '/deploy/store'
+      },
+      'store-config': {
+        icon: 'hdd', path: '/deploy/store'
+      },
+      'dept-config': {
+        icon: 'team', path: '/deploy/section'
+      }
+    },
 
     deptData: [], // 筛选部门信息
   }
@@ -77,15 +107,36 @@ class App extends React.Component {
   render() {
     let { children, app, user, structure } = this.props;
     let contentHeight = document.body.clientHeight - 64 - 60;
-    let { menus, selectedKeys, topNav, selectedKeysNav, deployMenus, collapsed } = this.state;
+    let { menusNav, selectedKeys, topNav, selectedKeysNav, deployMenus, collapsed, menusOwnData } = this.state;
     let { moduleName } = app;
-    let { userInfo, dept } = user;
+    let { userInfo, dept, menus } = user;
     let { userType } = userInfo;
 
-    let menusData = menus;
-    if (moduleName === '3') {
-      menusData = deployMenus;
-    }
+    let myMenus = [];
+    _.forEach(menus, (item) => {
+      let children = [];
+      if (!_.isEmpty(item.tree)) {
+        _.forEach(item.tree, (tItem) => {
+          children.push({
+            key: tItem.code,
+            name: tItem.name,
+            icon: menusOwnData[tItem.code].icon,
+            path: menusOwnData[tItem.code].path,
+          });
+        });
+      }
+      myMenus.push({
+        key: item.code,
+        name: item.name,
+        path: menusOwnData[item.code].path,
+        children,
+      })
+    });
+
+    let menusIndex = _.findIndex(myMenus, {key: moduleName});
+    let menusData = myMenus[menusIndex].children;
+
+    // console.log(myMenus, menus)
 
     // 菜单组件
     let renderMenus = menusData.map((item) => {
@@ -118,7 +169,7 @@ class App extends React.Component {
     );
 
     // 顶部导航菜单
-    let renderTopNav = topNav.map((item, index) => {
+    let renderTopNav = myMenus.map((item, index) => {
       return (
         <Menu.Item key={item.key}>
           <Link to={item.path}>{item.name}</Link>

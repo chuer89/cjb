@@ -61,7 +61,7 @@ export default {
         }
 
         // 获取菜单
-        const menusAjax = yield call(services.menus, payload);
+        const menusAjax = yield call(services.menus, {});
         const menusData = menusAjax.data;
         if (menusData.msg === 'success') {
           localStorage.setItem('menus', JSON.stringify(menusData.data));

@@ -9,8 +9,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import services from './../../services/';
 
-import ConfigMenus from './components/menusconfig'; // 配置菜单
-
 const Option = Select.Option;
 const confirm = Modal.confirm;
 
@@ -30,7 +28,6 @@ class RecordList extends React.Component {
         '3': '劳动合同',
       },
 
-      visibleConfigMenus: false,
       columns: [],
     }
   }
@@ -150,13 +147,6 @@ class RecordList extends React.Component {
       });
     }
 
-    // 打开菜单配置
-    let openConfigMenus = () => {
-      self.save({
-        visibleConfigMenus: true,
-      });
-    }
-
     let renderOperate = (
       <Menu>
         <Menu.Item>
@@ -164,9 +154,6 @@ class RecordList extends React.Component {
         </Menu.Item>
         <Menu.Item>
           <span className={style.operateBtn} onClick={delUser}>删除员工</span>
-        </Menu.Item>
-        <Menu.Item>
-          <span className={style.operateBtn} onClick={openConfigMenus}>菜单权限</span>
         </Menu.Item>
         <Menu.Item>
           <Link target="_blank" to={'/personnel/userdetails/' + item.id} className={style.operateBtn}>员工详情</Link>
@@ -205,7 +192,7 @@ class RecordList extends React.Component {
     let inputStyle = {
       'width': '180px',
     }
-    let { visibleConfigMenus, columns } = this.state;
+    let { columns } = this.state;
     let { records } = dataBody;
 
     let handleChange = (value) => {
@@ -236,25 +223,8 @@ class RecordList extends React.Component {
       }
     }
 
-    // 配置菜单参数
-    let configMenusOpt = {
-      user,
-      visible: visibleConfigMenus,
-      onCancel() {
-        self.save({
-          visibleConfigMenus: false,
-        })
-      },
-      handleOk() {
-
-      },
-    }
-
     return (
       <App>
-        <div>
-          <ConfigMenus {...configMenusOpt} />
-        </div>
         <div className={style.content}>
           <div>
             <Link to="addUser" target="_blank">
