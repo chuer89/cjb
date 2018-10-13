@@ -15,7 +15,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-			history.listen(({ pathname }) => {
+      history.listen(({ pathname }) => {
         if (pathname === '/login') {
           common.clearLocalStorage();
         }
@@ -47,36 +47,46 @@ export default {
       const { data } = temp;
       if (data.msg === 'success') {
         userInfo = data.data;
+        let { userType } = userInfo;
 
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
-
-        // 获取是否初始化企业架构
-        const initOrgAjax = yield call(services.getOrgInit, {});
-        const initOrgData = initOrgAjax.data;
-        let pathname = '/personnel/index';
-        if (initOrgData.msg === 'success') {
-          if (initOrgData.data.store) {
-            pathname = '/initstructure';
-          }
-        }
 
         // 获取菜单
         const menusAjax = yield call(services.menus, {});
         const menusData = menusAjax.data;
         if (menusData.msg === 'success') {
-          localStorage.setItem('menus', JSON.stringify(menusData.data));
-          yield put({
-            type: 'save',
-            payload: {
-              menus: menusData.data,
-              userInfo,
-              dept: '',
+          
+          // 是否有菜单
+          if (_.isEmpty(menusData.data)) {
+            message.warning('无权限访问系统。');
+          } else {
+            let pathname = '/personnel/index';
+            localStorage.setItem('menus', JSON.stringify(menusData.data));
+            // 企业账号
+            if (userType === 0) {
+              // 获取是否初始化企业架构
+              const initOrgAjax = yield call(services.getOrgInit, {});
+              const initOrgData = initOrgAjax.data;
+              if (initOrgData.msg === 'success') {
+                if (initOrgData.data.store) {
+                  pathname = '/initstructure';
+                }
+              }
             }
-          });
 
-          yield put(routerRedux.push({
-            pathname,
-          }));
+            yield put({
+              type: 'save',
+              payload: {
+                menus: menusData.data,
+                userInfo,
+                dept: '',
+              }
+            });
+  
+            yield put(routerRedux.push({
+              pathname,
+            }));
+          }
         }
       } else {
         message.error(data.msg);
