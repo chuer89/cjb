@@ -8,6 +8,7 @@ export default {
     moduleName: '', // 模块类型
     defaultImg: require('../assets/img_default.png'), // 默认图片
     defaultHead: require('../assets/head.png'), // 默认头像
+    mapKey: '30678ae375a00a1107177e2a272d1ec9',
   },
 
   subscriptions: {

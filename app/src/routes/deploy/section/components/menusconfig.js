@@ -50,12 +50,12 @@ class Config extends React.Component {
   }
 
   render() {
-    let { user, visible, onCancel, orgIndex } = this.props;
+    let { user, visible, onCancel, orgIndex, enteryConfigMenus } = this.props;
     let { menus } = user;
     let self = this;
 
-    // console.log(menus, 'menus')
-
+    // console.log(menus, enteryConfigMenus, 'menus')
+    
     let renderStructure = '';
     let renderTab = '';
     let defaultActiveKey = '';
@@ -68,6 +68,8 @@ class Config extends React.Component {
         if (!_.isEmpty(item.tree)) {
           renderTree = item.tree.map((itemTree) => {
             let { id } = itemTree;
+            let enteryMenu = enteryConfigMenus[id] || {};
+            let isdefultCheck = enteryMenu.id ? true : false;
             let handerChange = (e) => {
               let checked = e.target.checked;
               if (checked) {
@@ -77,14 +79,13 @@ class Config extends React.Component {
                 });
               } else {
                 self.handerDel({
-                  mid: id,
-                  orgIndex,
+                  id: enteryMenu.id,
                 });
               }
             }
             return (
               <div key={itemTree.id} className={style.itemMenus}>
-                <Checkbox onChange={handerChange}>{itemTree.name}</Checkbox>
+                <Checkbox defaultChecked={isdefultCheck} onChange={handerChange}>{itemTree.name}</Checkbox>
               </div>
             )
           })

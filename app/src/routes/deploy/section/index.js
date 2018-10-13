@@ -12,6 +12,7 @@ class Section extends React.Component {
   state = {
     visibleConfigMenus: false,
     orgIndex: '',
+    enteryConfigMenus: [],
   }
 
   UNSAFE_componentWillMount() {
@@ -29,7 +30,7 @@ class Section extends React.Component {
 
   render() {
     let { user } = this.props;
-    let { visibleConfigMenus, orgIndex } = this.state;
+    let { visibleConfigMenus, orgIndex, enteryConfigMenus } = this.state;
     let self = this;
 
     // 打开菜单配置
@@ -37,17 +38,28 @@ class Section extends React.Component {
       services.getEnterpriseOrgMenuByOrgId({
         orgIndex
       }).then(({ data }) => {
-
-      });
-      self.save({
-        visibleConfigMenus: true,
-        orgIndex,
+        if (data.msg === 'success') {
+          let obj = {};
+          let dataMenus = data.data;
+          _.forEach(dataMenus, (item) => {
+            obj[item.mid] = item;
+          });
+          self.save({
+            visibleConfigMenus: true,
+            orgIndex,
+            enteryConfigMenus: obj,
+          });
+        } else {
+          message.error(data.msg);
+        }
       });
     }
+
     let configMenusOpt = {
       user, 
       visible: visibleConfigMenus,
       orgIndex,
+      enteryConfigMenus,
       onCancel() {
         self.save({
           visibleConfigMenus: false,

@@ -36,6 +36,7 @@ let post = (region, api, params = {}) => {
 		if (data && data.code === 103) {
 			// 去登录
 			window.location.hash = '#/login';
+			window.location.reload();
 		}
 	}).catch(function () {
 		message.warning('服务器有误，请稍候再试。');

@@ -6,6 +6,7 @@ import _ from 'lodash';
 import services from './../../services/';
 
 import Modify from './modify';
+import ConfigStore from './configStore';
 
 const confirm = Modal.confirm;
 
@@ -17,6 +18,8 @@ class Structure extends React.Component {
     modifyLabel: '',
     callBack: () => { },
     initialValue: '',
+
+    visibleStroe: false, // 配置门店
   }
 
   UNSAFE_componentWillMount() {
@@ -159,16 +162,16 @@ class Structure extends React.Component {
   // 添加门店
   addCommonStore(bid, aid) {
     let self = this;
-    this.handerOpenModify({
+    this.save({
+      visibleStroe: true,
       modifyTitle: '添加门店',
-      modifyLabel: '请输入门店名称',
-      initialValue: '',
+      initialValue: {},
       callBack(values) {
         let param = {
           bid,
           aid,
-          sname: values,
         }
+        _.extend(param, values);
         services.addCommonStore(param)
           .then(({ data }) => {
             self.handerAjaxBack(data);
@@ -177,23 +180,42 @@ class Structure extends React.Component {
     });
   }
   // 更新门店
-  updateCommonStoreById(sid, initialValue) {
+  updateCommonStoreById({sid, sname, saddress}) {
     let self = this;
-    this.handerOpenModify({
+    this.save({
+      visibleStroe: true,
       modifyTitle: '修改门店',
-      modifyLabel: '请输入门店名称',
-      initialValue,
+      initialValue: {
+        sname, 
+        saddress,
+      },
       callBack(values) {
         let param = {
           sid,
-          sname: values,
         }
+        _.extend(param, values);
         services.updateCommonStoreById(param)
           .then(({ data }) => {
             self.handerAjaxBack(data);
           });
       }
     });
+
+    // this.handerOpenModify({
+    //   modifyTitle: '修改门店',
+    //   modifyLabel: '请输入门店名称',
+    //   initialValue,
+    //   callBack(values) {
+    //     let param = {
+    //       sid,
+    //       sname: values,
+    //     }
+    //     services.updateCommonStoreById(param)
+    //       .then(({ data }) => {
+    //         self.handerAjaxBack(data);
+    //       });
+    //   }
+    // });
   }
   // 删除门店
   deleteCommonStoreById(sid) {
@@ -208,10 +230,11 @@ class Structure extends React.Component {
   }
 
   render() {
-    let { structure } = this.props;
+    let { structure, app } = this.props;
     let { storeStructure } = structure;
+    let { mapKey } = app;
     let { visibleModify, modifyTitle,
-      modifyLabel, callBack, initialValue, valueBrandInput } = this.state;
+      modifyLabel, callBack, initialValue, valueBrandInput, visibleStroe } = this.state;
     let brandData = [];
     let self = this;
 
@@ -251,6 +274,18 @@ class Structure extends React.Component {
       },
       callBack,
     }
+    let configStoreOpt = {
+      visible: visibleStroe,
+      title: modifyTitle,
+      onCancel() {
+        self.save({
+          visibleStroe: false,
+        });
+      },
+      callBack,
+      initialValue,
+      mapKey,
+    }
 
     let renderStructure = '';
     if (!_.isEmpty(storeStructure)) {
@@ -274,7 +309,7 @@ class Structure extends React.Component {
                         {itemStore.sname}
                       </div>
                       <div className={styles.operateBox}>
-                        <span onClick={() => { self.updateCommonStoreById(itemStore.sid, itemStore.sname) }}>编辑门店</span>
+                        <span onClick={() => { self.updateCommonStoreById(itemStore) }}>编辑门店</span>
                         <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
                       </div>
                     </div>
@@ -328,6 +363,7 @@ class Structure extends React.Component {
       <div>
         <div>
           <Modify {...modifyOpt} />
+          <ConfigStore {...configStoreOpt} />
         </div>
         <div className={styles.addBtnBox}>
           <Row>
@@ -349,6 +385,7 @@ class Structure extends React.Component {
   }
 }
 
-export default connect(({ structure }) => ({
-  structure
+export default connect(({ structure, app }) => ({
+  structure,
+  app,
 }))(Structure)
