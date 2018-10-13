@@ -46,6 +46,7 @@ class Structure extends React.Component {
   handerCloseModify() {
     this.save({
       visibleModify: false,
+      visibleStroe: false,
     });
   }
 

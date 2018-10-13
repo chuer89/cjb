@@ -45,6 +45,7 @@ class ConfigStore extends React.Component {
         width={600}
         centered={true}
         visible={visible}
+        destroyOnClose={true}
         cancelText="取消"
         okText="确定"
         onOk={handleOk}
@@ -52,7 +53,7 @@ class ConfigStore extends React.Component {
         <div>
           <form>
             <FormItem {...formItemLayout} label="门店名称">
-              {getFieldDecorator('values', {
+              {getFieldDecorator('sname', {
                 initialValue: initialValue.sname,
                 rules: [{
                   required: true, message: "请输入门店名称"
