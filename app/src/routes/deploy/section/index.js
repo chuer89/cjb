@@ -1,5 +1,6 @@
 import React from 'react'
-import { connect } from 'dva'
+import { connect } from 'dva';
+import { message } from 'antd';
 import styles from './index.less'
 import App from '../../app';
 import Structure from './../../../components/structure/section';
@@ -56,10 +57,16 @@ class Section extends React.Component {
     }
 
     let configMenusOpt = {
-      user, 
+      user,
       visible: visibleConfigMenus,
       orgIndex,
       enteryConfigMenus,
+      handerAdd(data) {
+        enteryConfigMenus[data.mid] = data;
+        self.save({
+          enteryConfigMenus,
+        });
+      },
       onCancel() {
         self.save({
           visibleConfigMenus: false,
@@ -68,7 +75,7 @@ class Section extends React.Component {
     }
     return (
       <App>
-        <div className={styles.content}><Structure openConfigMenus={openConfigMenus}/></div>
+        <div className={styles.content}><Structure openConfigMenus={openConfigMenus} /></div>
         <div>
           <ConfigMenus {...configMenusOpt} />
         </div>

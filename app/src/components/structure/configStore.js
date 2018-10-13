@@ -61,7 +61,7 @@ class ConfigStore extends React.Component {
               })(<Input onPressEnter={handleOk} autoComplete="off" placeholder={"请输入门店名称"} />)}
             </FormItem>
             <FormItem {...formItemLayout} label="详细地址">
-              {getFieldDecorator('referrer', {
+              {getFieldDecorator('saddress', {
                 initialValue: initialValue.saddress,
                 rules: [{
                   required: true, message: "请输入详细地址"

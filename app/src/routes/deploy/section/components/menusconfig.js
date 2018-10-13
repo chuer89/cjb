@@ -29,8 +29,10 @@ class Config extends React.Component {
 
   // 配置菜单-添加
   handerAdd(param) {
-    services.addEnterpriseOrgMenu(param).then(({data}) => {
+    let { handerAdd } = this.props;
+    services.addEnterpriseOrgMenu(param).then(({ data }) => {
       if (data.msg === 'success') {
+        handerAdd(data.data);
         // message.success('注册成功，请登录');
       } else {
         message.error(data.msg);
@@ -40,7 +42,7 @@ class Config extends React.Component {
 
   // 配置菜单-删除
   handerDel(param) {
-    services.deleteEnterpriseOrgMenuById(param).then(({data}) => {
+    services.deleteEnterpriseOrgMenuById(param).then(({ data }) => {
       if (data.msg === 'success') {
         // message.success('注册成功，请登录');
       } else {
@@ -55,7 +57,7 @@ class Config extends React.Component {
     let self = this;
 
     // console.log(menus, enteryConfigMenus, 'menus')
-    
+
     let renderStructure = '';
     let renderTab = '';
     let defaultActiveKey = '';
@@ -67,7 +69,7 @@ class Config extends React.Component {
 
         if (!_.isEmpty(item.tree)) {
           renderTree = item.tree.map((itemTree) => {
-            let { id } = itemTree;
+            let { id, index } = itemTree;
             let enteryMenu = enteryConfigMenus[id] || {};
             let isdefultCheck = enteryMenu.id ? true : false;
             let handerChange = (e) => {
@@ -76,6 +78,7 @@ class Config extends React.Component {
                 self.handerAdd({
                   mid: id,
                   orgIndex,
+                  mindex: index,
                 });
               } else {
                 self.handerDel({
@@ -93,7 +96,7 @@ class Config extends React.Component {
 
         return (
           <TabPane tab={item.name} key={item.id}>
-            <div className={style.menusBox} style={{overflow: 'hidden'}}>{renderTree}</div>
+            <div className={style.menusBox} style={{ overflow: 'hidden' }}>{renderTree}</div>
           </TabPane>
         )
       });

@@ -10,7 +10,28 @@ export default {
   state: {
     userInfo: JSON.parse(localStorage.getItem('userInfo') || '{}'), // 个人详情
     menus: JSON.parse(localStorage.getItem('menus') || '{}'), // 菜单权限
+    myMenus: JSON.parse(localStorage.getItem('myMenus') || '[]'),
     dept: localStorage.getItem('dept') || '', // 部门信息
+
+    // 菜单的自定义字段
+    menusOwnData: {
+      'console': {
+        icon: 'desktop', path: '/personnel/index'
+      },
+      'summary': {
+        icon: 'pie-chart', path: '/personnel/dashboard',
+      },
+      'user': {
+        icon: 'copy', path: '/personnel/record',
+      },
+
+      'store-config': {
+        icon: 'hdd', path: '/deploy/store'
+      },
+      'dept-config': {
+        icon: 'team', path: '/deploy/section'
+      }
+    },
   },
 
   subscriptions: {
@@ -41,7 +62,8 @@ export default {
       }
     },
 
-    *login({ payload }, { call, put }) {
+    *login({ payload }, { call, put, select }) {
+      const { menusOwnData } = yield select(_ => _.user);
       let userInfo = {};
       const temp = yield call(services.login, payload);
       const { data } = temp;
@@ -55,13 +77,13 @@ export default {
         const menusAjax = yield call(services.menus, {});
         const menusData = menusAjax.data;
         if (menusData.msg === 'success') {
-          
+
           // 是否有菜单
           if (_.isEmpty(menusData.data)) {
             message.warning('无权限访问系统。');
           } else {
-            let pathname = '/personnel/index';
-            localStorage.setItem('menus', JSON.stringify(menusData.data));
+            let pathname = '';
+            
             // 企业账号
             if (userType === 0) {
               // 获取是否初始化企业架构
@@ -74,15 +96,47 @@ export default {
               }
             }
 
+            let myMenus = [];
+            _.forEach(menusData.data, (item, index) => {
+              let children = [];
+              if (!_.isEmpty(item.tree)) {
+                let defaultItem = item.tree[0];
+
+                if (index === 0 && !pathname) {
+                  pathname = menusOwnData[defaultItem.code].path;
+                }
+
+                _.forEach(item.tree, (tItem) => {
+                  children.push({
+                    key: tItem.code,
+                    name: tItem.name,
+                    icon: menusOwnData[tItem.code].icon,
+                    path: menusOwnData[tItem.code].path,
+                  });
+                });
+
+                myMenus.push({
+                  key: item.code,
+                  name: item.name,
+                  path: menusOwnData[defaultItem.code].path,
+                  children,
+                });
+              }
+            });
+
             yield put({
               type: 'save',
               payload: {
                 menus: menusData.data,
+                myMenus,
                 userInfo,
                 dept: '',
               }
             });
-  
+
+            localStorage.setItem('menus', JSON.stringify(menusData.data));
+            localStorage.setItem('myMenus', JSON.stringify(myMenus));
+
             yield put(routerRedux.push({
               pathname,
             }));
