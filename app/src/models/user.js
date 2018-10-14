@@ -37,10 +37,10 @@ export default {
 
       // 培训管理
       'class-config': { // 课程管理
-        icon: '&#xe60c;', isFont: true, path: '/course'
+        icon: '&#xe60c;', isFont: true, path: '/course/config'
       }, 
       'class-summary': { // 课程概况
-        icon: '&#xe62c;', isFont: true, path: '/course'
+        icon: '&#xe62c;', isFont: true, path: '/course/summary'
       },
     },
   },

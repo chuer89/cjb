@@ -26,16 +26,16 @@ class Basic extends React.Component {
     let { gender, education, marry } = this.state;
 
     let importantData = [{
-      label: '姓名', value: userDetails.name,
+      label: '姓名', value: userDetails.name || '--',
     }, {
       label: '性别', value: gender[userDetails.gender] || '--',
     }, {
-      label: '电话', value: userDetails.phone,
+      label: '电话', value: userDetails.phone || '--',
     }];
     let renderImportant = importantData.map((item, index) => {
       return (
         <div key={index}>
-          <span className={style.key}>{item.label}</span>
+          <span className={style.key} style={{ width: '17%' }}>{item.label}</span>
           <span className={style.value}>{item.value}</span>
         </div>
       )
@@ -85,7 +85,7 @@ class Basic extends React.Component {
           <div className={style.firstItemHead}>
             <img className={style.headImg} src={defaultHead} alt=""/>
           </div>
-          <div className={style.firstItem}>{renderImportant}</div>
+          <div className={style.firstItem} style={{ width: '70%' }}>{renderImportant}</div>
         </div>
         <div className={style.box}>{renderData}</div>
       </div>

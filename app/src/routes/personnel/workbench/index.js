@@ -4,6 +4,7 @@ import App from '../../app';
 import { Card, Tabs, Row, Col } from 'antd';
 import style from './index.less';
 import { Link } from 'dva/router';
+import moment from 'moment';
 
 const TabPane = Tabs.TabPane;
 
@@ -90,9 +91,13 @@ class Dashboard extends React.Component {
     )
     if (!_.isEmpty(workusercare)) {
       renderUserCare = workusercare.map((item, index) => {
+        let time = moment(item.eventDate).format('YYYY-MM-DD hh:mm');
         return (
-          <div key={index}>
-            <Link to={'editUser/' + item.id} target="_blank">{item.name}</Link>
+          <div key={index} className={style.messageListBox}>
+            <div className={style.messageContent}>
+              <Link to={'/personnel/userdetails/' + item.id} target="_blank">{item.content}</Link>
+            </div>
+            <div className={style.messageDate}>{time}</div>
           </div>
         )
       });
@@ -117,7 +122,7 @@ class Dashboard extends React.Component {
           </Card>
         </div>
         <div className={style.itemBox}>
-          <Card title="员工关怀">{renderUserCare}</Card>
+          <Card title="员工关怀" style={{ width: '50%' }}>{renderUserCare}</Card>
         </div>
       </App>
     );

@@ -18,7 +18,7 @@ export default {
           moduleName = 'service-config';
         } else if (pathname.indexOf('/personnel/') >= 0) { // 人事管理
           moduleName = 'user-console';
-        } else if (pathname.indexOf('/cultivate/') >= 0) { // 培训资料
+        } else if (pathname.indexOf('/course/') >= 0) { // 培训资料
           moduleName = 'train';
         }
 

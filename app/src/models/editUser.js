@@ -71,7 +71,7 @@ export default {
         yield put({
           type: 'save',
           payload: {
-            userDetails: data.data,
+            userDetails: data.data || {},
           }
         })
       }

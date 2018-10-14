@@ -65,7 +65,7 @@ class App extends React.Component {
       menusData = myMenus[menusIndex].children;
     }
 
-    // console.log(myMenus)
+    // console.log(myMenus, menusIndex, menusData)
 
     // 菜单组件
     let renderMenus = menusData.map((item) => {
@@ -74,7 +74,7 @@ class App extends React.Component {
       )
       if (item.isFont) {
         renderIcon = (
-          <i className={'iconfont'}>{item.icon}</i>
+          <i className={'iconfont ' + style.menusIconFont} dangerouslySetInnerHTML = {{ __html: item.icon }}></i>
         )
       }
       return (
