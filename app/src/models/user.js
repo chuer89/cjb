@@ -12,9 +12,11 @@ export default {
     menus: JSON.parse(localStorage.getItem('menus') || '{}'), // 菜单权限
     myMenus: JSON.parse(localStorage.getItem('myMenus') || '[]'),
     dept: localStorage.getItem('dept') || '', // 部门信息
+    errorPath: '/404',
 
     // 菜单的自定义字段
     menusOwnData: {
+      // 人事管理
       'console': {
         icon: 'desktop', path: '/personnel/index'
       },
@@ -25,12 +27,21 @@ export default {
         icon: 'copy', path: '/personnel/record',
       },
 
+      // 后台管理
       'store-config': {
         icon: 'hdd', path: '/deploy/store'
       },
       'dept-config': {
         icon: 'team', path: '/deploy/section'
-      }
+      },
+
+      // 培训管理
+      'class-config': { // 课程管理
+        icon: '&#xe60c;', isFont: true, path: '/course'
+      }, 
+      'class-summary': { // 课程概况
+        icon: '&#xe62c;', isFont: true, path: '/course'
+      },
     },
   },
 
@@ -63,7 +74,7 @@ export default {
     },
 
     *login({ payload }, { call, put, select }) {
-      const { menusOwnData } = yield select(_ => _.user);
+      const { menusOwnData, errorPath } = yield select(_ => _.user);
       let userInfo = {};
       const temp = yield call(services.login, payload);
       const { data } = temp;
@@ -101,24 +112,27 @@ export default {
               let children = [];
               if (!_.isEmpty(item.tree)) {
                 let defaultItem = item.tree[0];
+                let menusNavItem = menusOwnData[defaultItem.code] || {};
 
                 if (index === 0 && !pathname) {
-                  pathname = menusOwnData[defaultItem.code].path;
+                  pathname = menusNavItem.path;
                 }
 
                 _.forEach(item.tree, (tItem) => {
+                  let menusItem = menusOwnData[tItem.code] || {};
                   children.push({
                     key: tItem.code,
                     name: tItem.name,
-                    icon: menusOwnData[tItem.code].icon,
-                    path: menusOwnData[tItem.code].path,
+                    icon: menusItem.icon,
+                    path: menusItem.path || errorPath,
+                    isFont: menusItem.isFont || false,
                   });
                 });
 
                 myMenus.push({
                   key: item.code,
                   name: item.name,
-                  path: menusOwnData[defaultItem.code].path,
+                  path: menusNavItem.path || errorPath,
                   children,
                 });
               }

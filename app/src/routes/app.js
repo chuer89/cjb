@@ -56,23 +56,30 @@ class App extends React.Component {
     let contentHeight = document.body.clientHeight - 64 - 60;
     let { selectedKeys, selectedKeysNav, collapsed } = this.state;
     let { moduleName } = app;
-    let { userInfo, dept, menus, myMenus } = user;
+    let { userInfo, dept, myMenus } = user;
     let { userType } = userInfo;
 
-
     let menusIndex = _.findIndex(myMenus, {key: moduleName});
-    let menusData = myMenus[menusIndex].children;
+    let menusData = [];
+    if (myMenus[menusIndex]) {
+      menusData = myMenus[menusIndex].children;
+    }
 
-    // console.log(myMenus, menus)
+    // console.log(myMenus)
 
     // 菜单组件
     let renderMenus = menusData.map((item) => {
+      let renderIcon = (
+        <Icon type={item.icon} />
+      )
+      if (item.isFont) {
+        renderIcon = (
+          <i className={'iconfont'}>{item.icon}</i>
+        )
+      }
       return (
         <Menu.Item key={item.path}>
-          <Link to={item.path}>
-            <Icon type={item.icon} />
-            <span>{item.name}</span>
-          </Link>
+          <Link to={item.path}>{renderIcon}<span>{item.name}</span></Link>
         </Menu.Item>
       )
     });

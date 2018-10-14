@@ -1,8 +1,11 @@
 import React from 'react';
+import App from '../app';
 
 const DataIndex = () => {
   return (
-    <div>培训资料</div>
+    <App>
+      <div>培训资料</div>
+    </App>
   )
 }
 
