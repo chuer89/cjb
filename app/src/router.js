@@ -71,9 +71,13 @@ const Routers = function ({ history, app }) {
       path: '/course/summary',
       component: () => import('./routes/course/summary/')
     },
-    { // 课程概况
+    { // 课程管理
       path: '/course/config',
       component: () => import('./routes/course/config/')
+    },
+    { // 课程管理 - 新增
+      path: '/course/config/add',
+      component: () => import('./routes/course/config/add')
     },
   ];
 
