@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Button, Row, Col, Icon, message } from 'antd';
-import 'moment/locale/zh-cn';
 import style from './add.less';
 import { UploadField, Uploader } from '@navjobs/upload';
 import _ from 'lodash';

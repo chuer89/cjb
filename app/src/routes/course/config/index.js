@@ -1,12 +1,21 @@
 import React from 'react';
 import App from '../../app';
 
-const DataIndex = () => {
-  return (
-    <App>
-      <div>培训管理</div>
-    </App>
-  )
+import SearchConfig from './components/search';
+
+class CourseConfig extends React.Component {
+  state = {
+
+  }
+
+  render() {
+    return (
+      <App>
+        <div><SearchConfig /></div>
+        <div>培训管理</div>
+      </App>
+    )
+  }
 }
 
-export default DataIndex;
+export default CourseConfig;

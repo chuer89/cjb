@@ -1,7 +1,5 @@
 import React from 'react';
 import { Form, Input, Button, DatePicker, Icon, Row, Col } from 'antd';
-import locale from 'antd/lib/date-picker/locale/zh_CN';
-import 'moment/locale/zh-cn';
 import moment from 'moment';
 import style from './add.less';
 import _ from 'lodash';
@@ -167,7 +165,7 @@ class DynamicFieldSet extends React.Component {
                     required: true, message: '请选择时间段',
                   }],
                 })(
-                  <RangePicker locale={locale} />
+                  <RangePicker />
                 )}
               </FormItem>
             </Col>

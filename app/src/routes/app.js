@@ -1,10 +1,12 @@
-import { Layout, Menu, Icon, BackTop, Popover } from 'antd';
+import { Layout, Menu, Icon, BackTop, Popover, LocaleProvider } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import style from './app.less';
 import { Link } from 'dva/router';
-import DeptSele  from '../components/seleDept/';
+import DeptSele from '../components/seleDept/';
 import _ from 'lodash';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import 'moment/locale/zh-cn';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -59,7 +61,7 @@ class App extends React.Component {
     let { userInfo, dept, myMenus } = user;
     let { userType } = userInfo;
 
-    let menusIndex = _.findIndex(myMenus, {key: moduleName});
+    let menusIndex = _.findIndex(myMenus, { key: moduleName });
     let menusData = [];
     if (myMenus[menusIndex]) {
       menusData = myMenus[menusIndex].children;
@@ -74,7 +76,7 @@ class App extends React.Component {
       )
       if (item.isFont) {
         renderIcon = (
-          <i className={'iconfont ' + style.menusIconFont} dangerouslySetInnerHTML = {{ __html: item.icon }}></i>
+          <i className={'iconfont ' + style.menusIconFont} dangerouslySetInnerHTML={{ __html: item.icon }}></i>
         )
       }
       return (
@@ -118,7 +120,7 @@ class App extends React.Component {
       localStorage.setItem('dept', dept);
       window.location.reload();
     }
-    
+
     // 默认部门
     let defaultValue = [];
     let deptSplit = [];
@@ -137,13 +139,14 @@ class App extends React.Component {
     }
 
     return (
+      <LocaleProvider locale={zh_CN}>
       <Layout>
         <Header className={style.headerBox}>
           <div className={style.headerItem}>
             <div className={style.logo}>匠</div>
           </div>
           <div className={style.headerItem} style={{ margin: '0 28px 0 28px' }}>
-            <DeptSele {...deptOpt}/>
+            <DeptSele {...deptOpt} />
           </div>
           <div className={style.headerItem}>
             <Menu
@@ -184,6 +187,7 @@ class App extends React.Component {
           </Layout>
         </Layout>
       </Layout>
+      </LocaleProvider>
     );
   }
 }

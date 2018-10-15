@@ -1,8 +1,6 @@
 import React from 'react';
 import { Form, Input, Button, Radio, DatePicker, Select } from 'antd';
-import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from 'moment';
-import 'moment/locale/zh-cn';
 import _ from 'lodash';
 import style from './add.less';
 import common from './../../common';
@@ -110,7 +108,7 @@ class PersonalForm extends React.Component {
             }],
             initialValue: idcardTimeInit,
           })(
-            <DatePicker locale={locale} />
+            <DatePicker />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="学历">
