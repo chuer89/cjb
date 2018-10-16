@@ -42,7 +42,7 @@ class CourseAddForm extends React.Component {
 
   render() {
     let { tag, tagValue } = this.state;
-    let { form, handerAdd } = this.props;
+    let { form, handerAdd, tagTypeData } = this.props;
     const { getFieldDecorator } = form;
     let self = this;
 
@@ -92,12 +92,22 @@ class CourseAddForm extends React.Component {
       });
     }
 
-    let renderTag = tag.map((item) => {
-      let { name } = item;
-      return (
-        <Option key={item.code || name}>{name}</Option>
-      )
-    });
+    let renderTag = '';
+    if (_.isArray(tagTypeData)) {
+      renderTag = tagTypeData.map((item, index) => {
+        let code = '-1';
+        let name = '自定义';
+        if (item.code) {
+          name = item.name;
+          code = item.name;
+        }
+
+        return (
+          <Option key={code}>{name}</Option>
+        )
+      });
+    }
+
     let renderOwnTag = '';
     if (tagValue === '-1') {
       renderOwnTag = (
@@ -196,7 +206,8 @@ class CourseAddForm extends React.Component {
 
 const WrappedCourseAddForm = Form.create()(CourseAddForm);
 
-const CourseAdd = ({ dispatch }) => {
+const CourseAdd = ({ dispatch, course }) => {
+  let { tagTypeData } = course;
   let listPath = '/course/config';
   let handerAdd = (param) => {
     services.addTrainLibrary(param).then(({ data }) => {
@@ -211,6 +222,11 @@ const CourseAdd = ({ dispatch }) => {
     })
   };
 
+  let formOpt = {
+    tagTypeData,
+    handerAdd,
+  }
+
   return (
     <App>
       <div style={{ paddingBottom: '12px' }}>
@@ -223,7 +239,7 @@ const CourseAdd = ({ dispatch }) => {
       </div>
       <div className={style.addBox}>
         <div className={style.titleBox}>添加课程</div>
-        <WrappedCourseAddForm handerAdd={handerAdd} />
+        <WrappedCourseAddForm {...formOpt} />
       </div>
     </App>
   );

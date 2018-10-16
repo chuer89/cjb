@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 export default {
 
-  namespace: 'course',
+  namespace: 'courseSummary',
 
   state: {
     listData: [],
@@ -25,20 +25,14 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        let getTag = () => {
-          dispatch({
-            type: 'getTrainLibraryTagType',
-          });
-        }
-
-        if (pathname === '/course/config') {
+        if (pathname === '/course/summary') {
           dispatch({
             type: 'getTrainLibraryAllClass',
           });
 
-          getTag();
-        } else if (pathname === '/course/config/add') {
-          getTag();
+          dispatch({
+            type: 'getTrainLibraryTagType',
+          });
         }
       })
     },
@@ -51,7 +45,7 @@ export default {
 
     // 获取资料
     *getTrainLibraryAllClass({ payload }, { call, put, select }) {
-      const { classType, tag, className } = yield select(_ => _.course);
+      const { classType, tag, className } = yield select(_ => _.courseSummary);
       let param = {};
       _.extend(param, payload, {
         classType, 

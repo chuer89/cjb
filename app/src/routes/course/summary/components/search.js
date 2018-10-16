@@ -1,7 +1,6 @@
 import React from 'react';
 import style from './search.less';
-import { Input, Button } from 'antd';
-import { Link } from 'dva/router';
+import { Input } from 'antd';
 
 const Search = Input.Search;
 
@@ -10,8 +9,7 @@ class SearchConfig extends React.Component {
   }
 
   render() {
-    let { tagTypeData, classTypeData, 
-      handerTag, tag, handerType, classType, handerName, handerDel } = this.props;
+    let { tagTypeData, classTypeData, handerTag, tag, handerType, classType, handerName } = this.props;
 
     let renderType = classTypeData.map((item) => {
       let cssName = style.itemType;
@@ -58,11 +56,6 @@ class SearchConfig extends React.Component {
         <div className={style.itemBox} style={{ overflow: 'hidden' }}>
           <div className={style.itemLabel}>体系：</div>
           {renderTag}
-          <div className={style.operateBox}>
-            <Link to="/course/config/add"><Button type="primary">上传</Button></Link>
-            <Button type="primary" onClick={handerDel} style={{ margin: '0 24px' }}>删除</Button>
-            <Button type="primary">指派</Button>
-          </div>
         </div>
       </div>
     )
