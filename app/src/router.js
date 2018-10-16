@@ -73,10 +73,12 @@ const Routers = function ({ history, app }) {
     },
     { // 课程管理
       path: '/course/config',
+      models: () => [import('./models/course')],
       component: () => import('./routes/course/config/')
     },
     { // 课程管理 - 新增
       path: '/course/config/add',
+      models: () => [import('./models/course')],
       component: () => import('./routes/course/config/add')
     },
   ];

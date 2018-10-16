@@ -2,6 +2,7 @@ import React from 'react';
 import App from '../../app';
 import { Card, Checkbox } from 'antd';
 import style from './index.less';
+import { connect } from 'dva';
 
 import SearchConfig from './components/search';
 
@@ -47,4 +48,6 @@ class CourseConfig extends React.Component {
   }
 }
 
-export default CourseConfig;
+export default connect((({ course }) => ({
+  course,
+})))(CourseConfig);

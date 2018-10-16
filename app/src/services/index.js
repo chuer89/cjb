@@ -247,6 +247,14 @@ let httpApi = {
 	workusercare(param = {}) {
 		return post('base', '/workbench/usercare', param);
 	},
+	// 工作台 - 上传培训资料
+	addTrainLibrary(param = {}) {
+		return post('base', '/trainLibrary/addTrainLibrary', param);
+	},
+	// 工作台 - 课程列表
+	getTrainLibraryAllClass(param = {}) {
+		return post('base', '/trainLibrary/getTrainLibraryAllClass', param);
+	},
 };
 
 export default httpApi;
