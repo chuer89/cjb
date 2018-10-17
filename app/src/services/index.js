@@ -264,6 +264,14 @@ let httpApi = {
 	getNowClass(param = {}) {
 		return post('base', '/trainUserLibrary/getNowClass', param);
 	},
+	// 培训 - 删除课程
+	deleteMoreClass(param = {}) {
+		return post('base', '/trainLibrary/deleteMoreClass', param);
+	},
+	// 培训 - 添加课程
+	addTrainStorePositionRef(param = {}) {
+		return post('base', '/trainStorePositionRef/addTrainStorePositionRef', param);
+	},
 };
 
 export default httpApi;

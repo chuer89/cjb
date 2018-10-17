@@ -39,9 +39,8 @@ class Modify extends React.Component {
         width={600}
         destroyOnClose={true}
         visible={visible}
-        cancelText="取消"
-        okText="确定"
         onOk={handleOk}
+        centered={true}
         onCancel={onCancel}>
         <div className={styles.content}>
           <form>

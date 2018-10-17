@@ -140,53 +140,56 @@ class App extends React.Component {
 
     return (
       <LocaleProvider locale={zh_CN}>
-      <Layout>
-        <Header className={style.headerBox}>
-          <div className={style.headerItem}>
-            <div className={style.logo}>匠</div>
-          </div>
-          <div className={style.headerItem} style={{ margin: '0 28px 0 28px' }}>
-            <DeptSele {...deptOpt} />
-          </div>
-          <div className={style.headerItem}>
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              selectedKeys={selectedKeysNav}
-              style={{ lineHeight: '64px' }}
-            >{renderTopNav}</Menu>
-          </div>
-          <div style={{ 'float': 'right' }}>
-            <Popover content={userMenus} placement="bottomRight">
-              <span className={style.userInfo}>
-                <Icon type="user" /><span>{userInfo.username || ''}</span>
-              </span>
-            </Popover>
-          </div>
-        </Header>
-        <Layout style={{ 'paddingTop': '65px' }}>
-          <Sider
-            theme="light"
-            collapsible
-            collapsed={collapsed}
-            onCollapse={this.onCollapse}
-            style={{ position: 'fixed', height: '100vh' }}
-          >
-            <Menu mode="inline" selectedKeys={selectedKeys}>
-              {renderMenus}
-            </Menu>
-          </Sider>
-          <Layout style={{ marginLeft: collapsed ? '80px' : '200px' }}>
-            <Content style={contentStyle}>
-              {children}
-              <BackTop />
-            </Content>
-            <Footer style={{ textAlign: 'center' }}>
-              匠 ©2018
+        <Layout>
+          <Header className={style.headerBox}>
+            <div className={style.headerItem}>
+              <div className={style.logo}>
+                <img src={require('../assets/logo.png')} alt=""/>
+                <span>餐匠帮</span>
+              </div>
+            </div>
+            <div className={style.headerItem} style={{ margin: '0 28px 0 28px' }}>
+              <DeptSele {...deptOpt} />
+            </div>
+            <div className={style.headerItem}>
+              <Menu
+                theme="dark"
+                mode="horizontal"
+                selectedKeys={selectedKeysNav}
+                style={{ lineHeight: '64px' }}
+              >{renderTopNav}</Menu>
+            </div>
+            <div style={{ 'float': 'right' }}>
+              <Popover content={userMenus} placement="bottomRight">
+                <span className={style.userInfo}>
+                  <Icon type="user" /><span>{userInfo.username || ''}</span>
+                </span>
+              </Popover>
+            </div>
+          </Header>
+          <Layout style={{ 'paddingTop': '65px' }}>
+            <Sider
+              theme="light"
+              collapsible
+              collapsed={collapsed}
+              onCollapse={this.onCollapse}
+              style={{ position: 'fixed', height: '100vh' }}
+            >
+              <Menu mode="inline" selectedKeys={selectedKeys}>
+                {renderMenus}
+              </Menu>
+            </Sider>
+            <Layout style={{ marginLeft: collapsed ? '80px' : '200px' }}>
+              <Content style={contentStyle}>
+                {children}
+                <BackTop />
+              </Content>
+              <Footer style={{ textAlign: 'center' }}>
+                匠 ©2018
           </Footer>
+            </Layout>
           </Layout>
         </Layout>
-      </Layout>
       </LocaleProvider>
     );
   }

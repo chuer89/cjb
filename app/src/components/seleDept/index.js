@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Cascader } from 'antd';
+import { Cascader } from 'antd';
 import _ from 'lodash';
 
 // 筛选部门
@@ -100,7 +100,7 @@ class DeptSele extends React.Component {
     let deptOpt = {
       options: deptData,
       onChange,
-      placeholder: '选择部门',
+      placeholder: '全部',
       notFoundContent: '无筛选部门',
       expandTrigger: 'hover',
       changeOnSelect: userType === 1 ? false : true,

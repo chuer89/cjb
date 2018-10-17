@@ -1,5 +1,6 @@
 import services from './../services/';
 import _ from 'lodash';
+import { message } from 'antd';
 
 export default {
 
@@ -8,6 +9,11 @@ export default {
   state: {
     listData: [],
     tagTypeData: [], // 体系
+
+    visibleDesignate: false, // 指派弹框
+
+    checkedList: {}, // 选中列
+    seleDeptIndex: '', // 选中指派的部门
 
     classTypeData: [{ // 类型
       name: '全部', code: '0'
@@ -96,6 +102,31 @@ export default {
         });
       }
     },
+
+    // 删除课程
+    *deleteMoreClass({ payload }, { call, put }) {
+      const temp = yield call(services.deleteMoreClass, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        message.success('已删除');
+        yield put({
+          type: 'getTrainLibraryAllClass',
+        });
+      } else {
+        message.error(data.msg);
+      }
+    },
+
+    // 关联
+    *addTrainStorePositionRef({ payload }, { call, put }) {
+      const temp = yield call(services.addTrainStorePositionRef, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        message.success('指派成功');
+      } else {
+        message.error(data.msg);
+      }
+    }
   },
 
   reducers: {

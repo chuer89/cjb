@@ -10,7 +10,7 @@ class SearchConfig extends React.Component {
   }
 
   render() {
-    let { tagTypeData, classTypeData, disabled, 
+    let { tagTypeData, classTypeData, disabled, handerOpenDesignate,
       handerTag, tag, handerType, classType, handerName, handerDel } = this.props;
 
     let renderType = classTypeData.map((item) => {
@@ -61,7 +61,7 @@ class SearchConfig extends React.Component {
           <div className={style.operateBox}>
             <Link to="/course/config/add"><Button type="primary">上传</Button></Link>
             <Button type="primary" disabled={disabled} onClick={handerDel} style={{ margin: '0 24px' }}>删除</Button>
-            <Button type="primary" disabled={disabled}>指派</Button>
+            <Button type="primary" onClick={handerOpenDesignate} disabled={disabled}>指派</Button>
           </div>
         </div>
       </div>

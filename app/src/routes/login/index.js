@@ -129,7 +129,8 @@ class Login extends React.Component {
           <Company {...companyOpt} />
         </div>
         <div className={styles.logo}>
-          <div>CANJIANG餐匠</div>
+          <img src={require('../../assets/logo.png')} alt=""/>
+          <span>餐匠帮</span>
         </div>
         <form>
           <FormItem hasFeedback>

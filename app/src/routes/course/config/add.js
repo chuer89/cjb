@@ -130,7 +130,7 @@ class CourseAddForm extends React.Component {
       data: {
         type: 6,
       },
-      accept: '.ppt,.pptx,.mp4,.flv.avi',
+      // accept: '.ppt,.pptx,.mp4,.flv.avi',
     };
 
     return (

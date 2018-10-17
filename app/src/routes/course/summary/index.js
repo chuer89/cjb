@@ -17,7 +17,7 @@ class CourseSummary extends React.Component {
 
     let handerSearch = () => {
       dispatch({
-        type: 'courseSummary/getTrainLibraryAllClass'
+        type: 'courseSummary/getNowClass'
       });
     }
 
@@ -62,11 +62,15 @@ class CourseSummary extends React.Component {
 
     if (!_.isEmpty(listData)) {
       renderList = listData.map((item, index) => {
-        let path = 'ppt';
-        if (item.suffix !== '.ppt' || item.suffix !== '.pptx') {
-          path = 'video';
+        let path = 'video';
+        if (item.suffix === '.ppt' || item.suffix === '.pptx') {
+          path = 'ppt';
         }
         let img = require('../../../assets/course/' + path + '.jpg');
+
+        let renderDesc = (
+          <div className={style.descBox}>{item.desc}</div>
+        )
         return (
           <div key={index} className={style.listItem}>
             <Card
@@ -76,7 +80,8 @@ class CourseSummary extends React.Component {
             >
               <Meta
                 title={item.tag}
-                description={item.desc}
+                description={renderDesc}
+                className={style.descBox}
               />
             </Card>
           </div>
