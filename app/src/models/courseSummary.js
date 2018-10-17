@@ -27,7 +27,7 @@ export default {
       history.listen(({ pathname }) => {
         if (pathname === '/course/summary') {
           dispatch({
-            type: 'getTrainLibraryAllClass',
+            type: 'getNowClass',
           });
 
           dispatch({
@@ -44,7 +44,7 @@ export default {
     },
 
     // 获取资料
-    *getTrainLibraryAllClass({ payload }, { call, put, select }) {
+    *getNowClass({ payload }, { call, put, select }) {
       const { classType, tag, className } = yield select(_ => _.courseSummary);
       let param = {};
       _.extend(param, payload, {
@@ -52,7 +52,7 @@ export default {
         tag, 
         className,
       });
-      const temp = yield call(services.getTrainLibraryAllClass, param);
+      const temp = yield call(services.getNowClass, param);
       let { data } = temp;
       if (data.msg === 'success') {
         yield put({

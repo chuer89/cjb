@@ -9,9 +9,12 @@ const confirm = Modal.confirm;
 
 class CourseConfig extends React.Component {
   state = {
+    checkedList: {},
   }
 
   handerDel() {
+    let { checkedList } = this.state;
+    console.log(checkedList, this, 'si')
     confirm({
       title: '确定要删除吗?',
       content: '删除后不可恢复',
@@ -30,11 +33,24 @@ class CourseConfig extends React.Component {
   render() {
     let { course, dispatch } = this.props;
     let { tagTypeData, classTypeData, tag, classType, listData } = course;
+    let { checkedList } = this.state;
     let self = this;
 
     let handerSearch = () => {
       dispatch({
         type: 'course/getTrainLibraryAllClass'
+      });
+    }
+
+    let handerCheck = (e, item) => {
+      let checked = e.target.checked;
+      if (checked) {
+        checkedList[item.id] = item;
+      } else {
+        delete checkedList[item.id];
+      }
+      self.setState({
+        checkedList,
       });
     }
 
@@ -44,7 +60,10 @@ class CourseConfig extends React.Component {
       classTypeData,
       tag,
       classType,
-      handerDel: self.handerDel,
+      disabled: _.isEmpty(checkedList),
+      handerDel() {
+        self.handerDel.call(self)
+      },
       handerName(className) {
         dispatch({
           type: 'course/save',
@@ -89,10 +108,10 @@ class CourseConfig extends React.Component {
           <div key={index} className={style.listItem}>
             <Card
               hoverable={true}
-              title={item.tag}
+              title={item.filename || item.tag}
               bodyStyle={{ padding: 0 }}
               cover={<img className={style.cover} src={img} alt="" />}
-              extra={<Checkbox></Checkbox>}>
+              extra={<Checkbox onChange={(e) => { handerCheck(e, item) }}></Checkbox>}>
             </Card>
           </div>
         )

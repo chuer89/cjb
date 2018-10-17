@@ -260,6 +260,10 @@ let httpApi = {
 	getTrainLibraryTagType(param = {}) {
 		return post('base', '/trainLibrary/getTrainLibraryTagType', param);
 	},
+	// 培训 - 当前用户学习的课程
+	getNowClass(param = {}) {
+		return post('base', '/trainUserLibrary/getNowClass', param);
+	},
 };
 
 export default httpApi;

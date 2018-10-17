@@ -71,7 +71,7 @@ export default {
     },
 
     // 课程分类
-    *getTrainLibraryTagType({ payload }, { call, put, select }) {
+    *getTrainLibraryTagType({ payload }, { call, put }) {
       const temp = yield call(services.getTrainLibraryTagType, payload);
       let { data } = temp;
       if (data.msg === 'success') {
@@ -102,6 +102,10 @@ export default {
     save(state, action) {
       return { ...state, ...action.payload };
     },
+
+    getTrainLibraryTagType(state) {
+      return {...state}
+    }
   },
 
 };
