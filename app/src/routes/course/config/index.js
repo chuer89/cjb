@@ -46,8 +46,9 @@ class CourseConfig extends React.Component {
   }
 
   render() {
-    let { course, dispatch, structure } = this.props;
-    let { tagTypeData, classTypeData, tag, classType, 
+    let { course, dispatch, app, structure } = this.props;
+    let { officeWebUrl } = app;
+    let { tagTypeData, classTypeData, tag, classType,
       listData, checkedList, visibleDesignate, seleDeptIndex } = course;
     let self = this;
 
@@ -59,7 +60,7 @@ class CourseConfig extends React.Component {
 
     let handerCheck = (e, item) => {
       let checked = e.target.checked;
-      let id = '' + item.id ;
+      let id = '' + item.id;
       if (checked) {
         checkedList[id] = item;
       } else {
@@ -127,19 +128,23 @@ class CourseConfig extends React.Component {
     if (!_.isEmpty(listData)) {
       renderList = listData.map((item, index) => {
         let path = 'video';
+        let openUrl = item.allow_path;
         if (item.suffix === '.ppt' || item.suffix === '.pptx') {
+          openUrl = officeWebUrl + item.allow_path;
           path = 'ppt';
         }
         let img = require('../../../assets/course/' + path + '.jpg');
         return (
           <div key={index} className={style.listItem}>
-            <Card
-              hoverable={true}
-              title={item.filename || item.tag}
-              bodyStyle={{ padding: 0 }}
-              cover={<img className={style.cover} src={img} alt="" />}
-              extra={<Checkbox onChange={(e) => { handerCheck(e, item) }}></Checkbox>}>
-            </Card>
+            <a href={openUrl} target="_blank">
+              <Card
+                hoverable={true}
+                title={item.filename || item.tag}
+                bodyStyle={{ padding: 0 }}
+                cover={<img className={style.cover} src={img} alt="" />}
+                extra={<Checkbox onChange={(e) => { handerCheck(e, item) }}></Checkbox>}>
+              </Card>
+            </a>
           </div>
         )
       });
@@ -202,7 +207,8 @@ class CourseConfig extends React.Component {
   }
 }
 
-export default connect((({ course, structure }) => ({
+export default connect((({ course, structure, app }) => ({
   course,
   structure,
+  app,
 })))(CourseConfig);

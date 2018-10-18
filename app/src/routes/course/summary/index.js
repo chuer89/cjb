@@ -12,7 +12,8 @@ class CourseSummary extends React.Component {
   }
 
   render() {
-    let { courseSummary, dispatch } = this.props;
+    let { courseSummary, app, dispatch } = this.props;
+    let { officeWebUrl } = app;
     let { tagTypeData, classTypeData, tag, classType, listData } = courseSummary;
 
     let handerSearch = () => {
@@ -63,8 +64,10 @@ class CourseSummary extends React.Component {
     if (!_.isEmpty(listData)) {
       renderList = listData.map((item, index) => {
         let path = 'video';
+        let openUrl = item.allow_path;
         if (item.suffix === '.ppt' || item.suffix === '.pptx') {
           path = 'ppt';
+          openUrl = officeWebUrl + item.allow_path;
         }
         let img = require('../../../assets/course/' + path + '.jpg');
 
@@ -73,17 +76,19 @@ class CourseSummary extends React.Component {
         )
         return (
           <div key={index} className={style.listItem}>
-            <Card
-              hoverable={true}
-              bodyStyle={{ padding: 12 }}
-              cover={<img className={style.cover} src={img} alt="" />}
-            >
-              <Meta
-                title={item.tag}
-                description={renderDesc}
-                className={style.descBox}
-              />
-            </Card>
+            <a href={openUrl} target="_blank">
+              <Card
+                hoverable={true}
+                bodyStyle={{ padding: 12 }}
+                cover={<img className={style.cover} src={img} alt="" />}
+              >
+                <Meta
+                  title={item.tag}
+                  description={renderDesc}
+                  className={style.descBox}
+                />
+              </Card>
+            </a>
           </div>
         )
       });
@@ -98,6 +103,7 @@ class CourseSummary extends React.Component {
   }
 }
 
-export default connect((({ courseSummary }) => ({
+export default connect((({ courseSummary, app }) => ({
   courseSummary,
+  app,
 })))(CourseSummary);

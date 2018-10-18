@@ -85,7 +85,7 @@ class PersonalForm extends React.Component {
             initialValue: userDetails.phone,
             rules: [{
               required: true, message: '请输入联系方式',
-              pattern: common.reg.phone, message: '请输入正常的手机号',
+              pattern: common.reg.phone, message: '请输入正确的手机号',
             }],
           })(
             <Input placeholder="请输入联系方式" autoComplete="off" maxLength="11"/>
@@ -95,10 +95,11 @@ class PersonalForm extends React.Component {
           {getFieldDecorator('idcard', {
             rules: [{
               required: true, message: '请输入身份证',
+              pattern: common.reg.idcard, message: '请输入正确的身份证号',
             }],
             initialValue: userDetails.idcard,
           })(
-            <Input placeholder="请输入身份证" autoComplete="off" maxLength="32"/>
+            <Input placeholder="请输入身份证" autoComplete="off" maxLength="18"/>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="身份证到期日期">
@@ -144,6 +145,7 @@ class PersonalForm extends React.Component {
           {getFieldDecorator('bankCard', {
             rules: [{
               required: true, message: '请输入银行卡号',
+              pattern: common.reg.bankCard, message: '请输入正确的银行卡号',
             }],
             initialValue: userDetails.bankCard
           })(
@@ -167,6 +169,9 @@ class PersonalForm extends React.Component {
         <FormItem {...formItemLayout} label="紧急联系人联系方式">
           {getFieldDecorator('emergencyContactPhone', {
             initialValue: userDetails.emergencyContactPhone,
+            rules: [{
+              pattern: common.reg.phone, message: '请输入正确的手机号',
+            }],
           })(
             <Input placeholder="请输入紧急联系人联系方式" autoComplete="off" maxLength="11"/>
           )}

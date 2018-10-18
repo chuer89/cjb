@@ -7,6 +7,7 @@ import services from './../../services/';
 import common from './../../common';
 import _ from 'lodash';
 import Company from './components/company';
+import common from './../../common';
 
 const FormItem = Form.Item;
 
@@ -137,7 +138,8 @@ class Login extends React.Component {
             {getFieldDecorator('phone', {
               rules: [
                 {
-                  required: true, message: '请输入手机号'
+                  required: true, message: '请输入手机号',
+                  pattern: common.reg.phone, message: '请输入正确的手机号',
                 },
               ],
               initialValue: '15608203716'
