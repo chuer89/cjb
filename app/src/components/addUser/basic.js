@@ -20,17 +20,6 @@ class BasicForm extends React.Component {
     this.state = {
       isRecommendChannel: false, // 是否内推
 
-      // 职业级别
-      professionLevel: [{
-        value: '普通店员', code: '0'
-      }, {
-        value: '店长', code: '1'
-      }, {
-        value: '经理', code: '2'
-      }, {
-        value: '其他', code: '3'
-      }],
-
       // 应聘渠道
       invitationChannel: [{
         value: '社招', code: '0'
@@ -77,9 +66,9 @@ class BasicForm extends React.Component {
   }
 
   render() {
-    let { userDetails, form } = this.props;
+    let { userDetails, form, positionData } = this.props;
     const { getFieldDecorator } = form;
-    let { professionLevel, invitationChannel, 
+    let { invitationChannel, 
       isRecommendChannel, contractType } = this.state;
     let self = this;
 
@@ -105,9 +94,9 @@ class BasicForm extends React.Component {
       console.log(value, 'v');
     }
     // 状态筛选
-    let renderProfessionLevel = professionLevel.map((item) => {
+    let renderProfessionLevel = positionData.map((item) => {
       return (
-        <Option value={item.code} key={item.code}>{item.value}</Option>
+        <Option value={item.id} key={item.id}>{item.name}</Option>
       )
     });
 
@@ -147,6 +136,22 @@ class BasicForm extends React.Component {
       )
     }
 
+    // 职位
+    let renderPosition = ''
+    if (!_.isEmpty(positionData)) {
+      renderPosition = (
+        <FormItem {...formItemLayout} label="职级">
+          {getFieldDecorator('position', {
+            initialValue: userDetails.position || '',
+          })(
+            <Select style={{ width: 120 }}>
+              {renderProfessionLevel}
+            </Select>
+          )}
+        </FormItem>
+      )
+    }
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
@@ -159,15 +164,7 @@ class BasicForm extends React.Component {
             <DatePicker onChange={onChange} locale={locale} />
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="职级">
-          {getFieldDecorator('position', {
-            initialValue: '' + (userDetails.position || ''),
-          })(
-            <Select style={{ width: 120 }} onChange={handleChange}>
-              {renderProfessionLevel}
-            </Select>
-          )}
-        </FormItem>
+        {renderPosition}
         <FormItem {...formItemLayout} label="合同类型">
           {getFieldDecorator('contractType', {
             rules: [{
@@ -222,11 +219,12 @@ class BasicForm extends React.Component {
 
 const WrappedBasicForm = Form.create()(BasicForm);
 
-const Basic = ({ handerNext, userDetails }) => {
+const Basic = ({ handerNext, userDetails, positionData }) => {
 
   let opt = {
     handerNext,
     userDetails,
+    positionData,
   };
 
   return (

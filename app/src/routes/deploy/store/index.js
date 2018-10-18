@@ -1,11 +1,7 @@
 import React from 'react'
 import { connect } from 'dva'
-// import { Button, Input, Row, Col, Icon, Modal, message } from 'antd'
 import styles from './index.less'
-// import _ from 'lodash';
 import App from '../../app';
-// import services from './../../services/';
-// import { Link } from 'dva/router';
 
 import Structure from './../../../components/structure/';
 

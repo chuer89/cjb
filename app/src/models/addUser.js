@@ -18,15 +18,19 @@ export default {
     departmentType: '1', // 部门类型 1门店 2行政
 
     uid: '', // 操作当前的uid
+    positionData: [], // 当前门店职级
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        // 获取门店
-        dispatch({
-          type: 'getOrganizations',
-        });
+        // 获取部门
+        // dispatch({
+        //   type: 'getPosition',
+        //   payload: {
+        //     sid: 40,
+        //   }
+        // });
       })
     },
   },
@@ -36,38 +40,21 @@ export default {
       yield put({ type: 'save' });
     },
 
+    // 获取当前门店职位
     *getPosition({ payload }, { call, put }) {
       let temp = yield call(services.getPosition, payload);
-    },
-
-    // 获取目前行政部门架构
-    *getUserOrganizations({ payload }, { call, put, select }) {
-      const { userOrganizations } = yield select(_ => _.addUser);
-      if (_.isEmpty(userOrganizations)) {
-        const temp = yield call(services.getUserOrganizations, payload);
-        let { data } = temp;
-        if (data.msg === 'success') {
-          yield put({
-            type: 'save',
-            payload: {
-              userOrganizations: data.data,
-            }
-          })
-        }
-      }
-    },
-
-    // 获取门店
-    *getOrganizations({ payload }, { call, put }) {
-      const temp = yield call(services.getOrganizations, payload);
       let { data } = temp;
       if (data.msg === 'success') {
+        let positionData = data.data;
+        positionData.push({
+          name: '其他', id: ''
+        });
         yield put({
           type: 'save',
           payload: {
-            storeStructure: data.data,
+            positionData,
           }
-        })
+        });
       }
     },
   },

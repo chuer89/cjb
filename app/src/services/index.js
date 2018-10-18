@@ -48,6 +48,11 @@ let post = (region, api, params = {}) => {
 let httpApi = {
 	// 上传头像图片 公共接口
 	addImg: host['base'] + '/file/addFile',
+	
+	// 用户导出
+	exportUser: host['base'] + '/user/export',
+	// 用户导入
+	importUser: host['base'] + '/user/import',
 
 	// 获取多企业
 	checkupCompany(param = {}) {
@@ -130,6 +135,10 @@ let httpApi = {
 	// 获取所有岗位
 	getPosition(param = {}) {
 		return post('base', '/position/getAll', param);
+	},
+	// 添加岗位
+	addPosition(param = {}) {
+		return post('base', '/position/addPosition', param);
 	},
 
 	// 当前用户是否初始化组织架构

@@ -83,7 +83,7 @@ class CourseSummary extends React.Component {
                 cover={<img className={style.cover} src={img} alt="" />}
               >
                 <Meta
-                  title={item.tag}
+                  title={item.filename || item.tag}
                   description={renderDesc}
                   className={style.descBox}
                 />

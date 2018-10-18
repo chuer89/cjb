@@ -31,6 +31,8 @@ export default {
     }, {
       value: '试用', code: '3'
     }],
+
+    searchParam: {},
   },
 
   subscriptions: {
@@ -53,8 +55,8 @@ export default {
 
     // 获取列表
     *getUserList({ payload }, { call, put, select }) {
-      const { indentSize } = yield select(_ => _.record);
-      _.extend(payload, {
+      const { indentSize, searchParam } = yield select(_ => _.record);
+      _.extend(payload, searchParam, {
         length: indentSize,
       });
       const temp = yield call(services.getUserList, payload);

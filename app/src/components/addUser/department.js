@@ -156,12 +156,13 @@ class DepartmentForm extends React.Component {
 
 const WrappedDepartmentForm = Form.create()(DepartmentForm);
 
-const Department = ({ dispatch, addUser, handerNext }) => {
-  let { userOrganizations, departmentType, storeStructure } = addUser;
+const Department = ({ dispatch, addUser, handerNext, structure }) => {
+  let { departmentType } = addUser;
+  const { sectionStructure, storeStructure } = structure
 
   let opt = {
     handerNext,
-    userOrganizations,
+    userOrganizations: sectionStructure,
     departmentType,
     storeStructure,
     handerChange(e) {
@@ -172,13 +173,6 @@ const Department = ({ dispatch, addUser, handerNext }) => {
           departmentType,
         }
       });
-
-      // 获取行政架构
-      if (departmentType === '2') {
-        dispatch({
-          type: 'addUser/getUserOrganizations'
-        });
-      }
     }
   };
 
@@ -190,6 +184,7 @@ const Department = ({ dispatch, addUser, handerNext }) => {
   );
 };
 
-export default connect((({ addUser }) => ({
+export default connect((({ addUser, structure }) => ({
   addUser,
+  structure,
 })))(Department);

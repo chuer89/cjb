@@ -42,7 +42,7 @@ class Add extends React.Component {
     let { uid } = this.state;
     let { addUser, dispatch, app } = this.props;
     let { defaultImg } = app;
-    let { personalDisabled, basicDisabled, experienceDisabled,
+    let { personalDisabled, basicDisabled, experienceDisabled, departmentType, positionData,
       portrayalDisabled, activeTabsKey, addUserParam } = addUser;
 
     let handerChange = (activeKey) => {
@@ -57,6 +57,7 @@ class Add extends React.Component {
     // 归属
     let departmentOpt = {
       handerNext(values) {
+        const { storeId } = values;
         _.extend(addUserParam, values);
         dispatch({
           type: 'addUser/save',
@@ -66,6 +67,16 @@ class Add extends React.Component {
             addUserParam,
           }
         });
+        // 请求岗位
+        if (departmentType === '1' && storeId) {
+          dispatch({
+            type: 'addUser/getPosition',
+            payload: {
+              sid: storeId,
+            }
+          })
+        }
+        console.log(addUserParam, departmentType, 'addp')
       }
     }
 
@@ -86,6 +97,7 @@ class Add extends React.Component {
     
     // 基本信息
     let baseOpt = {
+      positionData,
       handerNext(values) {
         _.extend(addUserParam, values, {
           contractDate: '',

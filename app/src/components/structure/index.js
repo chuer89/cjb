@@ -7,9 +7,11 @@ import services from './../../services/';
 
 import Modify from './modify';
 import ConfigStore from './configStore';
+import PositionManage from './positionManage';
 
 const confirm = Modal.confirm;
 
+// 门店组织架构
 class Structure extends React.Component {
   state = {
     valueBrandInput: '', // 添加品牌
@@ -20,6 +22,7 @@ class Structure extends React.Component {
     initialValue: '',
 
     visibleStroe: false, // 配置门店
+    visiblePosition: false, // 岗位
   }
 
   UNSAFE_componentWillMount() {
@@ -234,7 +237,7 @@ class Structure extends React.Component {
     let { structure, app } = this.props;
     let { storeStructure } = structure;
     let { mapKey } = app;
-    let { visibleModify, modifyTitle,
+    let { visibleModify, modifyTitle, visiblePosition,
       modifyLabel, callBack, initialValue, valueBrandInput, visibleStroe } = this.state;
     let brandData = [];
     let self = this;
@@ -288,6 +291,22 @@ class Structure extends React.Component {
       mapKey,
     }
 
+    // 岗位
+    let positionManageAttr = {
+      visible: visiblePosition,
+      onCancel() {
+        self.save({
+          visiblePosition: false,
+        });
+      }
+    }
+    let handerOpenPosition = ({ sid }) => {
+      console.log(sid, 's')
+      self.save({
+        visiblePosition: true,
+      });
+    }
+
     let renderStructure = '';
     if (!_.isEmpty(storeStructure)) {
       brandData = storeStructure[0].brand;
@@ -310,6 +329,7 @@ class Structure extends React.Component {
                         {itemStore.sname}
                       </div>
                       <div className={styles.operateBox}>
+                        <span onClick={() => { handerOpenPosition(itemStore) }} style={{ display: 'none' }}>岗位管理</span>
                         <span onClick={() => { self.updateCommonStoreById(itemStore) }}>编辑门店</span>
                         <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
                       </div>
@@ -365,6 +385,7 @@ class Structure extends React.Component {
         <div>
           <Modify {...modifyOpt} />
           <ConfigStore {...configStoreOpt} />
+          <PositionManage {...positionManageAttr} />
         </div>
         <div className={styles.addBtnBox}>
           <Row>

@@ -65,6 +65,16 @@ export default {
           }
         })
       }
+    },
+
+    // 获取门店岗位
+    *getPosition({ payload }, { call, put }) {
+      let temp = yield call(services.getPosition, payload);
+    },
+
+    // 添加门店
+    *addPosition({ payload }, { call, put }) {
+      let temp = yield call(services.addPosition, payload);
     }
   },
 

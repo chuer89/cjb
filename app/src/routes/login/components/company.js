@@ -67,7 +67,7 @@ class Company extends React.Component {
             {
               companyData.map((item, index) => {
                 return (
-                  <Radio key={index} value={item.index + '_' + item.userType}>{item.name}</Radio>
+                  <Radio key={index} value={item.index + '_' + item.userType} style={{ marginBottom: '8px' }}>{item.name}</Radio>
                 )
               })
             }

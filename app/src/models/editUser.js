@@ -13,6 +13,8 @@ export default {
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像
 
+    positionData: [], // 岗位
+
     uid: '', // 操作当前的uid
 
     userWork: [], // 工作经验
@@ -68,12 +70,42 @@ export default {
       let temp = yield call(services.getUserById, param);
       let { data } = temp;
       if (data.msg === 'success') {
+        let userDetails = data.data || {};
         yield put({
           type: 'save',
           payload: {
-            userDetails: data.data || {},
+            userDetails,
           }
-        })
+        });
+
+        const { storeId } = userDetails;
+        if (storeId) {
+          yield put({
+            type: 'getPosition',
+            payload: {
+              sid: storeId
+            }
+          });
+        }
+      }
+    },
+
+    // 获取当前门店职位
+    *getPosition({ payload }, { call, put }) {
+      let temp = yield call(services.getPosition, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        let positionData = data.data;
+        positionData.push({
+          name: '其他', id: ''
+        });
+
+        yield put({
+          type: 'save',
+          payload: {
+            positionData,
+          }
+        });
       }
     },
 

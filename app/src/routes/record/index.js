@@ -8,9 +8,65 @@ import { Link } from 'dva/router';
 import _ from 'lodash';
 import moment from 'moment';
 import services from './../../services/';
+import { UploadField, Uploader } from '@navjobs/upload';
 
 const Option = Select.Option;
 const confirm = Modal.confirm;
+
+// 上传
+const UploadHead = ({ addFile }) => {
+  let action = services.importUser;
+  return (
+    <Uploader
+      request={{
+        fileName: 'file',
+        url: action,
+        method: 'POST',
+        // use credentials for cross-site requests
+        withCredentials: false,
+      }}
+      onError={({ error }) => {
+        message.error('上传失败，请稍后再试。');
+      }}
+      onComplete={({ response }) => {
+        let { msg, data } = response;
+
+        if (msg === 'success') {
+          message.success('导入成功');
+          addFile(data);
+        } else {
+          message.error(data.msg);
+        }
+      }}
+      //upload on file selection, otherwise use `startUpload`
+      uploadOnSelection={true}
+    >
+      {({ onFiles, progress, complete }) => {
+        let loading = false;
+        if (progress && !complete) {
+          loading = true;
+        }
+
+        return (
+          <UploadField onFiles={(file) => {
+            if (!_.isEmpty(file)) {
+              // 文件限制5m
+              if (file[0].size < 1024 * 1024 * 5) {
+                onFiles(file);
+              } else {
+                message.error('文件最大5M，请压缩文件大小');
+              }
+            }
+          }} uploadProps={{
+            accept: '.xlsx,.xls,.xlt',
+          }}>
+            <Button loading={loading} type="primary" icon="usergroup-add">批量添加</Button>
+          </UploadField>
+        )
+      }}
+    </Uploader>
+  )
+}
 
 class RecordList extends React.Component {
   constructor(props) {
@@ -187,8 +243,9 @@ class RecordList extends React.Component {
 
   render() {
     let self = this;
-    let { record, user } = this.props;
-    let { dataBody, indentSize, statusData, contractType } = record;
+    let { record, user, dispatch } = this.props;
+    let { dataBody, indentSize, statusData, contractType, searchParam } = record;
+    let { dept } = user;
     let inputStyle = {
       'width': '180px',
     }
@@ -213,6 +270,10 @@ class RecordList extends React.Component {
       )
     });
 
+    let handerSearch = () => {
+
+    }
+
     let tableOpt = {
       rowKey: 'id',
       dataSource: records || [],
@@ -223,20 +284,40 @@ class RecordList extends React.Component {
       }
     }
 
+    let exportUser = `${services.exportUser}?type=1&dept=${dept}`;
+    let exportTemplate = `${services.exportUser}?type=2`;
+
+    let importUserAttr = {
+      addFile() {
+        dispatch({
+          type: 'record/getUserList',
+          payload: {
+            start: 1,
+          }
+        })
+      }
+    }
+
     return (
       <App>
         <div className={style.content}>
-          <div>
-            <Link to="addUser" target="_blank">
-              <Button type="primary" icon="user-add" style={{ 'marginRight': '15px' }}>添加员工</Button>
+          <div className={style.operateTopBox}>
+            <Link to="addUser" target="_blank" className={style.operateTopBtn}>
+              <Button type="primary" icon="user-add">添加员工</Button>
             </Link>
-            <Button type="primary" icon="usergroup-add" style={{display: 'none'}}>批量添加</Button>
+            <span className={style.operateTopBtn}><UploadHead {...importUserAttr} /></span>
+            <a href={exportUser} className={style.operateTopBtn} target="_blank">
+              <Button type="primary" icon="export" >导出</Button>
+            </a>
+            <a href={exportTemplate} className={style.operateTopBtn} target="_blank">
+              <Button type="primary" icon="save" className={style.operateTopBtn}>模版下载</Button>
+            </a>
           </div>
           <div className={style.searchBox}>
             <div className={'clearfix'}>
               <div className={style.searchItem}>
                 <span>工号：</span>
-                <Input placeholder="请输入工号" maxLength={32} style={inputStyle} />
+                <Input ref="code" placeholder="请输入工号" maxLength={32} style={inputStyle} />
               </div>
               <div className={style.searchItem}>
                 <span>姓名：</span>
@@ -263,7 +344,7 @@ class RecordList extends React.Component {
                 </Select>
               </div>
               <div className={style.searchItem}>
-                <Button type="primary" style={{ 'marginRight': '15px' }}>查询</Button>
+                <Button type="primary" onClick={handerSearch} style={{ 'marginRight': '15px' }}>查询</Button>
                 <Button>重置</Button>
               </div>
             </div>
