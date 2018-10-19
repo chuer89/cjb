@@ -185,7 +185,7 @@ class App extends React.Component {
                 <BackTop />
               </Content>
               <Footer style={{ textAlign: 'center' }}>
-                匠 ©2018
+              餐匠帮 ©2018
           </Footer>
             </Layout>
           </Layout>

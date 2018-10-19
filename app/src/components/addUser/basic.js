@@ -1,8 +1,6 @@
 import React from 'react';
 import { Form, Button, DatePicker, Select, Input, InputNumber } from 'antd';
-import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from 'moment';
-import 'moment/locale/zh-cn';
 import _ from 'lodash';
 import style from './add.less';
 
@@ -161,7 +159,7 @@ class BasicForm extends React.Component {
             }],
             initialValue: joinTimeInit
           })(
-            <DatePicker onChange={onChange} locale={locale} />
+            <DatePicker onChange={onChange} />
           )}
         </FormItem>
         {renderPosition}
@@ -184,7 +182,7 @@ class BasicForm extends React.Component {
             }],
             initialValue: contractDateInit
           })(
-            <RangePicker onChange={onChange} locale={locale} />
+            <RangePicker onChange={onChange} />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="当前薪水">

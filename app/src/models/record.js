@@ -8,11 +8,11 @@ export default {
 
   state: {
     dataBody: {}, // 内容
-    indentSize: 20, // 
+    indentSize: 5, // 
 
     // 状态筛选
     statusData: [{
-      value: '全部', code: '-1'
+      value: '全部', code: ''
     }, {
       value: '离职', code: '1'
     }, {
@@ -23,7 +23,7 @@ export default {
 
     // 合同类型
     contractType: [{
-      value: '全部', code: '-1'
+      value: '全部', code: ''
     }, {
       value: '固定期限', code: '1'
     }, {
@@ -32,7 +32,21 @@ export default {
       value: '试用', code: '3'
     }],
 
-    searchParam: {},
+    // 信息预警
+    warningData: [{
+      value: '全部', code: ''
+    }, {
+      value: '身份证', code: '1'
+    }, {
+      value: '健康证', code: '2'
+    }, {
+      value: '劳动合同', code: '3'
+    }],
+
+    // 搜索条件
+    searchParam: {
+      start: 1,
+    },
   },
 
   subscriptions: {
@@ -56,10 +70,11 @@ export default {
     // 获取列表
     *getUserList({ payload }, { call, put, select }) {
       const { indentSize, searchParam } = yield select(_ => _.record);
-      _.extend(payload, searchParam, {
+      let param = {};
+      _.extend(param, searchParam, payload, {
         length: indentSize,
       });
-      const temp = yield call(services.getUserList, payload);
+      const temp = yield call(services.getUserList, param);
       
       let { data } = temp;
       if (data.msg === 'success') {

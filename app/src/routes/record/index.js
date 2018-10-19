@@ -244,16 +244,40 @@ class RecordList extends React.Component {
   render() {
     let self = this;
     let { record, user, dispatch } = this.props;
-    let { dataBody, indentSize, statusData, contractType, searchParam } = record;
-    let { dept } = user;
+    let { dataBody, indentSize, statusData, contractType, warningData, searchParam } = record;
+    let { dept, userInfo: { token } } = user;
     let inputStyle = {
       'width': '180px',
     }
     let { columns } = this.state;
     let { records } = dataBody;
 
-    let handleChange = (value) => {
-      console.log(value, 'v');
+    let handerSearch = () => {
+      dispatch({
+        type: 'record/getUserList',
+        payload: {
+          start: 1,
+        }
+      })
+    }
+    let handerChangeSearch = (key, value) => {
+      searchParam[key] = value;
+      dispatch({
+        type: 'record/save',
+        payload: {
+          searchParam,
+        }
+      })
+    }
+    let resetSearch = () => {
+      dispatch({
+        type: 'record/save',
+        payload: {
+          searchParam: {
+            start: 1,
+          },
+        }
+      })
     }
 
     // 状态筛选
@@ -270,9 +294,12 @@ class RecordList extends React.Component {
       )
     });
 
-    let handerSearch = () => {
-
-    }
+    // 信息预警
+    let renderWarningData = warningData.map((item) => {
+      return (
+        <Option value={item.code} key={item.code}>{item.value}</Option>
+      )
+    })
 
     let tableOpt = {
       rowKey: 'id',
@@ -284,8 +311,8 @@ class RecordList extends React.Component {
       }
     }
 
-    let exportUser = `${services.exportUser}?type=1&dept=${dept}`;
-    let exportTemplate = `${services.exportUser}?type=2`;
+    let exportUser = `${services.exportUser}?token=${token}&type=1&dept=${dept}`;
+    let exportTemplate = `${services.exportUser}?token=${token}&type=2`;
 
     let importUserAttr = {
       addFile() {
@@ -317,35 +344,35 @@ class RecordList extends React.Component {
             <div className={'clearfix'}>
               <div className={style.searchItem}>
                 <span>工号：</span>
-                <Input ref="code" placeholder="请输入工号" maxLength={32} style={inputStyle} />
+                <Input value={searchParam.code} onChange={(e) => {handerChangeSearch('code', e.target.value)}} placeholder="请输入工号" maxLength={32} style={inputStyle} />
               </div>
               <div className={style.searchItem}>
                 <span>姓名：</span>
-                <Input placeholder="请输入姓名" maxLength={32} style={inputStyle} />
+                <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => {handerChangeSearch('name', e.target.value)}} maxLength={32} style={inputStyle} />
               </div>
               <div className={style.searchItem}>
                 <span>状态：</span>
-                <Select defaultValue="全部" style={{ width: 120 }} onChange={handleChange}>
+                <Select value={searchParam.status || ''} style={{ width: 120 }} onChange={(e) => {handerChangeSearch('status', e)}}>
                   {renderSeleStatus}
                 </Select>
               </div>
               <div className={style.searchItem}>
                 <span>合同类型：</span>
-                <Select defaultValue="全部" style={{ width: 120 }} onChange={handleChange}>
+                <Select value={searchParam.contractType || ''} style={{ width: 120 }} onChange={(e) => {handerChangeSearch('contractType', e)}}>
                   {renderContractType}
                 </Select>
               </div>
             </div>
             <div className={style.searchItemBox + ' clearfix'}>
               <div className={style.searchItem}>
-                <span>合同类型：</span>
-                <Select defaultValue="全部" style={{ width: 120 }} onChange={handleChange}>
-                  {renderContractType}
+                <span>信息预警：</span>
+                <Select value={searchParam.warning || ''} style={{ width: 120 }} onChange={(e) => {handerChangeSearch('warning', e)}}>
+                  {renderWarningData}
                 </Select>
               </div>
               <div className={style.searchItem}>
                 <Button type="primary" onClick={handerSearch} style={{ 'marginRight': '15px' }}>查询</Button>
-                <Button>重置</Button>
+                <Button onClick={resetSearch}>重置</Button>
               </div>
             </div>
           </div>

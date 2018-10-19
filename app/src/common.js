@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export default {
   // 饼图所需参数
   getPieOption(seriesData = []) {
@@ -26,6 +28,15 @@ export default {
           }
         }
       ]
+    }
+  },
+
+  // 日期
+  format(time, mat = 'YYYY-MM-DD') {
+    if (time) {
+      return moment(time).format(mat);
+    } else {
+      return '';
     }
   },
 
