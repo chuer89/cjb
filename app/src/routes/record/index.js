@@ -273,9 +273,14 @@ class RecordList extends React.Component {
       dispatch({
         type: 'record/save',
         payload: {
-          searchParam: {
-            start: 1,
-          },
+          searchParam: {},
+        }
+      });
+
+      dispatch({
+        type: 'record/getUserList',
+        payload: {
+          start: 1,
         }
       })
     }
