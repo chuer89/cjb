@@ -14,8 +14,8 @@ const Option = Select.Option;
 const confirm = Modal.confirm;
 
 // 上传
-const UploadHead = ({ addFile }) => {
-  let action = services.importUser;
+const UploadHead = ({ addFile, token }) => {
+  let action = services.importUser + '?token=' + token;
   return (
     <Uploader
       request={{
@@ -318,6 +318,18 @@ class RecordList extends React.Component {
       }
     }
 
+    let importUserAttr = {
+      token,
+      addFile() {
+        dispatch({
+          type: 'record/getUserList',
+          payload: {
+            start: 1,
+          }
+        })
+      }
+    }
+
     let exportUser = `${services.exportUser}?token=${token}&type=1&dept=${dept}`;
     let exportTemplate = `${services.exportUser}?token=${token}&type=2`;
 
@@ -335,16 +347,7 @@ class RecordList extends React.Component {
       )
     }
 
-    let importUserAttr = {
-      addFile() {
-        dispatch({
-          type: 'record/getUserList',
-          payload: {
-            start: 1,
-          }
-        })
-      }
-    }
+    
 
     return (
       <App>
