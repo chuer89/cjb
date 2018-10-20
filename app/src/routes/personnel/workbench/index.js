@@ -5,6 +5,7 @@ import { Card, Tabs, Row, Col } from 'antd';
 import style from './index.less';
 import { Link } from 'dva/router';
 import moment from 'moment';
+import common from '../../../common';
 
 const TabPane = Tabs.TabPane;
 
@@ -14,7 +15,7 @@ class Dashboard extends React.Component {
     super(props);
     // 设置 initial state
     this.state = {
-      loading: true,
+      loading: false,
     }
   }
 
@@ -32,18 +33,13 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    let self = this;
-    setTimeout(() => {
-      self.save({
-        loading: false,
-      })
-    }, 2000)
   }
 
   render() {
     let { loading } = this.state;
-    let { work } = this.props;
-    let { workUserinfo, workusercare } = work;
+    let { work: {
+      workUserinfo, workusercare, todoList
+    } } = this.props;
 
     let personnelGeneral = [{
       name: '在职', number: workUserinfo.all, color: 'rgb(100, 234, 145)'
@@ -69,23 +65,64 @@ class Dashboard extends React.Component {
       )
     });
 
-    let allListData = [{
-      message: '今天重点新闻，宽松大翻领加上地方', date: '2018-02-11 12:33', isNew: true
-    }, {
-      message: '来到健身房阿斯顿发了；看见阿斯顿发爱上；两地分居', date: '2017-09-19 14:44'
-    }];
-    let renderAllList = allListData.map((item, index) => {
-      return (
-        <li key={index}>
-          <div className={style.messageListBox}>
-            <div className={style.newMessage} style={{ 'display': item.isNew ? 'block' : 'none' }}></div>
-            <div className={style.messageContent}>{item.message}</div>
-            <div className={style.messageDate}>{item.date}</div>
-          </div>
-        </li>
-      )
-    });
+    // 代办事项
+    let warnLevel = []; // 预警
+    let remindLevel = []; // 提醒
+    let renderAllList = '暂无数据';
+    if (!_.isEmpty(todoList)) {
+      renderAllList = todoList.map((item, index) => {
+        const { level, content, eventDate } = item;
+        if (level === 2) {
+          remindLevel.push(item);
+        } else if (level === 3) {
+          warnLevel.push(item);
+        }
 
+        return (
+          <li key={index}>
+            <div className={style.messageListBox}>
+              <div className={style.newMessage} style={{ 'display': item.isNew ? 'block' : 'none' }}></div>
+              <div className={style.messageContent}>{content}</div>
+              <div className={style.messageDate}>{common.format(eventDate)}</div>
+            </div>
+          </li>
+        )
+      });
+    }
+    let renderWarnLevel = '暂无数据';
+    if (!_.isEmpty(warnLevel)) {
+      renderWarnLevel = warnLevel.map((item, index) => {
+        const { content, eventDate } = item;
+
+        return (
+          <li key={index}>
+            <div className={style.messageListBox}>
+              <div className={style.newMessage} style={{ 'display': item.isNew ? 'block' : 'none' }}></div>
+              <div className={style.messageContent}>{content}</div>
+              <div className={style.messageDate}>{common.format(eventDate)}</div>
+            </div>
+          </li>
+        )
+      });
+    }
+    let renderRemindLevel = '暂无数据';
+    if (!_.isEmpty(remindLevel)) {
+      renderRemindLevel = remindLevel.map((item, index) => {
+        const { content, eventDate } = item;
+
+        return (
+          <li key={index}>
+            <div className={style.messageListBox}>
+              <div className={style.newMessage} style={{ 'display': item.isNew ? 'block' : 'none' }}></div>
+              <div className={style.messageContent}>{content}</div>
+              <div className={style.messageDate}>{common.format(eventDate)}</div>
+            </div>
+          </li>
+        )
+      });
+    }
+
+    // 员工关怀
     let renderUserCare = (
       <div>暂无数据</div>
     )
@@ -111,13 +148,17 @@ class Dashboard extends React.Component {
           </Card>
         </div>
         <div className={style.itemBox}>
-          <Card loading={loading} title="代办事项（样本数据）">
+          <Card loading={loading} title="代办事项">
             <Tabs tabPosition={'left'}>
               <TabPane tab="全部" key="1">
                 <ul>{renderAllList}</ul>
               </TabPane>
-              <TabPane tab="预警" key="2"><div>暂无数据</div></TabPane>
-              <TabPane tab="提醒" key="3"><div>暂无数据</div></TabPane>
+              <TabPane tab="预警" key="2">
+                <ul>{renderRemindLevel}</ul>
+              </TabPane>
+              <TabPane tab="提醒" key="3">
+                <ul>{renderWarnLevel}</ul>
+              </TabPane>
             </Tabs>
           </Card>
         </div>

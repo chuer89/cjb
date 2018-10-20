@@ -8,6 +8,7 @@ export default {
   state: {
     workUserinfo: {},
     workusercare: [],
+    todoList: [],
   },
 
   subscriptions: {
@@ -21,6 +22,10 @@ export default {
           dispatch({
             type: 'workusercare',
           });
+
+          dispatch({
+            type: 'todoList'
+          })
         }
       })
     },
@@ -68,6 +73,25 @@ export default {
         });
       }
     },
+
+    // 代办事项
+    *todoList({ payload }, { call, put, select }) {
+      const { dept } = yield select(_ => _.user);
+      let param = {};
+      _.extend(param, payload, {
+        dept,
+      });
+      let temp = yield call(services.todoList, param);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            todoList: data.data,
+          }
+        });
+      }
+    }
   },
 
   reducers: {

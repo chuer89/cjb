@@ -35,7 +35,7 @@ const UploadHead = ({ addFile }) => {
           message.success('导入成功');
           addFile(data);
         } else {
-          message.error(data.msg);
+          message.error(msg);
         }
       }}
       //upload on file selection, otherwise use `startUpload`
@@ -245,12 +245,14 @@ class RecordList extends React.Component {
     let self = this;
     let { record, user, dispatch } = this.props;
     let { dataBody, indentSize, statusData, contractType, warningData, searchParam } = record;
-    let { dept, userInfo: { token } } = user;
+    let { dept, userInfo: { token, userType } } = user;
     let inputStyle = {
       'width': '180px',
     }
     let { columns } = this.state;
-    let { records } = dataBody;
+    let { records, total } = dataBody;
+
+    let btnDisabled = total <= 0; // 列表无数据，导出按钮不可用
 
     let handerSearch = () => {
       dispatch({
@@ -319,6 +321,20 @@ class RecordList extends React.Component {
     let exportUser = `${services.exportUser}?token=${token}&type=1&dept=${dept}`;
     let exportTemplate = `${services.exportUser}?token=${token}&type=2`;
 
+    // 如果是员工账号
+    let renderExport = '';
+    let renderExportTemp = '';
+    if (userType === 1) {
+      renderExport = (
+        <span className={style.operateTopBtn}><UploadHead {...importUserAttr} /></span>
+      )
+      renderExportTemp = (
+        <a href={exportTemplate} className={style.operateTopBtn} target="_blank">
+          <Button type="primary" icon="save" className={style.operateTopBtn}>模版下载</Button>
+        </a>
+      )
+    }
+
     let importUserAttr = {
       addFile() {
         dispatch({
@@ -337,33 +353,30 @@ class RecordList extends React.Component {
             <Link to="addUser" target="_blank" className={style.operateTopBtn}>
               <Button type="primary" icon="user-add">添加员工</Button>
             </Link>
-            <span className={style.operateTopBtn}><UploadHead {...importUserAttr} /></span>
             <a href={exportUser} className={style.operateTopBtn} target="_blank">
-              <Button type="primary" icon="export" >导出</Button>
+              <Button disabled={btnDisabled} type="primary" icon="export" >导出</Button>
             </a>
-            <a href={exportTemplate} className={style.operateTopBtn} target="_blank">
-              <Button type="primary" icon="save" className={style.operateTopBtn}>模版下载</Button>
-            </a>
+            {renderExport}{renderExportTemp}
           </div>
           <div className={style.searchBox}>
             <div className={'clearfix'}>
               <div className={style.searchItem}>
                 <span>工号：</span>
-                <Input value={searchParam.code} onChange={(e) => {handerChangeSearch('code', e.target.value)}} placeholder="请输入工号" maxLength={32} style={inputStyle} />
+                <Input value={searchParam.code} onChange={(e) => { handerChangeSearch('code', e.target.value) }} placeholder="请输入工号" maxLength={32} style={inputStyle} />
               </div>
               <div className={style.searchItem}>
                 <span>姓名：</span>
-                <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => {handerChangeSearch('name', e.target.value)}} maxLength={32} style={inputStyle} />
+                <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => { handerChangeSearch('name', e.target.value) }} maxLength={32} style={inputStyle} />
               </div>
               <div className={style.searchItem}>
                 <span>状态：</span>
-                <Select value={searchParam.status || ''} style={{ width: 120 }} onChange={(e) => {handerChangeSearch('status', e)}}>
+                <Select value={searchParam.status || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('status', e) }}>
                   {renderSeleStatus}
                 </Select>
               </div>
               <div className={style.searchItem}>
                 <span>合同类型：</span>
-                <Select value={searchParam.contractType || ''} style={{ width: 120 }} onChange={(e) => {handerChangeSearch('contractType', e)}}>
+                <Select value={searchParam.contractType || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('contractType', e) }}>
                   {renderContractType}
                 </Select>
               </div>
@@ -371,7 +384,7 @@ class RecordList extends React.Component {
             <div className={style.searchItemBox + ' clearfix'}>
               <div className={style.searchItem}>
                 <span>信息预警：</span>
-                <Select value={searchParam.warning || ''} style={{ width: 120 }} onChange={(e) => {handerChangeSearch('warning', e)}}>
+                <Select value={searchParam.warning || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('warning', e) }}>
                   {renderWarningData}
                 </Select>
               </div>

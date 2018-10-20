@@ -28,7 +28,14 @@ class Basic extends React.Component {
     // 在职状态
     status: {
       '1': '试用', '2': '在职', '3': '离职'
-    }
+    },
+
+    warningSele: { // 预警信息
+      '0': '正常',
+      '1': '身份证',
+      '2': '健康证',
+      '3': '劳动合同',
+    },
   }
 
   render() {

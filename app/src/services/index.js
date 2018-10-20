@@ -48,7 +48,7 @@ let post = (region, api, params = {}) => {
 let httpApi = {
 	// 上传头像图片 公共接口
 	addImg: host['base'] + '/file/addFile',
-	
+
 	// 用户导出
 	exportUser: host['base'] + '/user/export',
 	// 用户导入
@@ -255,6 +255,10 @@ let httpApi = {
 	// 工作台 - 员工关怀
 	workusercare(param = {}) {
 		return post('base', '/workbench/usercare', param);
+	},
+	// 工作台 - 代办事项（预警）
+	todoList(param = {}) {
+		return post('base', '/todo/list', param);
 	},
 
 	// 培训 - 上传培训资料

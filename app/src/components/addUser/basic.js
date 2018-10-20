@@ -112,11 +112,14 @@ class BasicForm extends React.Component {
       )
     });
     let handleChangeChannel = (value) => {
+      let channel = false;
       if (_.toString(value) === '1') {
-        self.setState({
-          isRecommendChannel: true,
-        });
+        channel = true;
       }
+
+      self.setState({
+        isRecommendChannel: channel,
+      });
     }
     // 推荐人
     let renderRecommendChannel = '';
