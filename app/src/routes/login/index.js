@@ -141,7 +141,7 @@ class Login extends React.Component {
                   pattern: common.reg.phone, message: '请输入正确的手机号',
                 },
               ],
-              initialValue: '15608203716'
+              initialValue: '18300000000'
             })(<Input size="large" maxLength={11} onPressEnter={handleOk} autoComplete="off" placeholder="手机号" />)}
           </FormItem>
           <FormItem hasFeedback>

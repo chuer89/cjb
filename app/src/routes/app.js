@@ -173,7 +173,7 @@ class App extends React.Component {
               collapsible
               collapsed={collapsed}
               onCollapse={this.onCollapse}
-              style={{ position: 'fixed', height: '100vh' }}
+              style={{ position: 'fixed', height: '90vh' }}
             >
               <Menu mode="inline" selectedKeys={selectedKeys}>
                 {renderMenus}

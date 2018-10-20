@@ -176,7 +176,7 @@ class Add extends React.Component {
         <div style={{'paddingBottom': '12px'}}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="personnel/record">员工档案</Link>
+              <Link to="/personnel/record">员工档案</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>添加用户</Breadcrumb.Item>
           </Breadcrumb>

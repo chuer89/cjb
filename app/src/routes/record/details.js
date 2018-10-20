@@ -2,7 +2,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
-import { Tabs } from 'antd';
+import { Link } from 'dva/router';
+import { Tabs, Breadcrumb } from 'antd';
 
 import Basic from './components/basic';
 import Expression from './components/expression';
@@ -51,6 +52,14 @@ class DetailsInfo extends React.Component {
 
     return (
       <App>
+        <div style={{'paddingBottom': '12px'}}>
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to="/personnel/record">员工档案</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>员工详情</Breadcrumb.Item>
+          </Breadcrumb>
+        </div>
         <div style={contentStyle}>
           <Tabs defaultActiveKey="1" onChange={callback}>
             <TabPane tab="基本信息" key="1"><Basic {...basicOpt} /></TabPane>

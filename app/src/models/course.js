@@ -123,6 +123,12 @@ export default {
       let { data } = temp;
       if (data.msg === 'success') {
         message.success('指派成功');
+        yield put({
+          type: 'save',
+          payload: {
+            visibleDesignate: false,
+          }
+        });
       } else {
         message.error(data.msg);
       }

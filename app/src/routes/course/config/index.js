@@ -1,6 +1,6 @@
 import React from 'react';
 import App from '../../app';
-import { Card, Checkbox, Modal } from 'antd';
+import { Card, Checkbox, Modal, message } from 'antd';
 import style from './index.less';
 import { connect } from 'dva';
 import SearchConfig from './components/search';
@@ -162,6 +162,10 @@ class CourseConfig extends React.Component {
         });
       },
       handleOk() {
+        if (!seleDeptIndex) {
+          message.error('请选择指派的部门');
+          return false;
+        }
         let fidArr = [];
         let tidArr = [];
         _.forEach(checkedList, (item) => {

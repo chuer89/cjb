@@ -220,7 +220,7 @@ class RecordList extends React.Component {
       <div>
         <Dropdown overlay={renderOperate}>
           <div>
-            处理<Icon type="down" />
+            操作<Icon type="down" />
           </div>
         </Dropdown>
       </div>

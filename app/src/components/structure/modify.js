@@ -40,6 +40,8 @@ class Modify extends React.Component {
         destroyOnClose={true}
         visible={visible}
         onOk={handleOk}
+        okText="确定"
+        cancelText="取消"
         centered={true}
         onCancel={onCancel}>
         <div className={styles.content}>
