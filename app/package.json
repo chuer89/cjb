@@ -23,7 +23,8 @@
     "nprogress": "^0.2.0",
     "qs": "^6.5.2",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-helmet": "^5.2.0"
   },
   "devDependencies": {
     "babel-plugin-dva-hmr": "^0.3.2",

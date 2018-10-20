@@ -7,6 +7,7 @@ import DeptSele from '../components/seleDept/';
 import _ from 'lodash';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
 import 'moment/locale/zh-cn';
+import { Helmet } from "react-helmet";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -140,11 +141,15 @@ class App extends React.Component {
 
     return (
       <LocaleProvider locale={zh_CN}>
+
         <Layout>
+          <Helmet>
+            <link rel="shortcut icon" href={require('../assets/favicon.ico')} />
+          </Helmet>
           <Header className={style.headerBox}>
             <div className={style.headerItem}>
               <div className={style.logo}>
-                <img src={require('../assets/logo.png')} alt=""/>
+                <img src={require('../assets/logo.png')} alt="" />
                 <span>餐匠帮</span>
               </div>
             </div>
@@ -185,7 +190,7 @@ class App extends React.Component {
                 <BackTop />
               </Content>
               <Footer style={{ textAlign: 'center' }}>
-              餐匠帮 ©2018
+                餐匠帮 ©2018
           </Footer>
             </Layout>
           </Layout>
