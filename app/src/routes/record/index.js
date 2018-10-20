@@ -244,7 +244,7 @@ class RecordList extends React.Component {
   render() {
     let self = this;
     let { record, user, dispatch } = this.props;
-    let { dataBody, indentSize, statusData, contractType, warningData, searchParam } = record;
+    let { dataBody, statusData, contractType, warningData, searchParam, pageSize } = record;
     let { dept, userInfo: { token, userType } } = user;
     let inputStyle = {
       'width': '180px',
@@ -312,9 +312,20 @@ class RecordList extends React.Component {
       rowKey: 'id',
       dataSource: records || [],
       columns,
-      indentSize,
       locale: {
         emptyText: '暂无数据'
+      },
+      pagination: {
+        pageSize,
+        total,
+      },
+      onChange({ current }) {
+        dispatch({
+          type: 'record/getUserList',
+          payload: {
+            start: current,
+          }
+        })
       }
     }
 
@@ -346,8 +357,6 @@ class RecordList extends React.Component {
         </a>
       )
     }
-
-    
 
     return (
       <App>

@@ -8,7 +8,7 @@ export default {
 
   state: {
     dataBody: {}, // 内容
-    indentSize: 5, // 
+    pageSize: 20, // 
 
     // 状态筛选
     statusData: [{
@@ -69,10 +69,10 @@ export default {
 
     // 获取列表
     *getUserList({ payload }, { call, put, select }) {
-      const { indentSize, searchParam } = yield select(_ => _.record);
+      const { pageSize, searchParam } = yield select(_ => _.record);
       let param = {};
       _.extend(param, searchParam, payload, {
-        length: indentSize,
+        length: pageSize,
       });
       const temp = yield call(services.getUserList, param);
       
