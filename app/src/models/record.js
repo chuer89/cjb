@@ -8,7 +8,7 @@ export default {
 
   state: {
     dataBody: {}, // 内容
-    pageSize: 5, // 
+    pageSize: 20, // 
     firstPage: 1,
 
     // 状态筛选
