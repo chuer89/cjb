@@ -193,7 +193,7 @@ class RecordList extends React.Component {
             dispatch({
               type: 'record/getUserList',
               payload: {
-                start: 1,
+                page: 1,
               }
             });
           } else {
@@ -244,7 +244,7 @@ class RecordList extends React.Component {
   render() {
     let self = this;
     let { record, user, dispatch } = this.props;
-    let { dataBody, statusData, contractType, warningData, searchParam, pageSize } = record;
+    let { dataBody, statusData, contractType, warningData, searchParam, pageSize, firstPage } = record;
     let { dept, userInfo: { token, userType } } = user;
     let inputStyle = {
       'width': '180px',
@@ -258,7 +258,7 @@ class RecordList extends React.Component {
       dispatch({
         type: 'record/getUserList',
         payload: {
-          start: 1,
+          page: firstPage,
         }
       })
     }
@@ -282,7 +282,7 @@ class RecordList extends React.Component {
       dispatch({
         type: 'record/getUserList',
         payload: {
-          start: 1,
+          page: firstPage,
         }
       })
     }
@@ -323,7 +323,7 @@ class RecordList extends React.Component {
         dispatch({
           type: 'record/getUserList',
           payload: {
-            start: current,
+            page: current,
           }
         })
       }
@@ -335,7 +335,7 @@ class RecordList extends React.Component {
         dispatch({
           type: 'record/getUserList',
           payload: {
-            start: 1,
+            page: firstPage,
           }
         })
       }

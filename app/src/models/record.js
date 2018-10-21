@@ -8,7 +8,8 @@ export default {
 
   state: {
     dataBody: {}, // 内容
-    pageSize: 20, // 
+    pageSize: 5, // 
+    firstPage: 1,
 
     // 状态筛选
     statusData: [{
@@ -45,7 +46,7 @@ export default {
 
     // 搜索条件
     searchParam: {
-      start: 1,
+      page: 1,
     },
   },
 
@@ -55,7 +56,7 @@ export default {
         dispatch({
           type: 'getUserList',
           payload: {
-            start: 1,
+            page: 1,
           }
         })
       })
@@ -71,9 +72,14 @@ export default {
     *getUserList({ payload }, { call, put, select }) {
       const { pageSize, searchParam } = yield select(_ => _.record);
       let param = {};
+      
       _.extend(param, searchParam, payload, {
         length: pageSize,
       });
+
+      let start = pageSize * ( param.page - 1 ) || 0;
+      param.start = start;
+
       const temp = yield call(services.getUserList, param);
       
       let { data } = temp;
