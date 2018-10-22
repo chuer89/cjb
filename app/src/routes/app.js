@@ -141,7 +141,6 @@ class App extends React.Component {
 
     return (
       <LocaleProvider locale={zh_CN}>
-
         <Layout>
           <Helmet>
             <link rel="shortcut icon" href={require('../assets/favicon.ico')} />
@@ -150,12 +149,12 @@ class App extends React.Component {
             <div className={style.headerItem}>
               <div className={style.logo}>
                 <img src={require('../assets/logo.png')} alt="" />
-                <span>餐匠帮</span>
+                <span>餐匠帮运营系统</span>
               </div>
             </div>
             <div className={style.headerItem} style={{ margin: '0 28px 0 28px' }}>
-              <DeptSele {...deptOpt} />
-            </div>
+                <DeptSele {...deptOpt} />
+              </div>
             <div className={style.headerItem}>
               <Menu
                 theme="dark"
