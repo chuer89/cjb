@@ -42,7 +42,7 @@ class Add extends React.Component {
     let { uid } = this.state;
     let { addUser, dispatch, app } = this.props;
     let { defaultImg } = app;
-    let { personalDisabled, basicDisabled, experienceDisabled, departmentType, positionData,
+    let { personalDisabled, basicDisabled, experienceDisabled, departmentType, positionData, twoDepartmentData,
       portrayalDisabled, activeTabsKey, addUserParam } = addUser;
 
     let handerChange = (activeKey) => {
@@ -106,6 +106,7 @@ class Add extends React.Component {
     // 基本信息
     let baseOpt = {
       positionData,
+      twoDepartmentData,
       handerNext(values) {
         _.extend(addUserParam, values, {
           contractDate: '',

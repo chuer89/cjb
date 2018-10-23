@@ -24,7 +24,7 @@ class Edit extends React.Component {
 
   render() {
     let { editUser, dispatch, app } = this.props;
-    let { basicDisabled, experienceDisabled, 
+    let { basicDisabled, experienceDisabled, twoDepartmentData,
       portrayalDisabled, activeTabsKey, userParam, uid, positionData,
       userWork, userDetails, portrayalImg } = editUser;
     let { defaultImg } = app;
@@ -59,6 +59,7 @@ class Edit extends React.Component {
     let baseOpt = {
       userDetails,
       positionData,
+      twoDepartmentData,
       handerNext(values) {
         _.extend(userParam, values, {
           contractDate: '',
