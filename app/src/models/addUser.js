@@ -25,11 +25,10 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        // 获取部门
         // dispatch({
-        //   type: 'getPosition',
+        //   type: 'getTwoDepartmentBySid',
         //   payload: {
-        //     sid: 40,
+        //     sid: 51,
         //   }
         // });
       })

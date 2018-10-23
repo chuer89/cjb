@@ -108,15 +108,16 @@ class BasicForm extends React.Component {
     let handleChange = (value) => {
       console.log(value, 'v');
     }
-    // 岗位筛选
-    let renderProfessionLevel = positionData.map((item) => {
-      return (
-        <Option value={item.id} key={item.id}>{item.name}</Option>
-      )
-    });
+
     // 职位
     let renderPosition = ''
     if (!_.isEmpty(positionData)) {
+      // 岗位筛选
+      let renderProfessionLevel = positionData.map((item) => {
+        return (
+          <Option value={item.id} key={item.id}>{item.name}</Option>
+        )
+      });
       renderPosition = (
         <FormItem {...formItemLayout} label="岗位">
           {getFieldDecorator('position', {
@@ -161,16 +162,14 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
       )
-      
+
     }
     // 自定义二级部门
     let renderTwoDepartmentOwn = '';
     if (tagTwoDepartment === '-1') {
       renderTwoDepartmentOwn = (
         <FormItem {...formItemLayout} label="自定义二级部门">
-          {getFieldDecorator('twoDepartmentOwn', {
-            initialValue: userDetails.referrer,
-          })(
+          {getFieldDecorator('twoDepartmentOwn')(
             <Input placeholder="请输入自定义二级部门" autoComplete="off" maxLength="32" />
           )}
         </FormItem>
