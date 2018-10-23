@@ -48,7 +48,7 @@ export default {
       if (data.msg === 'success') {
         let positionData = data.data;
         positionData.push({
-          name: '其他', id: ''
+          name: '其他', code: ''
         });
         yield put({
           type: 'save',
@@ -66,7 +66,7 @@ export default {
       if (data.msg === 'success') {
         let twoDepartmentData = data.data;
         twoDepartmentData.push({
-          name: '自定义', id: ''
+          name: '自定义', id: -1
         });
         yield put({
           type: 'save',

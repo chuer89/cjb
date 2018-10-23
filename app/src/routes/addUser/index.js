@@ -40,8 +40,9 @@ class Add extends React.Component {
   render() {
     let self = this;
     let { uid } = this.state;
-    let { addUser, dispatch, app } = this.props;
+    let { addUser, dispatch, app, user } = this.props;
     let { defaultImg } = app;
+    const { userInfo: { token } } = user;
     let { personalDisabled, basicDisabled, experienceDisabled, departmentType, positionData, twoDepartmentData,
       portrayalDisabled, activeTabsKey, addUserParam } = addUser;
 
@@ -160,7 +161,7 @@ class Add extends React.Component {
 
     // 员工画像
     let portrayalOpt = {
-      action: services.addImg,
+      action: services.addImg + '?token=' + token,
       defaultImg,
       handerNext(param) {
         _.extend(param, {
@@ -204,7 +205,8 @@ class Add extends React.Component {
   }
 }
 
-export default connect((({ addUser, app }) => ({
+export default connect((({ addUser, app, user }) => ({
   addUser,
   app,
+  user,
 })))(Add);

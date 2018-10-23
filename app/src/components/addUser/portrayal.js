@@ -162,7 +162,7 @@ class PortrayalForm extends React.Component {
     let idcardFrontOpt = {
       imgUrl: idcardFront,
       defaultImg,
-      action,
+      action: action + '&type=1',
       addFileImg(param) {
         self.save({
           idcardFront: param,
@@ -170,10 +170,11 @@ class PortrayalForm extends React.Component {
       }
     }
 
+    // 身份证反照片
     let idcardReverseOpt = {
       imgUrl: idcardReverse,
       defaultImg,
-      action,
+      action: action + '&type=2',
       addFileImg(param) {
         self.save({
           idcardReverse: param,
@@ -184,7 +185,7 @@ class PortrayalForm extends React.Component {
     let healthCertificateFrontOpt = {
       imgUrl: healthCertificateFront,
       defaultImg,
-      action,
+      action: action + '&type=3',
       addFileImg(param) {
         self.save({
           healthCertificateFront: param,
@@ -195,7 +196,7 @@ class PortrayalForm extends React.Component {
     let healthCertificateReverseOpt = {
       imgUrl: healthCertificateReverse,
       defaultImg,
-      action,
+      action: action + '&type=4',
       addFileImg(param) {
         self.save({
           healthCertificateReverse: param,
@@ -206,7 +207,7 @@ class PortrayalForm extends React.Component {
     let contractOpt = {
       imgUrl: contract,
       defaultImg,
-      action,
+      action: action + '&type=5',
       addFileImg(param) {
         contract.push(param);
       }

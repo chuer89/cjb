@@ -23,11 +23,12 @@ class Edit extends React.Component {
   }
 
   render() {
-    let { editUser, dispatch, app } = this.props;
+    let { editUser, dispatch, app, user } = this.props;
     let { basicDisabled, experienceDisabled, twoDepartmentData,
       portrayalDisabled, activeTabsKey, userParam, uid, positionData,
       userWork, userDetails, portrayalImg } = editUser;
     let { defaultImg } = app;
+    const { userInfo: { token } } = user;
 
     // tab 切换
     let handerChange = (activeKey) => {
@@ -130,7 +131,7 @@ class Edit extends React.Component {
 
     // 员工画像
     let portrayalOpt = {
-      action: services.addImg,
+      action: services.addImg + '?token=' + token,
       defaultImg,
       portrayalImg,
       handerNext(param) {
@@ -174,7 +175,8 @@ class Edit extends React.Component {
   }
 }
 
-export default connect((({ editUser, app }) => ({
+export default connect((({ editUser, app, user }) => ({
   editUser,
   app,
+  user,
 })))(Edit);

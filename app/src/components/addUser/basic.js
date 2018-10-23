@@ -28,6 +28,21 @@ class BasicForm extends React.Component {
 
       //职级
       rankType: rankTypeMap,
+
+      tagTwoDepartment: '',
+    }
+  }
+
+  UNSAFE_componentWillMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  save(payload) {
+    if (this._isMounted) {
+      this.setState(payload);
     }
   }
 
@@ -35,7 +50,6 @@ class BasicForm extends React.Component {
     e.preventDefault();
     let { form, handerNext } = this.props;
     form.validateFields((err, values) => {
-      console.log(values.contractDate, 'time')
       let contractStarttime = '';
       let contractEndtime = '';
       let joinTime = '';
@@ -44,10 +58,20 @@ class BasicForm extends React.Component {
         contractStarttime = moment(values.contractDate[0]).format('YYYY-MM-DD');
         contractEndtime = moment(values.contractDate[1]).format('YYYY-MM-DD');
 
+        let twoDepartment = values.twoDepartmentSele;
+        if (twoDepartment === '-1') {
+          twoDepartment = values.twoDepartmentOwn;
+        }
+
+        delete values.twoDepartmentSele;
+        delete values.twoDepartmentOwn;
+        delete values.contractDate;
+
         _.extend(values, {
           joinTime,
           contractStarttime,
           contractEndtime,
+          twoDepartment,
         });
 
         console.log('Received values of form: ', values);
@@ -59,7 +83,7 @@ class BasicForm extends React.Component {
   render() {
     let { userDetails, form, positionData, twoDepartmentData } = this.props;
     const { getFieldDecorator } = form;
-    let { invitationChannel, rankType,
+    let { invitationChannel, rankType, tagTwoDepartment,
       isRecommendChannel, contractType } = this.state;
     let self = this;
 
@@ -107,22 +131,47 @@ class BasicForm extends React.Component {
     }
 
     // 二级部门
-    let rendertwoDepartmentSele = twoDepartmentData.map((item) => {
-      return (
-        <Option value={item.id} key={item.id}>{item.name}</Option>
-      )
-    })
-    // 职位
-    let renderTwoDepartment = ''
+    let handleTwoDepartmentChange = (value) => {
+      self.save({
+        tagTwoDepartment: _.toString(value),
+      });
+    }
+    let renderTwoDepartment = '';
     if (!_.isEmpty(twoDepartmentData)) {
+      let rendertwoDepartmentSele = twoDepartmentData.map((item, index) => {
+        let code = index;
+        let name = item;
+        if (item.code === '-1') {
+          name = item.name;
+          code = item.code;
+        }
+
+        return (
+          <Option key={code}>{name}</Option>
+        )
+      })
       renderTwoDepartment = (
         <FormItem {...formItemLayout} label="二级部门">
-          {getFieldDecorator('twoDepartment', {
+          {getFieldDecorator('twoDepartmentSele', {
             initialValue: userDetails.twoDepartment || '',
           })(
-            <Select style={{ width: 120 }}>
+            <Select style={{ width: 120 }} onChange={handleTwoDepartmentChange}>
               {rendertwoDepartmentSele}
             </Select>
+          )}
+        </FormItem>
+      )
+      
+    }
+    // 自定义二级部门
+    let renderTwoDepartmentOwn = '';
+    if (tagTwoDepartment === '-1') {
+      renderTwoDepartmentOwn = (
+        <FormItem {...formItemLayout} label="自定义二级部门">
+          {getFieldDecorator('twoDepartmentOwn', {
+            initialValue: userDetails.referrer,
+          })(
+            <Input placeholder="请输入自定义二级部门" autoComplete="off" maxLength="32" />
           )}
         </FormItem>
       )
@@ -174,8 +223,6 @@ class BasicForm extends React.Component {
       )
     }
 
-    
-
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
@@ -201,7 +248,7 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
         {renderPosition}
-        {renderTwoDepartment}
+        {renderTwoDepartment}{renderTwoDepartmentOwn}
         <FormItem {...formItemLayout} label="合同类型">
           {getFieldDecorator('contractType', {
             rules: [{
@@ -248,14 +295,14 @@ class BasicForm extends React.Component {
           {getFieldDecorator('specialty', {
             initialValue: userDetails.specialty
           })(
-            <Input placeholder="请输入特长" autoComplete="off" maxLength="64"/>
+            <Input placeholder="请输入特长" autoComplete="off" maxLength="64" />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="紧急联系人姓名">
           {getFieldDecorator('emergencyContact', {
             initialValue: userDetails.emergencyContact,
           })(
-            <Input placeholder="请输入紧急联系人姓名" autoComplete="off" maxLength="32"/>
+            <Input placeholder="请输入紧急联系人姓名" autoComplete="off" maxLength="32" />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="紧急联系人联系方式">
@@ -265,7 +312,7 @@ class BasicForm extends React.Component {
               pattern: common.reg.phone, message: '请输入正确的手机号',
             }],
           })(
-            <Input placeholder="请输入紧急联系人联系方式" autoComplete="off" maxLength="11"/>
+            <Input placeholder="请输入紧急联系人联系方式" autoComplete="off" maxLength="11" />
           )}
         </FormItem>
         <FormItem>
@@ -280,12 +327,13 @@ class BasicForm extends React.Component {
 
 const WrappedBasicForm = Form.create()(BasicForm);
 
-const Basic = ({ handerNext, userDetails, positionData }) => {
+const Basic = ({ handerNext, userDetails, positionData, twoDepartmentData }) => {
 
   let opt = {
     handerNext,
     userDetails,
     positionData,
+    twoDepartmentData,
   };
 
   return (
