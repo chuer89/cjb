@@ -66,7 +66,7 @@ export default {
       if (data.msg === 'success') {
         let twoDepartmentData = data.data;
         twoDepartmentData.push({
-          name: '自定义', id: -1
+          name: '自定义', code: '-1'
         });
         yield put({
           type: 'save',
