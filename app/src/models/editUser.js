@@ -14,6 +14,7 @@ export default {
     portrayalDisabled: true,  // 员工画像
 
     positionData: [], // 岗位
+    twoDepartmentData: [], // 二级部门
 
     uid: '', // 操作当前的uid
 
@@ -86,6 +87,13 @@ export default {
               sid: storeId
             }
           });
+
+          yield put({
+            type: 'getTwoDepartmentBySid',
+            payload: {
+              sid: storeId
+            }
+          })
         }
       }
     },
@@ -104,6 +112,24 @@ export default {
           type: 'save',
           payload: {
             positionData,
+          }
+        });
+      }
+    },
+
+    // 获取二级部门
+    *getTwoDepartmentBySid({ payload }, { call, put }) {
+      let temp = yield call(services.getTwoDepartmentBySid, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        let twoDepartmentData = data.data;
+        twoDepartmentData.push({
+          name: '自定义', id: ''
+        });
+        yield put({
+          type: 'save',
+          payload: {
+            twoDepartmentData,
           }
         });
       }
