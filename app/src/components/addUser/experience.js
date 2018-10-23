@@ -109,7 +109,9 @@ class DynamicFieldSet extends React.Component {
             workParm.id = id;
           }
 
-          params.push(workParm);
+          if (startdate && enddate) {
+            params.push(workParm);
+          }
 
           handerNext(params);
         });
@@ -161,9 +163,6 @@ class DynamicFieldSet extends React.Component {
               <FormItem {...formItemLayout}>
                 {getFieldDecorator('date_' + k, {
                   initialValue: startdate && date,
-                  rules: [{
-                    required: true, message: '请选择时间段',
-                  }],
                 })(
                   <RangePicker />
                 )}

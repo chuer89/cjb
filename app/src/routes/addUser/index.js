@@ -75,6 +75,14 @@ class Add extends React.Component {
               sid: storeId,
             }
           })
+
+          // 二级部门
+          dispatch({
+            type: 'addUser/getTwoDepartmentBySid',
+            payload: {
+              sid: storeId,
+            }
+          })
         }
         console.log(addUserParam, departmentType, 'addp')
       }

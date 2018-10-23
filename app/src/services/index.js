@@ -140,6 +140,10 @@ let httpApi = {
 	addPosition(param = {}) {
 		return post('base', '/position/addPosition', param);
 	},
+	// 获取门店的二级部门
+	getTwoDepartmentBySid(param = {}) {
+		return post('base', '/user/getTwoDepartmentBySid', param);
+	},
 
 	// 当前用户是否初始化组织架构
 	getOrgInit(param = {}) {

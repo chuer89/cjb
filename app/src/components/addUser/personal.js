@@ -4,6 +4,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import style from './add.less';
 import common from './../../common';
+import { educationMap } from './config';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -12,15 +13,7 @@ const Option = Select.Option;
 class PersonalForm extends React.Component {
   state = {
     // 学历
-    education: [{
-      value: '大学', code: '1'
-    }, {
-      value: '高中', code: '2'
-    }, {
-      value: '初中', code: '3'
-    }, {
-      value: '其他', code: '4'
-    }]
+    education: educationMap
   }
 
   render() {
@@ -112,6 +105,27 @@ class PersonalForm extends React.Component {
             <DatePicker />
           )}
         </FormItem>
+        <FormItem {...formItemLayout} label="身份证地址">
+          {getFieldDecorator('idcardAddr', {
+            rules: [{
+              required: true, message: '请输入身份证地址',
+            }],
+            initialValue: userDetails.idcardAddr,
+          })(
+            <Input placeholder="请输入身份证地址" autoComplete="off" maxLength="32"/>
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="银行卡号">
+          {getFieldDecorator('bankCard', {
+            rules: [{
+              required: true, message: '请输入银行卡号',
+              pattern: common.reg.bankCard, message: '请输入正确的银行卡号',
+            }],
+            initialValue: userDetails.bankCard
+          })(
+            <Input placeholder="请输入银行卡号" autoComplete="off" maxLength="32"/>
+          )}
+        </FormItem>
         <FormItem {...formItemLayout} label="学历">
           {getFieldDecorator('education', {
             initialValue: '' + (userDetails.education || ''),
@@ -139,41 +153,6 @@ class PersonalForm extends React.Component {
               <Radio value="1">已育</Radio>
               <Radio value="0">未育</Radio>
             </Radio.Group>
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="银行卡号">
-          {getFieldDecorator('bankCard', {
-            rules: [{
-              required: true, message: '请输入银行卡号',
-              pattern: common.reg.bankCard, message: '请输入正确的银行卡号',
-            }],
-            initialValue: userDetails.bankCard
-          })(
-            <Input placeholder="请输入银行卡号" autoComplete="off" maxLength="32"/>
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="特长">
-          {getFieldDecorator('specialty', {
-            initialValue: userDetails.specialty
-          })(
-            <Input placeholder="请输入特长" autoComplete="off" maxLength="64"/>
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="紧急联系人姓名">
-          {getFieldDecorator('emergencyContact', {
-            initialValue: userDetails.emergencyContact,
-          })(
-            <Input placeholder="请输入紧急联系人姓名" autoComplete="off" maxLength="32"/>
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="紧急联系人联系方式">
-          {getFieldDecorator('emergencyContactPhone', {
-            initialValue: userDetails.emergencyContactPhone,
-            rules: [{
-              pattern: common.reg.phone, message: '请输入正确的手机号',
-            }],
-          })(
-            <Input placeholder="请输入紧急联系人联系方式" autoComplete="off" maxLength="11"/>
           )}
         </FormItem>
         <FormItem>

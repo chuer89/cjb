@@ -139,6 +139,15 @@ class App extends React.Component {
       defaultValue,
     }
 
+    let renderDeptSele = '';
+    if (userType !== 1) {
+      renderDeptSele = (
+        <div className={style.headerItem} style={{ margin: '0 28px 0 28px' }}>
+          <DeptSele {...deptOpt} />
+        </div>
+      )
+    }
+
     return (
       <LocaleProvider locale={zh_CN}>
         <Layout>
@@ -152,9 +161,7 @@ class App extends React.Component {
                 <span>餐匠帮运营系统</span>
               </div>
             </div>
-            <div className={style.headerItem} style={{ margin: '0 28px 0 28px' }}>
-                <DeptSele {...deptOpt} />
-              </div>
+            {renderDeptSele}
             <div className={style.headerItem}>
               <Menu
                 theme="dark"

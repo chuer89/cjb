@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import App from '../app';
-import { Table, Button, Input, Select, Menu, Dropdown, Icon, Modal, message } from 'antd';
+import { Table, Button, Input, Select, Modal, message, Divider } from 'antd';
 import style from './record.less';
 import { Link } from 'dva/router';
 import _ from 'lodash';
@@ -203,26 +203,13 @@ class RecordList extends React.Component {
       });
     }
 
-    let renderOperate = (
-      <Menu>
-        <Menu.Item>
-          <Link to={'editUser/' + item.id} target="_blank" className={style.operateBtn}>编辑资料</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <span className={style.operateBtn} onClick={delUser}>删除员工</span>
-        </Menu.Item>
-        <Menu.Item>
-          <Link target="_blank" to={'/personnel/userdetails/' + item.id} className={style.operateBtn}>员工详情</Link>
-        </Menu.Item>
-      </Menu>
-    )
     return (
       <div>
-        <Dropdown overlay={renderOperate}>
-          <div>
-            操作<Icon type="down" />
-          </div>
-        </Dropdown>
+        <Link to={'editUser/' + item.id} target="_blank" className={style.operateBtn}>编辑</Link>
+        <Divider type="vertical" />
+        <span className={style.operateBtn} onClick={delUser}>删除</span>
+        <Divider type="vertical" />
+        <Link target="_blank" to={'/personnel/userdetails/' + item.id} className={style.operateBtn}>详情</Link>
       </div>
     )
   }
@@ -344,20 +331,6 @@ class RecordList extends React.Component {
     let exportUser = `${services.exportUser}?token=${token}&type=1&dept=${dept}`;
     let exportTemplate = `${services.exportUser}?token=${token}&type=2`;
 
-    // 如果是员工账号
-    let renderExport = '';
-    let renderExportTemp = '';
-    if (userType === 1) {
-      renderExport = (
-        <span className={style.operateTopBtn}><UploadHead {...importUserAttr} /></span>
-      )
-      renderExportTemp = (
-        <a href={exportTemplate} className={style.operateTopBtn} target="_blank">
-          <Button type="primary" icon="save" className={style.operateTopBtn}>模版下载</Button>
-        </a>
-      )
-    }
-
     return (
       <App>
         <div className={style.content}>
@@ -368,7 +341,10 @@ class RecordList extends React.Component {
             <a href={exportUser} className={style.operateTopBtn} target="_blank">
               <Button disabled={btnDisabled} type="primary" icon="export" >导出</Button>
             </a>
-            {renderExport}{renderExportTemp}
+            <span className={style.operateTopBtn}><UploadHead {...importUserAttr} /></span>
+            <a href={exportTemplate} className={style.operateTopBtn} target="_blank">
+              <Button type="primary" icon="save" className={style.operateTopBtn}>模版下载</Button>
+            </a>
           </div>
           <div className={style.searchBox}>
             <div className={'clearfix'}>

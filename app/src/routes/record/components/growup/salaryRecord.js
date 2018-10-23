@@ -30,17 +30,6 @@ class salaryRecord extends React.Component {
     let { visibleAdd } = this.state;
     let self = this;
     
-    let dataSource = [{
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号'
-    }, {
-      key: '2',
-      name: '胡彦祖',
-      age: 42,
-      address: '西湖区湖底公园1号'
-    }];
     _.forEach(salaryRecord, (item) => {
 
       // dataSource.push({
@@ -51,7 +40,7 @@ class salaryRecord extends React.Component {
     console.log(salaryRecord, 'list')
 
     const salaryRecordColumns = [{
-      title: '时间', dataIndex: 'time', render: (time) => {
+      title: '生效时间', dataIndex: 'time', render: (time) => {
         return (
           <span>{moment(time).format('YYYY-MM-DD')}</span>
         )

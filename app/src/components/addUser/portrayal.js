@@ -30,9 +30,10 @@ const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
       uploadOnSelection={true}
     >
       {({ onFiles, progress, complete }) => {
-
+        let isLoading = false;
         if (progress && !complete) {
           img = {path: defaultImg};
+          isLoading = true;
         }
         if (complete) {
           img = imgUrl;
@@ -57,6 +58,15 @@ const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
           }
         }
 
+        let renderIcon = (
+          <Icon type="upload" theme="outlined" style={{ 'fontSize': '20px' }} />
+        )
+        if (isLoading) {
+          renderIcon = (
+            <Icon type="loading" theme="outlined" style={{ 'fontSize': '20px' }} />
+          )
+        }
+
         return (
           <div>
             <div className={style.addBox}>
@@ -76,8 +86,11 @@ const UploadHead = ({ action, addFileImg, imgUrl, defaultImg }) => {
                 }}>
                   <div className={style.addFileBox}>
                     <div className={style.addFileItemBox}>
-                      <div><Icon type="upload" theme="outlined" style={{ 'fontSize': '20px' }} /></div>
+                      <div>
+                        {renderIcon}
+                      </div>
                       <div>上传</div>
+                      
                     </div>
                   </div>
                 </UploadField>

@@ -64,10 +64,10 @@ class AddSalary extends React.Component {
         onCancel={onCancel}>
         <div style={styleCss}>
           <form>
-            <FormItem {...formItemLayout} label="调整时间">
+            <FormItem {...formItemLayout} label="生效时间">
               {getFieldDecorator('time', {
                 rules: [{
-                  required: true, message: '请选择调整时间',
+                  required: true, message: '请选择生效时间',
                 }],
                 initialValue: moment(new Date())
               })(

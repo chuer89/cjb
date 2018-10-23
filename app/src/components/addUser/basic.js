@@ -3,6 +3,8 @@ import { Form, Button, DatePicker, Select, Input, InputNumber } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import style from './add.less';
+import common from './../../common';
+import { invitationChannelMap, contractTypeMap, rankTypeMap } from './config';
 
 // const { TextArea } = Input;
 
@@ -19,22 +21,13 @@ class BasicForm extends React.Component {
       isRecommendChannel: false, // 是否内推
 
       // 应聘渠道
-      invitationChannel: [{
-        value: '社招', code: '0'
-      }, {
-        value: '内推', code: '1'
-      }, {
-        value: '其他', code: '2'
-      }],
+      invitationChannel: invitationChannelMap,
 
       // 合同类型
-      contractType: [{
-        value: '固定期限', code: '1'
-      }, {
-        value: '非固定期限', code: '2'
-      }, {
-        value: '试用', code: '3'
-      }]
+      contractType: contractTypeMap,
+
+      //职级
+      rankType: rankTypeMap,
     }
   }
 
@@ -66,7 +59,7 @@ class BasicForm extends React.Component {
   render() {
     let { userDetails, form, positionData } = this.props;
     const { getFieldDecorator } = form;
-    let { invitationChannel, 
+    let { invitationChannel, rankType,
       isRecommendChannel, contractType } = this.state;
     let self = this;
 
@@ -100,6 +93,13 @@ class BasicForm extends React.Component {
 
     // 合同类型
     let renderContractType = contractType.map((item) => {
+      return (
+        <Option value={item.code} key={item.code}>{item.value}</Option>
+      )
+    });
+
+    // 职级
+    let renderRankType = rankType.map((item) => {
       return (
         <Option value={item.code} key={item.code}>{item.value}</Option>
       )
@@ -141,7 +141,7 @@ class BasicForm extends React.Component {
     let renderPosition = ''
     if (!_.isEmpty(positionData)) {
       renderPosition = (
-        <FormItem {...formItemLayout} label="职级">
+        <FormItem {...formItemLayout} label="岗位">
           {getFieldDecorator('position', {
             initialValue: userDetails.position || '',
           })(
@@ -163,6 +163,18 @@ class BasicForm extends React.Component {
             initialValue: joinTimeInit
           })(
             <DatePicker onChange={onChange} />
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="职级">
+          {getFieldDecorator('type', {
+            rules: [{
+              required: true, message: '请选择职级',
+            }],
+            initialValue: '' + (userDetails.type || '')
+          })(
+            <Select style={{ width: 120 }}>
+              {renderRankType}
+            </Select>
           )}
         </FormItem>
         {renderPosition}
@@ -208,6 +220,30 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
         {renderRecommendChannel}
+        <FormItem {...formItemLayout} label="特长">
+          {getFieldDecorator('specialty', {
+            initialValue: userDetails.specialty
+          })(
+            <Input placeholder="请输入特长" autoComplete="off" maxLength="64"/>
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="紧急联系人姓名">
+          {getFieldDecorator('emergencyContact', {
+            initialValue: userDetails.emergencyContact,
+          })(
+            <Input placeholder="请输入紧急联系人姓名" autoComplete="off" maxLength="32"/>
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="紧急联系人联系方式">
+          {getFieldDecorator('emergencyContactPhone', {
+            initialValue: userDetails.emergencyContactPhone,
+            rules: [{
+              pattern: common.reg.phone, message: '请输入正确的手机号',
+            }],
+          })(
+            <Input placeholder="请输入紧急联系人联系方式" autoComplete="off" maxLength="11"/>
+          )}
+        </FormItem>
         <FormItem>
           <div className={style.submitBtnBox}>
             <Button block type="primary" htmlType="submit" size="large">下一步</Button>

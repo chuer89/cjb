@@ -19,6 +19,7 @@ export default {
 
     uid: '', // 操作当前的uid
     positionData: [], // 当前门店职级
+    twoDepartmentData: [], // 二级部门
   },
 
   subscriptions: {
@@ -53,6 +54,24 @@ export default {
           type: 'save',
           payload: {
             positionData,
+          }
+        });
+      }
+    },
+
+    // 获取二级部门
+    *getTwoDepartmentBySid({ payload }, { call, put }) {
+      let temp = yield call(services.getTwoDepartmentBySid, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        let twoDepartmentData = data.data;
+        twoDepartmentData.push({
+          name: '自定义', id: ''
+        });
+        yield put({
+          type: 'save',
+          payload: {
+            twoDepartmentData,
           }
         });
       }

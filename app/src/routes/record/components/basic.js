@@ -1,19 +1,16 @@
 import React from 'react';
 import style from './basic.less';
 import common from '../../../common';
+import { educationObj, genderObj, contractTypeObj, rankTypeObj } from '../../../components/addUser/config'
 
 // 基本信息
 class Basic extends React.Component {
   state = {
     // 性别
-    gender: {
-      '1': '男', '2': '女', '0': '未知',
-    },
+    gender: genderObj,
 
     // 学历
-    education: {
-      '1': '大学', '2': '高中', '3': '初中', '4': '其他',
-    },
+    education: educationObj,
 
     // 婚姻
     marry: {
@@ -21,9 +18,7 @@ class Basic extends React.Component {
     },
 
     // 合同类型
-    contractType: {
-      '1': '固定期限', '2': '非固定期限', '3': '试用'
-    },
+    contractType: contractTypeObj,
 
     // 在职状态
     status: {
@@ -31,11 +26,11 @@ class Basic extends React.Component {
     },
 
     warningSele: { // 预警信息
-      '0': '正常',
-      '1': '身份证',
-      '2': '健康证',
-      '3': '劳动合同',
+      '0': '正常', '1': '身份证', '2': '健康证', '3': '劳动合同',
     },
+
+    // 职级
+    rankType: rankTypeObj,
   }
 
   render() {
