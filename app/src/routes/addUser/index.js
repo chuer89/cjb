@@ -85,7 +85,6 @@ class Add extends React.Component {
             }
           })
         }
-        console.log(addUserParam, departmentType, 'addp')
       }
     }
 

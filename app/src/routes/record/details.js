@@ -24,7 +24,6 @@ class DetailsInfo extends React.Component {
     let { defaultHead } = app;
 
     let callback = (key) => {
-      console.log(key);
       if (key === '3') {
         dispatch({
           type: 'editUser/getUserPortrayalByUid'

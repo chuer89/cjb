@@ -37,8 +37,6 @@ class salaryRecord extends React.Component {
       // })
     })
 
-    console.log(salaryRecord, 'list')
-
     const salaryRecordColumns = [{
       title: '生效时间', dataIndex: 'time', render: (time) => {
         return (

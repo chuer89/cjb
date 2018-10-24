@@ -148,7 +148,7 @@ class BasicForm extends React.Component {
         }
 
         return (
-          <Option key={code}>{name}</Option>
+          <Option value={code} key={code}>{name}</Option>
         )
       })
       renderTwoDepartment = (
@@ -162,7 +162,6 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
       )
-
     }
     // 自定义二级部门
     let renderTwoDepartmentOwn = '';
