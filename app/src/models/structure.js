@@ -8,6 +8,7 @@ export default {
   state: {
     storeStructure: [], // 门店组织结构
     sectionStructure: [], // 部门组织架构
+    positionStructure: [], // 岗位
   },
 
   subscriptions: {
@@ -30,6 +31,12 @@ export default {
         dispatch({
           type: 'getOrganizations',
         });
+
+        if (pathname === '/deploy/position') {
+          dispatch({
+            type: 'getPosition',
+          });
+        }
       })
     },
   },
@@ -70,6 +77,16 @@ export default {
     // 获取门店岗位
     *getPosition({ payload }, { call, put }) {
       let temp = yield call(services.getPosition, payload);
+
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            positionStructure: data.data,
+          }
+        })
+      }
     },
 
     // 添加门店

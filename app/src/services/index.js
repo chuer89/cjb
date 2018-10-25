@@ -140,6 +140,15 @@ let httpApi = {
 	addPosition(param = {}) {
 		return post('base', '/position/addPosition', param);
 	},
+	// 更新岗位
+	updatePositionById(param = {}) {
+		return post('base', '/position/updatePositionById', param);
+	},
+	// 删除岗位
+	deletePositionById(param = {}) {
+		return post('base', '/position/deletePositionById', param);
+	},
+
 	// 获取门店的二级部门
 	getTwoDepartmentBySid(param = {}) {
 		return post('base', '/user/getTwoDepartmentBySid', param);

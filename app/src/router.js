@@ -62,9 +62,14 @@ const Routers = function ({ history, app }) {
     {
       path: '/deploy/store', // 门店管理
       component: () => import('./routes/deploy/store/')
-    }, {
+    }, 
+    {
       path: '/deploy/section', // 部门管理
       component: () => import('./routes/deploy/section/')
+    },
+    {
+      path: '/deploy/position', // 岗位管理
+      component: () => import('./routes/deploy/position/')
     },
 
     { // 课程概况

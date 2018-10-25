@@ -29,13 +29,6 @@ class salaryRecord extends React.Component {
     let { salaryRecord, uid, upSalaryList } = this.props;
     let { visibleAdd } = this.state;
     let self = this;
-    
-    _.forEach(salaryRecord, (item) => {
-
-      // dataSource.push({
-
-      // })
-    })
 
     const salaryRecordColumns = [{
       title: '生效时间', dataIndex: 'time', render: (time) => {
@@ -48,9 +41,9 @@ class salaryRecord extends React.Component {
     }, {
       title: '调整后', dataIndex: 'salaryAfter',
     }, {
-      title: '调整幅度', dataIndex: 'range', render: () => {
+      title: '调整幅度', dataIndex: 'rate', render: (value) => {
         return (
-          <span>22%</span>
+          <span>{value}%</span>
         )
       }
     }, {

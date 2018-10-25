@@ -34,6 +34,9 @@ export default {
       'dept-config': {
         icon: 'team', path: '/deploy/section'
       },
+      'position-config': { // 岗位
+        icon: 'solution', path: '/deploy/position'
+      },
 
       // 培训管理
       'class-config': { // 课程管理
