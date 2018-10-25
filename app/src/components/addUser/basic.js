@@ -144,7 +144,7 @@ class BasicForm extends React.Component {
     let renderTwoDepartment = '';
     if (!_.isEmpty(twoDepartmentData)) {
       let rendertwoDepartmentSele = twoDepartmentData.map((item, index) => {
-        let code = index;
+        let code = item;
         let name = item;
         if (item.code === '-1') {
           name = item.name;
