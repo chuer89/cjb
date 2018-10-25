@@ -53,8 +53,10 @@ class BasicForm extends React.Component {
       let contractStarttime = '';
       let contractEndtime = '';
       let joinTime = '';
+      let healthCertificateTime = '';
       if (!err) {
         joinTime = moment(values.joinTime).format('YYYY-MM-DD');
+        healthCertificateTime = moment(values.healthCertificateTime).format('YYYY-MM-DD');
         contractStarttime = moment(values.contractDate[0]).format('YYYY-MM-DD');
         contractEndtime = moment(values.contractDate[1]).format('YYYY-MM-DD');
 
@@ -69,6 +71,7 @@ class BasicForm extends React.Component {
 
         _.extend(values, {
           joinTime,
+          healthCertificateTime,
           contractStarttime,
           contractEndtime,
           twoDepartment,
@@ -88,9 +91,10 @@ class BasicForm extends React.Component {
     let self = this;
 
     userDetails = userDetails || {};
-    let { joinTime, contractStarttime, contractEndtime } = userDetails;
+    let { joinTime, contractStarttime, contractEndtime, healthCertificateTime } = userDetails;
     let joinTimeInit = moment(joinTime || new Date()) || '';
-    let contractDateInit = [moment(contractStarttime), moment(contractEndtime)];
+    let healthCertificateTimeInit = healthCertificateTime ? moment(healthCertificateTime) : '';
+    let contractDateInit = contractStarttime ? [moment(contractStarttime), moment(contractEndtime)] : [];
 
     const formItemLayout = {
       labelCol: {
@@ -229,6 +233,13 @@ class BasicForm extends React.Component {
               required: true, message: '请选择入职日期',
             }],
             initialValue: joinTimeInit
+          })(
+            <DatePicker onChange={onChange} />
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="健康证到期时间">
+          {getFieldDecorator('healthCertificateTime', {
+            initialValue: healthCertificateTimeInit
           })(
             <DatePicker onChange={onChange} />
           )}
