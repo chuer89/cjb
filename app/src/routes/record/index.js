@@ -16,6 +16,9 @@ const confirm = Modal.confirm;
 // 上传
 const UploadHead = ({ addFile, token }) => {
   let action = services.importUser + '?token=' + token;
+  const reloadPage = () => {
+    location.reload();
+  }
   return (
     <Uploader
       request={{
@@ -26,7 +29,7 @@ const UploadHead = ({ addFile, token }) => {
         withCredentials: false,
       }}
       onError={({ error }) => {
-        message.error('上传失败，请稍后再试。');
+        message.error('上传失败，请稍后再试。', reloadPage);
       }}
       onComplete={({ response }) => {
         let { msg, data } = response;
@@ -35,7 +38,7 @@ const UploadHead = ({ addFile, token }) => {
           message.success('导入成功');
           addFile(data);
         } else {
-          message.error(msg);
+          message.error(msg, reloadPage);
         }
       }}
       //upload on file selection, otherwise use `startUpload`

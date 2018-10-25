@@ -11,15 +11,17 @@ export default {
     pageSize: 20, // 
     firstPage: 1,
 
-    // 状态筛选
+    // 状态筛选 1试用 2在职 3离职 4待离职
     statusData: [{
       value: '全部', code: ''
     }, {
-      value: '离职', code: '1'
+      value: '试用', code: '1'
     }, {
       value: '在职', code: '2'
     }, {
-      value: '待离职', code: '3'
+      value: '离职', code: '3'
+    }, {
+      value: '待离职', code: '4'
     }],
 
     // 合同类型
