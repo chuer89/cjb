@@ -128,19 +128,21 @@ class RecordList extends React.Component {
         )
       }
     }, {
-      title: '信息预警',
-      dataIndex: 'warning',
-      render: (item) => {
-        let value = '';
-        if (_.isArray(item)) {
-          _.forEach(item, (val) => {
-            value += warningSele[val] + ',';
-          });
-        }
-        return (
-          <div>{value}</div>
-        )
-      }
+      // title: '信息预警',
+      // dataIndex: 'warning',
+      // render: (item) => {
+      //   let value = '';
+      //   if (_.isArray(item)) {
+      //     _.forEach(item, (val) => {
+      //       value += warningSele[val] + ',';
+      //     });
+      //   }
+      //   return (
+      //     <div>{value}</div>
+      //   )
+      // }
+      title: '工作年限',
+      dataIndex: 'workAge',
     }, {
       title: '入职时间',
       dataIndex: 'joinTime',

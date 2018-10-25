@@ -1,11 +1,17 @@
 import React from 'react';
 import style from './basic.less';
 import common from '../../../common';
-import { educationObj, genderObj, contractTypeObj, rankTypeObj } from '../../../components/addUser/config'
+import _ from 'lodash';
+import { educationObj, genderObj, contractTypeObj,
+  rankTypeObj, invitationChannelObj } from '../../../components/addUser/config'
 
 // 基本信息
 class Basic extends React.Component {
   state = {
+
+    invitationChannelObj, // 应聘渠道
+    rankTypeObj, // 职级
+
     // 性别
     gender: genderObj,
 
@@ -28,9 +34,6 @@ class Basic extends React.Component {
     warningSele: { // 预警信息
       '0': '正常', '1': '身份证', '2': '健康证', '3': '劳动合同',
     },
-
-    // 职级
-    rankType: rankTypeObj,
   }
 
   render() {
@@ -76,25 +79,42 @@ class Basic extends React.Component {
     }, {
       label: '入职时间', value: common.format(userDetails.joinTime) || '--'
     }, {
+      label: '工作年限', value: userDetails.workAge || '--',
+    }, {
+      label: '职级', value: rankTypeObj[userDetails.type] || '--'
+    }, {
       label: '在职状态', value: status[userDetails.status] || '--'
     }, {
       label: '合同类型', value: contractType[userDetails.contractType] || '--'
     }, {
+      label: '合同开始时间', value: common.format(userDetails.contractStarttime) || '--'
+    }, {
+      label: '合同结束时间', value: common.format(userDetails.contractEndtime) || '--'
+    }, {
       label: '身份证到期时间', value: common.format(userDetails.idcardTime) || '--'
     }, {
-      label: '应聘渠道', value: userDetails.applyChannel || '--'
+      label: '健康证到期时间', value: common.format(userDetails.healthCertificateTime) || '--'
     }, {
-      label: '推荐人', value: userDetails.referrer || '--'
+      label: '应聘渠道', value: invitationChannelObj[userDetails.applyChannel] || '--'
     }, {
-      label: '转正时间', value: common.format(userDetails.positiveTime) || '--'
+      label: '身份证地址', value: userDetails.idcardAddr || '--'
     }];
 
+    // 离职
     if (userDetails.status === '3') {
       data = data.concat([
         {
           label: '离职时间', value: common.format(userDetails.resignationTime) || '--'
         }, {
           label: '离职原因', value: userDetails.resignationReason || '--'
+        }
+      ]);
+    }
+    // 内推
+    if (_.toString(userDetails.applyChannel) === '1') {
+      data = data.concat([
+        {
+          label: '推荐人', value: userDetails.referrer || '--'
         }
       ]);
     }
