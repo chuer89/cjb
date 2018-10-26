@@ -42,7 +42,7 @@ class CourseAddForm extends React.Component {
 
   render() {
     let { tag, tagValue } = this.state;
-    let { form, handerAdd, tagTypeData } = this.props;
+    let { form, handerAdd, tagTypeData, token } = this.props;
     const { getFieldDecorator } = form;
     let self = this;
 
@@ -71,6 +71,11 @@ class CourseAddForm extends React.Component {
             tags: '',
             tagOwn: '',
           });
+
+          if (_.isEmpty(fileId)) {
+            message.error('上传文件无法正常读取，请刷新再试');
+            return false;
+          }
 
           handerAdd(param);
         }
@@ -122,11 +127,12 @@ class CourseAddForm extends React.Component {
         </FormItem>
       )
     }
-
+    
+    // 
     const fileProps = {
       name: 'file',
       multiple: true,
-      action: services.addImg,
+      action: services.addImg + '?token=' + token,
       data: {
         type: 6,
       },
@@ -206,8 +212,9 @@ class CourseAddForm extends React.Component {
 
 const WrappedCourseAddForm = Form.create()(CourseAddForm);
 
-const CourseAdd = ({ dispatch, course }) => {
+const CourseAdd = ({ dispatch, course, user }) => {
   let { tagTypeData } = course;
+  const { userInfo: { token } } = user;
   let listPath = '/course/config';
   let handerAdd = (param) => {
     services.addTrainLibrary(param).then(({ data }) => {
@@ -225,6 +232,7 @@ const CourseAdd = ({ dispatch, course }) => {
   let formOpt = {
     tagTypeData,
     handerAdd,
+    token,
   }
 
   return (
@@ -245,6 +253,7 @@ const CourseAdd = ({ dispatch, course }) => {
   );
 };
 
-export default connect((({ course }) => ({
+export default connect((({ course, user }) => ({
   course,
+  user,
 })))(CourseAdd);
