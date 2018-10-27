@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, Input, Button, Radio, DatePicker, Select } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import style from './add.less';
 import common from './../../common';
+import moment from 'moment';
 import { educationMap } from './config';
 
 const FormItem = Form.Item;
@@ -20,6 +20,7 @@ class PersonalForm extends React.Component {
     let { handerNext, form, userDetails } = this.props;
     const { getFieldDecorator } = form;
     const { education } = this.state;
+
     
     userDetails = userDetails || {};
     let { idcardTime } = userDetails;
@@ -29,7 +30,7 @@ class PersonalForm extends React.Component {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          values.idcardTime = moment(values.idcardTime).format('YYYY-MM-DD');
+          values.idcardTime = common.format(values.idcardTime);
           handerNext(values);
         }
       });

@@ -55,10 +55,10 @@ class BasicForm extends React.Component {
       let joinTime = '';
       let healthCertificateTime = '';
       if (!err) {
-        joinTime = moment(values.joinTime).format('YYYY-MM-DD');
-        healthCertificateTime = moment(values.healthCertificateTime).format('YYYY-MM-DD');
-        contractStarttime = moment(values.contractDate[0]).format('YYYY-MM-DD');
-        contractEndtime = moment(values.contractDate[1]).format('YYYY-MM-DD');
+        joinTime = common.format(values.joinTime);
+        healthCertificateTime = common.format(values.healthCertificateTime);
+        contractStarttime = common.format(values.contractDate[0]);
+        contractEndtime = common.format(values.contractDate[1]);
 
         let twoDepartment = values.twoDepartmentSele;
         if (twoDepartment === '-1') {
@@ -92,8 +92,8 @@ class BasicForm extends React.Component {
 
     userDetails = userDetails || {};
     let { joinTime, contractStarttime, contractEndtime, healthCertificateTime } = userDetails;
-    let joinTimeInit = moment(joinTime || new Date()) || '';
-    let healthCertificateTimeInit = healthCertificateTime ? moment(healthCertificateTime) : '';
+    let joinTimeInit = moment(joinTime || new Date()) || null;
+    let healthCertificateTimeInit = healthCertificateTime ? moment(healthCertificateTime) : null;
     let contractDateInit = contractStarttime ? [moment(contractStarttime), moment(contractEndtime)] : [];
 
     const formItemLayout = {
@@ -234,14 +234,14 @@ class BasicForm extends React.Component {
             }],
             initialValue: joinTimeInit
           })(
-            <DatePicker onChange={onChange} />
+            <DatePicker />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="健康证到期时间">
           {getFieldDecorator('healthCertificateTime', {
             initialValue: healthCertificateTimeInit
           })(
-            <DatePicker onChange={onChange} />
+            <DatePicker />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="职级">
