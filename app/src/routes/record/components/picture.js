@@ -1,9 +1,7 @@
 import React from 'react';
-// import { Card } from 'antd';
-// import _ from 'lodash';
 import style from './picture.less';
 
-// 个人成长
+// 员工画像
 class Picture extends React.Component {
   state = {
 

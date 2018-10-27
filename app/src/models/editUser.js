@@ -24,6 +24,7 @@ export default {
     portrayalImg: {}, // 员工画像资料
 
     salaryRecord: [], // 工作调整记录
+    positionRecord: [], // 岗位调整记录
   },
 
   subscriptions: {
@@ -46,10 +47,11 @@ export default {
             dispatch({
               type: 'getUserById',
             });
-  
-            // dispatch({
-            //   type: 'getUserPortrayalByUid'
-            // });
+            
+            // 岗位列表
+            dispatch({
+              type: 'getPosition'
+            });
           }
         }
       });
@@ -98,15 +100,15 @@ export default {
       }
     },
 
-    // 获取当前门店职位
+    // 获取当前岗位
     *getPosition({ payload }, { call, put }) {
       let temp = yield call(services.getPosition, payload);
       let { data } = temp;
       if (data.msg === 'success') {
         let positionData = data.data;
-        positionData.push({
-          name: '其他', id: ''
-        });
+        // positionData.push({
+        //   name: '其他', id: ''
+        // });
 
         yield put({
           type: 'save',
@@ -210,7 +212,26 @@ export default {
           }
         })
       }
-    }
+    },
+
+    // 获取当前用户岗位变化
+    *getUserPositionRecordByUid({ payload }, { call, put, select }) {
+      const { uid } = yield select(_ => _.editUser);
+      let param = {};
+      _.extend(param, payload, {
+        uid,
+      });
+      let temp = yield call(services.getUserPositionRecordByUid, param);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            positionRecord: data.data,
+          }
+        })
+      }
+    },
   },
 
   reducers: {

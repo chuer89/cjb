@@ -66,10 +66,10 @@ class PositionManage extends React.Component {
                 <Input placeholder="请输入岗位名称" autoComplete="off" maxLength="32" />
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label="是否管理">
+            <FormItem {...formItemLayout} label="门店管理权限">
               {getFieldDecorator('admin', {
                 rules: [{
-                  required: true, message: '请选择是否管理岗位'
+                  required: true, message: '请选择是否拥有门店管理权限'
                 }],
                 initialValue: admin ? '0' : '1',
               })(

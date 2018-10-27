@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, Table, Button, message } from 'antd';
-import AddModule from './addSalary';
+import AddModule from './addPosition';
 import _ from 'lodash';
-import services from '../../../../services/';
+import services from '../../../../services';
 import moment from 'moment';
 import style from './table.less';
 
-// 个人成长
-class salaryRecord extends React.Component {
+// 岗位调整记录
+class PositionRecord extends React.Component {
   state = {
     visibleAdd: false,
   }
@@ -26,36 +26,31 @@ class salaryRecord extends React.Component {
   }
 
   render() {
-    let { salaryRecord, uid, upSalaryList, showAdd } = this.props;
+    let { positionRecord, uid, upSalaryList, positionData, showAdd } = this.props;
     let { visibleAdd } = this.state;
     let self = this;
 
     const salaryRecordColumns = [{
-      title: '生效时间', dataIndex: 'time', render: (time) => {
+      title: '申请调整时间', dataIndex: 'createTime', render: (time) => {
         return (
           <span>{moment(time).format('YYYY-MM-DD')}</span>
         )
       }
     }, {
-      title: '调整前', dataIndex: 'salaryBefore',
+      title: '调整前', dataIndex: 'beforeName',
     }, {
-      title: '调整后', dataIndex: 'salaryAfter',
+      title: '调整后', dataIndex: 'afterName',
     }, {
-      title: '调整幅度', dataIndex: 'rate', render: (value) => {
+      title: '原因', dataIndex: 'remark', render: (remark) => {
         return (
-          <span>{value}%</span>
-        )
-      }
-    }, {
-      title: '原因', dataIndex: 'reason', render: (reason) => {
-        return (
-          <p className={style.seasonBox} title={reason}>{reason}</p>
+          <p className={style.seasonBox} title={remark}>{remark}</p>
         )
       }
     }];
 
     let addOpt = {
       visible: visibleAdd,
+      positionData,
       onCancel() {
         self.save({
           visibleAdd: false,
@@ -65,7 +60,7 @@ class salaryRecord extends React.Component {
         _.extend(param, {
           uid,
         });
-        services.addUserSalaryRecord(param).then(({data}) => {
+        services.updateUserPosition(param).then(({data}) => {
           if (data.msg === 'success') {
             message.success('添加成功');
             self.save({
@@ -94,7 +89,7 @@ class salaryRecord extends React.Component {
       renderExtra = '';
     }
     let tableOpt = {
-      dataSource: salaryRecord,
+      dataSource: positionRecord,
       rowKey: 'id',
       columns: salaryRecordColumns,
       pagination: false,
@@ -106,7 +101,7 @@ class salaryRecord extends React.Component {
     return (
       <div>
         <AddModule {...addOpt} />
-        <Card title="工资调整记录" extra={renderExtra}>
+        <Card title="岗位调整记录" extra={renderExtra}>
           <Table {...tableOpt} />
         </Card>
       </div>
@@ -114,4 +109,4 @@ class salaryRecord extends React.Component {
   }
 };
 
-export default salaryRecord;
+export default PositionRecord;

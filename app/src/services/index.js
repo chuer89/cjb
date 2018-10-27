@@ -148,6 +148,14 @@ let httpApi = {
 	deletePositionById(param = {}) {
 		return post('base', '/position/deletePositionById', param);
 	},
+	// 获取当前用户岗位
+	getUserPositionRecordByUid(param = {}) {
+		return post('base', '/userPosition/getUserPositionRecordByUid', param);
+	},
+	// 岗位变化
+	updateUserPosition(param = {}) {
+		return post('base', '/userPosition/add', param);
+	},
 
 	// 获取门店的二级部门
 	getTwoDepartmentBySid(param = {}) {

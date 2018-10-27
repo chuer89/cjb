@@ -8,6 +8,7 @@ export default {
   namespace: 'user',
 
   state: {
+    // userType 0：企业账号；1：员工账号 2: 直属部门
     userInfo: JSON.parse(localStorage.getItem('userInfo') || '{}'), // 个人详情
     menus: JSON.parse(localStorage.getItem('menus') || '{}'), // 菜单权限
     myMenus: JSON.parse(localStorage.getItem('myMenus') || '[]'),
@@ -158,6 +159,8 @@ export default {
               pathname,
             }));
           }
+        } else {
+          message.error(menusData.msg);
         }
       } else {
         message.error(data.msg);

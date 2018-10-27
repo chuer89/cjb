@@ -1,9 +1,9 @@
 import React from 'react';
-// import _ from 'lodash';
 import style from './expression.less';
 import { connect } from 'dva';
 
 import SalaryRecord from './growup/salaryRecord';
+import PositionRecord from './growup/positionRecord';
 
 // 个人成长
 class Expression extends React.Component {
@@ -11,25 +11,54 @@ class Expression extends React.Component {
   }
 
   render() {
-    let { editUser, dispatch } = this.props;
-    let { uid, salaryRecord } = editUser;
-    let opt = {
+    let {
+      editUser: {
+        uid, salaryRecord, positionRecord, positionData
+      },
+      user: {
+        userInfo: {
+          userType
+        }
+      },
+      dispatch 
+    } = this.props;
+
+    const showAdd = userType === 1 ? false : true;
+
+    // 岗位
+    let salaryAttr = {
       uid,
       salaryRecord,
+      showAdd,
       upSalaryList() {
         dispatch({
           type: 'editUser/getUserSalaryRecordByUid'
         });
       }
     }
+
+    // 薪资调整记录
+    let postionAttr = {
+      uid,
+      positionRecord,
+      positionData,
+      showAdd,
+      upSalaryList() {
+        dispatch({
+          type: 'editUser/getUserPositionRecordByUid'
+        });
+      }
+    }
     return (
       <div>
-        <div className={style.itemBox}><SalaryRecord {...opt} /></div>
+        <div className={style.itemBox}><SalaryRecord {...salaryAttr} /></div>
+        <div className={style.itemBox}><PositionRecord {...postionAttr} /></div>
       </div>
     );
   }
 };
 
-export default connect((({ editUser }) => ({
+export default connect((({ editUser, user }) => ({
   editUser,
+  user,
 })))(Expression);

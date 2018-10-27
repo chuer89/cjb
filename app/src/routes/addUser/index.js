@@ -72,9 +72,6 @@ class Add extends React.Component {
         if (departmentType === '1' && storeId) {
           dispatch({
             type: 'addUser/getPosition',
-            payload: {
-              sid: storeId,
-            }
           })
 
           // 二级部门

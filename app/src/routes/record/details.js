@@ -29,8 +29,14 @@ class DetailsInfo extends React.Component {
           type: 'editUser/getUserPortrayalByUid'
         })
       } else if (key === '2') {
+        // 工作记录
         dispatch({
           type: 'editUser/getUserSalaryRecordByUid'
+        });
+
+        // 岗位记录
+        dispatch({
+          type: 'editUser/getUserPositionRecordByUid'
         });
       }
     }

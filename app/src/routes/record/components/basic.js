@@ -61,7 +61,7 @@ class Basic extends React.Component {
     }, {
       label: '年龄', value: userDetails.age
     }, {
-      label: '出生日期', value: userDetails.birthday,
+      label: '出生日期', value: common.format(userDetails.birthday) || '--',
     }, {
       label: '身份证', value: userDetails.idcard || '--',
     }, {
