@@ -46,7 +46,11 @@ class CourseConfig extends React.Component {
   }
 
   render() {
-    let { course, dispatch, app, structure } = this.props;
+    let { course, dispatch, app, structure, user: {
+      userInfo: {
+        userType
+      }
+    } } = this.props;
     let { officeWebUrl } = app;
     let { tagTypeData, classTypeData, tag, classType,
       listData, checkedList, visibleDesignate, seleDeptIndex } = course;
@@ -153,6 +157,7 @@ class CourseConfig extends React.Component {
     let designateAttr = {
       visible: visibleDesignate,
       structure,
+      userType,
       onCancel() {
         dispatch({
           type: 'course/save',
@@ -211,8 +216,9 @@ class CourseConfig extends React.Component {
   }
 }
 
-export default connect((({ course, structure, app }) => ({
+export default connect((({ course, structure, app, user }) => ({
   course,
   structure,
   app,
+  user,
 })))(CourseConfig);

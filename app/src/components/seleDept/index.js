@@ -21,7 +21,7 @@ class DeptSele extends React.Component {
   }
 
   render() {
-    let { structure, userType, onChange, defaultValue } = this.props;
+    let { structure, userType, onChange, defaultValue, getPopupContainerId } = this.props;
     let { storeStructure, sectionStructure } = structure;
 
     // userType 0：企业账号；1：员工账号 2: 直属部门
@@ -100,16 +100,17 @@ class DeptSele extends React.Component {
     let deptOpt = {
       options: deptData,
       onChange,
+      defaultValue,
       placeholder: '全部',
       notFoundContent: '无筛选部门',
       expandTrigger: 'hover',
       changeOnSelect: userType === 1 ? false : true,
-      defaultValue,
+      getPopupContainer: () => document.getElementById(getPopupContainerId || 'js_sele_dept'),
     }
 
     return (
       <div>
-        <Cascader {...deptOpt} getPopupContainer={() => document.getElementById('js_sele_dept')} />
+        <Cascader {...deptOpt} />
         <div id="js_sele_dept"></div>
       </div>
     )
