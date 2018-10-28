@@ -33,7 +33,8 @@ let post = (region, api, params = {}) => {
 
 	ajax.then(({data}) => {
 		// 超时登录
-		if (data && data.code === 103) {
+		// 102,"无效的token" 103,"token已过期"
+		if (data && (data.code === 103 || data.code === 102)) {
 			// 去登录
 			window.location.hash = '#/login';
 			window.location.reload();
