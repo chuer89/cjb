@@ -1,0 +1,49 @@
+@import "~@themes/class";
+
+.box{
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 20px;
+}
+
+.item{
+  width: 50%;
+}
+.oddItem{
+  background: @bgGrayColor;
+}
+
+.itemClone{
+  display: inline-block;
+  line-height: 42px;
+}
+.key{
+  .itemClone;
+  color: @fontGrayColor;
+  text-align: right;
+  padding-right: 5%;
+  width: 40%;
+}
+.value{
+  .itemClone;
+  color: @linkFontColor;
+  width: 60%;
+}
+
+.headImg{
+  height: 120px;
+  max-width: 120px;
+  border-radius: 60px;
+}
+
+.firstItemHead{
+  width: 25%;
+  text-align: right;
+  .fl;
+}
+.firstBox{
+  .clearfix;
+}
+.firstItem{
+  .fl;
+}

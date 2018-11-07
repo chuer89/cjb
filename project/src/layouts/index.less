@@ -1,0 +1,67 @@
+@import "~@themes/class";
+@import "~@themes/mixin";
+
+.logo {
+  height: 32px;
+  margin: 16px;
+  width: 165px;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-left: 2px;
+  color: white;
+  img {
+    height: 30px;
+    margin-right: 8px;
+  }
+}
+
+.headerBox{
+  box-shadow: 0 1px 3px rgba(255,255,255,.2);
+  padding: 0px 34px 0px 0px;
+  position: fixed;
+  width: 100%;
+  z-index: 900;
+}
+.headerItem{
+  float: left;
+}
+.userHeader{
+  text-align: right;
+  padding-right: 24px;
+}
+.userInfo{
+  color: white;
+  cursor: pointer;
+  i{
+    font-size: 14px;
+    padding-right: 5px;
+  }
+}
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color .3s;
+  &:hover{
+    color: #1890ff;
+  }
+}
+
+.logout{
+  color: @linkFontColor;
+  a{
+    color: @linkFontColor;
+  }
+  i{
+    padding-right: 2px;
+  }
+}
+
+.menusIconFont{
+  font-size: 14px;
+  padding-right: 10px;
+}
