@@ -3,7 +3,7 @@ import { Form, Button, DatePicker, Select, Input, InputNumber } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import style from './add.less';
-import common from './../../common';
+import common from '@common';
 import { invitationChannelMap, contractTypeMap, rankTypeMap } from './config';
 
 // const { TextArea } = Input;

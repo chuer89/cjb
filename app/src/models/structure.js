@@ -1,4 +1,4 @@
-import services from './../services/';
+import services from '@services';
 // import { message } from 'antd';
 
 export default {

@@ -1,4 +1,4 @@
-import services from './../services/';
+import services from '@services/';
 import _ from 'lodash';
 
 export default {
@@ -8,10 +8,13 @@ export default {
   state: {
     userParam: {}, // 修改员工参数
 
-    activeTabsKey: '1', // 选中面板
+    activeTabsKey: '0', // 选中面板
+    personalDisabled: true, // 个人信息
     basicDisabled: true, // 基本信息
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像
+
+    departmentType: '1', // 部门类型 1门店 2行政
 
     positionData: [], // 岗位
     twoDepartmentData: [], // 二级部门
@@ -30,28 +33,30 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        let _pathname = pathname.split('/');
-        let pathnameLen = _pathname.length;
-        let uid = _pathname[pathnameLen - 1];
+        if (pathname.indexOf('/personnel/record/userdetails/') === 0 || pathname.indexOf('/personnel/record/editUser/') === 0) {
+          let _pathname = pathname.split('/');
+          let pathnameLen = _pathname.length;
+          let uid = _pathname[pathnameLen - 1];
 
-        if (_.toNumber(uid)) {
-          dispatch({
-            type: 'save',
-            payload: {
-              uid,
+          if (_.toNumber(uid)) {
+            dispatch({
+              type: 'save',
+              payload: {
+                uid,
+              }
+            });
+
+            // 用户详情
+            if (uid) {
+              dispatch({
+                type: 'getUserById',
+              });
+
+              // 岗位列表
+              dispatch({
+                type: 'getPosition'
+              });
             }
-          });
-  
-          // 用户详情
-          if (uid) {
-            dispatch({
-              type: 'getUserById',
-            });
-            
-            // 岗位列表
-            dispatch({
-              type: 'getPosition'
-            });
           }
         }
       });
@@ -179,7 +184,7 @@ export default {
         _.forEach(_contract, (item) => {
           contractData.push(filesObj[item]);
         });
-        
+
         yield put({
           type: 'save',
           payload: {

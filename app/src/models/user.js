@@ -1,7 +1,7 @@
-import services from './../services/';
+import services from '@services';
 import { message } from 'antd';
-import common from './../common';
-import { routerRedux } from 'dva/router';
+import common from '@common';
+import routerRedux from 'umi/router';
 
 export default {
 
@@ -19,7 +19,7 @@ export default {
     menusOwnData: {
       // 人事管理
       'console': {
-        icon: 'desktop', path: '/personnel/index'
+        icon: 'desktop', path: '/personnel/workbench'
       },
       'summary': {
         icon: 'pie-chart', path: '/personnel/dashboard',
@@ -41,7 +41,7 @@ export default {
 
       // 培训管理
       'class-config': { // 课程管理
-        icon: '&#xe60c;', isFont: true, path: '/course/config'
+        icon: '&#xe60c;', isFont: true, path: '/course/management'
       }, 
       'class-summary': { // 课程概况
         icon: '&#xe62c;', isFont: true, path: '/course/summary'
