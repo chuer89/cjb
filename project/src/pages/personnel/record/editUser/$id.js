@@ -7,6 +7,7 @@ import _ from 'lodash';
 import services from '@services/';
 import routerRedux from 'umi/router';
 
+import Department from '@components/addUser/department'; // 员工归属
 import Personal from '@components/addUser/personal'; // 个人信息
 import Basic from '@components/addUser/basic'; // 基本信息
 import Experience from '@components/addUser/experience'; // 工作经验
@@ -23,9 +24,9 @@ class Edit extends React.Component {
 
   render() {
     let { editUser, dispatch, app, user } = this.props;
-    let { basicDisabled, experienceDisabled, twoDepartmentData,
+    let { personalDisabled, basicDisabled, experienceDisabled, twoDepartmentData,
       portrayalDisabled, activeTabsKey, userParam, uid, positionData,
-      userWork, userDetails, portrayalImg } = editUser;
+      userWork, userDetails, portrayalImg, departmentType } = editUser;
     let { defaultImg } = app;
     const { userInfo: { token } } = user;
 
@@ -37,6 +38,46 @@ class Edit extends React.Component {
           activeTabsKey: activeKey
         }
       });
+    }
+
+    // 归属
+    let departmentOpt = {
+      departmentType,
+      userDetails,
+      handerChange(departmentType) {
+        dispatch({
+          type: 'editUser/save',
+          payload: {
+            departmentType,
+          }
+        });
+      },
+      handerNext(values) {
+        const { storeId } = values;
+        _.extend(userParam, values);
+        dispatch({
+          type: 'editUser/save',
+          payload: {
+            personalDisabled: false,
+            activeTabsKey: '1',
+            userParam,
+          }
+        });
+        // 请求岗位
+        if (departmentType === '1' && storeId) {
+          dispatch({
+            type: 'editUser/getPosition',
+          })
+
+          // 二级部门
+          dispatch({
+            type: 'editUser/getTwoDepartmentBySid',
+            payload: {
+              sid: storeId,
+            }
+          })
+        }
+      }
     }
 
     // 个人信息
@@ -163,7 +204,8 @@ class Edit extends React.Component {
         </div>
         <div className={'contentBox'}>
           <Tabs activeKey={activeTabsKey} tabPosition="left" onChange={handerChange}>
-            <TabPane tab="个人信息" key="1"><Personal {...personalOpt} /></TabPane>
+            <TabPane tab="归属部门" key="0"><Department {...departmentOpt} /></TabPane>
+            <TabPane tab="个人信息" disabled={personalDisabled} key="1"><Personal {...personalOpt} /></TabPane>
             <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic {...baseOpt} /></TabPane>
             <TabPane tab="工作经历" disabled={experienceDisabled} key="3"><Experience {...experienceOpt} /></TabPane>
             <TabPane tab="员工画像" disabled={portrayalDisabled} key="4"><Portrayal {...portrayalOpt} /></TabPane>

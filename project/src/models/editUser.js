@@ -8,10 +8,13 @@ export default {
   state: {
     userParam: {}, // 修改员工参数
 
-    activeTabsKey: '1', // 选中面板
+    activeTabsKey: '0', // 选中面板
+    personalDisabled: true, // 个人信息
     basicDisabled: true, // 基本信息
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像
+
+    departmentType: '1', // 部门类型 1门店 2行政
 
     positionData: [], // 岗位
     twoDepartmentData: [], // 二级部门

@@ -27,8 +27,14 @@ class DepartmentForm extends React.Component {
   }
 
   render() {
-    const { form, handerChange, userOrganizations, storeStructure, departmentType } = this.props;
+    let { form, handerChange, userOrganizations, storeStructure, departmentType, userDetails } = this.props;
     const { getFieldDecorator } = form;
+
+    // orgId 组织，storeId 门店
+    const { orgId, storeId } = userDetails;
+    if (orgId) {
+      departmentType = '2'
+    }
 
     const formItemLayout = {
       labelCol: {
@@ -52,6 +58,7 @@ class DepartmentForm extends React.Component {
       renderStuc = (
         <FormItem {...formItemLayout} label="行政组织">
           {getFieldDecorator('orgId', {
+            initialValue: orgId,
             rules: [{
               required: true, message: '请选择行政组织',
             }],
@@ -116,12 +123,13 @@ class DepartmentForm extends React.Component {
       renderStuc = (
         <FormItem {...formItemLayout} label="门店组织">
           {getFieldDecorator('storeId', {
+            initialValue: storeId,
             rules: [{
               required: true, message: '请选择门店组织',
             }],
           })(
             <div>
-              <Radio.Group>{renderBrand}</Radio.Group>
+              <Radio.Group defaultValue={storeId}>{renderBrand}</Radio.Group>
             </div>
           )}
         </FormItem>
@@ -156,8 +164,7 @@ class DepartmentForm extends React.Component {
 
 const WrappedDepartmentForm = Form.create()(DepartmentForm);
 
-const Department = ({ dispatch, addUser, handerNext, structure }) => {
-  let { departmentType } = addUser;
+const Department = ({ handerNext, structure, handerChange, departmentType, userDetails }) => {
   const { sectionStructure, storeStructure } = structure
 
   let opt = {
@@ -165,14 +172,10 @@ const Department = ({ dispatch, addUser, handerNext, structure }) => {
     userOrganizations: sectionStructure,
     departmentType,
     storeStructure,
+    userDetails,
     handerChange(e) {
       let departmentType = e.target.value;
-      dispatch({
-        type: 'addUser/save',
-        payload: {
-          departmentType,
-        }
-      });
+      _.isFunction(handerChange) && handerChange(departmentType);
     }
   };
 
@@ -184,7 +187,6 @@ const Department = ({ dispatch, addUser, handerNext, structure }) => {
   );
 };
 
-export default connect((({ addUser, structure }) => ({
-  addUser,
+export default connect((({ structure }) => ({
   structure,
 })))(Department);

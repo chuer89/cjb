@@ -56,6 +56,15 @@ class Add extends React.Component {
     
     // 归属
     let departmentOpt = {
+      departmentType,
+      handerChange(departmentType) {
+        dispatch({
+          type: 'addUser/save',
+          payload: {
+            departmentType,
+          }
+        });
+      },
       handerNext(values) {
         const { storeId } = values;
         _.extend(addUserParam, values);
