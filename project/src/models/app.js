@@ -6,6 +6,7 @@ export default {
   state: {
     pathname: '/', // 路由
     moduleName: '', // 模块类型
+
     defaultImg: require('../assets/img_default.png'), // 默认图片
     defaultHead: require('../assets/head.png'), // 默认头像
     officeWebUrl: 'http://ow365.cn/?i=17026&furl=', // office Web 

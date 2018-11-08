@@ -2,10 +2,10 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Breadcrumb, Tabs, message } from 'antd';
-import { Link } from 'dva/router';
+import Link from 'umi/link';
 import _ from 'lodash';
 import services from '@services/';
-import { routerRedux } from 'dva/router';
+import routerRedux from 'umi/router';
 
 import Personal from '@components/addUser/personal'; // 个人信息
 import Basic from '@components/addUser/basic'; // 基本信息
@@ -141,9 +141,9 @@ class Edit extends React.Component {
         services.addUserPortrayal(param).then(({ data }) => {
           if (data.msg === 'success') {
             message.success('员工修改成功')
-            dispatch(routerRedux.push({
+            routerRedux.push({
               pathname: '/personnel/record'
-            }));
+            })
           } else {
             message.error(data.msg);
           }

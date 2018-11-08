@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Card, Tabs, Row, Col } from 'antd';
 import style from './index.less';
-import { Link } from 'dva/router';
+import Link from 'umi/link';
 import moment from 'moment';
 import common from '@common';
 

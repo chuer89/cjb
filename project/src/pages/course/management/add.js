@@ -1,10 +1,10 @@
 import React from 'react';
 import { Breadcrumb, Form, Input, Button, Select, Upload, Icon, message } from 'antd';
 import style from './add.less';
-import { Link } from 'dva/router';
+import Link from 'umi/link';
 import _ from 'lodash';
 import services from '../../../services/';
-import { routerRedux } from 'dva/router';
+import routerRedux from 'umi/router';
 import { connect } from 'dva';
 
 const FormItem = Form.Item;
@@ -198,7 +198,7 @@ class CourseAddForm extends React.Component {
             </FormItem>
             <div className={style.submitBtnBox}>
               <Button type="primary" htmlType="submit" size="large" style={{ marginRight: '24px' }}>添加</Button>
-              <Link to="/course/config">
+              <Link to="/course/management">
                 <Button size="large">取消</Button>
               </Link>
             </div>
@@ -214,14 +214,14 @@ const WrappedCourseAddForm = Form.create()(CourseAddForm);
 const CourseAdd = ({ dispatch, course, user }) => {
   let { tagTypeData } = course;
   const { userInfo: { token } } = user;
-  let listPath = '/course/config';
+  let listPath = '/course/management';
   let handerAdd = (param) => {
     services.addTrainLibrary(param).then(({ data }) => {
       if (data.msg === 'success') {
         message.success('上传成功');
-        dispatch(routerRedux.push({
+        routerRedux.push({
           pathname: listPath,
-        }))
+        })
       } else {
         message.error(data.msg);
       }

@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Input, Select, Modal, message, Divider } from 'antd';
 import style from './record.less';
-import { Link } from 'dva/router';
+import Link from 'umi/link';
 import _ from 'lodash';
 import moment from 'moment';
 import services from '@services/';
@@ -209,11 +209,11 @@ class RecordList extends React.Component {
 
     return (
       <div>
-        <Link to={'editUser/' + item.id} target="_blank" className={style.operateBtn}>编辑</Link>
+        <Link to={'/personnel/record/editUser/' + item.id} target="_blank" className={style.operateBtn}>编辑</Link>
         <Divider type="vertical" />
         <span className={style.operateBtn} onClick={delUser}>删除</span>
         <Divider type="vertical" />
-        <Link target="_blank" to={'/personnel/userdetails/' + item.id} className={style.operateBtn}>详情</Link>
+        <Link target="_blank" to={'/personnel/record/userdetails/' + item.id} className={style.operateBtn}>详情</Link>
       </div>
     )
   }
@@ -339,7 +339,7 @@ class RecordList extends React.Component {
       <div>
         <div className={style.content}>
           <div className={style.operateTopBox}>
-            <Link to="addUser" target="_blank" className={style.operateTopBtn}>
+            <Link to="/personnel/record/addUser" target="_blank" className={style.operateTopBtn}>
               <Button type="primary" icon="user-add">添加员工</Button>
             </Link>
             <a href={exportUser} className={style.operateTopBtn} target="_blank">

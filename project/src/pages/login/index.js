@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'dva'
 import { Button, Row, Form, Input, message } from 'antd'
 import styles from './index.less'
-import { Link } from 'dva/router';
+import Link from 'umi/link';
 import services from '@services/';
 import common from '@common';
 import _ from 'lodash';

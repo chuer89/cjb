@@ -136,7 +136,7 @@ class CourseConfig extends React.Component {
           openUrl = officeWebUrl + item.allow_path;
           path = 'ppt';
         }
-        let img = require('../../../assets/course/' + path + '.jpg');
+        let img = require('@assets/course/' + path + '.jpg');
         return (
           <div key={index} className={style.listItem}>
             <a href={openUrl} target="_blank">

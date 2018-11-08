@@ -1,7 +1,7 @@
 import services from '@services';
 import { message } from 'antd';
 import common from '@common';
-import { routerRedux } from 'dva/router';
+import routerRedux from 'umi/router';
 
 export default {
 

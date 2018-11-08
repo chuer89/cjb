@@ -4,9 +4,9 @@ import { connect } from 'dva';
 import Link from 'umi/link';
 import { Tabs, Breadcrumb } from 'antd';
 
-import Basic from './components/basic';
-import Expression from './components/expression';
-import Picture from './components/picture';
+import Basic from '../components/basic';
+import Expression from '../components/expression';
+import Picture from '../components/picture';
 
 const TabPane = Tabs.TabPane;
 

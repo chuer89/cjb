@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './search.less';
 import { Input, Button } from 'antd';
-import { Link } from 'dva/router';
+import Link from 'umi/link';
 
 const Search = Input.Search;
 
@@ -59,7 +59,7 @@ class SearchConfig extends React.Component {
           <div className={style.itemLabel}>体系：</div>
           {renderTag}
           <div className={style.operateBox}>
-            <Link to="/course/config/add"><Button type="primary">上传</Button></Link>
+            <Link to="/course/management/add"><Button type="primary">上传</Button></Link>
             <Button type="primary" disabled={disabled} onClick={handerDel} style={{ margin: '0 24px' }}>删除</Button>
             <Button type="primary" onClick={handerOpenDesignate} disabled={disabled}>指派</Button>
           </div>

@@ -2,7 +2,7 @@ import { Layout, Menu, Icon, BackTop, Popover, LocaleProvider } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import style from './index.less';
-import { Link } from 'dva/router';
+import Link from 'umi/link';
 import DeptSele from '@components/seleDept/';
 import _ from 'lodash';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
@@ -15,28 +15,13 @@ class App extends React.Component {
   state = {
     collapsed: false,
 
-    defaultSelectedKeys: ['/index'],
+    defaultSelectedKeys: ['/personnel/workbench'],
     selectedKeys: [],
 
     defaultSelectedKeysNav: ['user-console'],
     selectedKeysNav: [],
 
     deptData: [], // 筛选部门信息
-  }
-
-  UNSAFE_componentWillMount() {
-    this._isMounted = true;
-
-    let { defaultSelectedKeys, defaultSelectedKeysNav } = this.state;
-    let { pathname, moduleName } = this.props.app;
-    let selectedKeys = [pathname] || defaultSelectedKeys;
-
-    let selectedKeysNav = [moduleName] || defaultSelectedKeysNav;
-
-    this.save({
-      selectedKeys,
-      selectedKeysNav,
-    });
   }
 
   componentWillUnmount() {
@@ -57,10 +42,13 @@ class App extends React.Component {
   render() {
     let { children, app, user, structure } = this.props;
     let contentHeight = document.body.clientHeight - 64 - 60;
-    let { selectedKeys, selectedKeysNav, collapsed } = this.state;
-    let { moduleName } = app;
+    let { collapsed, defaultSelectedKeys, defaultSelectedKeysNav } = this.state;
+    let { moduleName, pathname } = app;
     let { userInfo, dept, myMenus } = user;
     let { userType } = userInfo;
+
+    let selectedKeys = [pathname] || defaultSelectedKeys;
+    let selectedKeysNav = [moduleName] || defaultSelectedKeysNav;
 
     let menusIndex = _.findIndex(myMenus, { key: moduleName });
     let menusData = [];
@@ -219,7 +207,7 @@ const LayoutRender = ({ app, user, structure, location, children }) => {
     <App {...elementProps} />
   );
 
-  if (pathname === '/login') {
+  if (pathname === '/login' || pathname === '/register' || pathname === '/initstructure' || pathname === '/404') {
     renderChilder = (
       <div>{children}</div>
     )

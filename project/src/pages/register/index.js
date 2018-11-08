@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'dva'
 import { Button, Form, Input } from 'antd'
 import styles from './index.less'
-import { Link } from 'dva/router';
+import Link from 'umi/link';
 
 const FormItem = Form.Item
 

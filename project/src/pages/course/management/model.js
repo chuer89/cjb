@@ -37,13 +37,13 @@ export default {
           });
         }
 
-        if (pathname === '/course/config') {
+        if (pathname === '/course/management') {
           dispatch({
             type: 'getTrainLibraryAllClass',
           });
 
           getTag();
-        } else if (pathname === '/course/config/add') {
+        } else if (pathname === '/course/management/add') {
           getTag();
         }
       })
