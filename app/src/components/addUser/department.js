@@ -31,10 +31,7 @@ class DepartmentForm extends React.Component {
     const { getFieldDecorator } = form;
 
     // orgId 组织，storeId 门店
-    const { orgId, storeId } = userDetails;
-    if (orgId) {
-      departmentType = '2'
-    }
+    let { orgId, storeId } = userDetails || {}
 
     const formItemLayout = {
       labelCol: {

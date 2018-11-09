@@ -19,7 +19,9 @@ class Edit extends React.Component {
   constructor(props) {
     super(props);
     // 设置 initial state
-    this.state = {};
+    this.state = {
+      isInitCheck: true,
+    };
   }
 
   render() {
@@ -29,6 +31,8 @@ class Edit extends React.Component {
       userWork, userDetails, portrayalImg, departmentType } = editUser;
     let { defaultImg } = app;
     const { userInfo: { token } } = user;
+    const self = this;
+    const { isInitCheck } = this.state;
 
     // tab 切换
     let handerChange = (activeKey) => {
@@ -40,11 +44,23 @@ class Edit extends React.Component {
       });
     }
 
+    // orgId 组织，storeId 门店
+    if (isInitCheck) {
+      const { orgId } = userDetails;
+      departmentType = '1'
+      if (orgId) {
+        departmentType = '2'
+      }
+    }
+
     // 归属
     let departmentOpt = {
       departmentType,
       userDetails,
       handerChange(departmentType) {
+        self.setState({
+          isInitCheck: false,
+        })
         dispatch({
           type: 'editUser/save',
           payload: {
@@ -135,7 +151,7 @@ class Edit extends React.Component {
         _.forEach(param, (item) => {
           item.uid = uid;
         });
-        
+
         services.addUserWork({
           jsondata: JSON.stringify(param),
         }).then(({ data }) => {
@@ -161,7 +177,7 @@ class Edit extends React.Component {
           ids: JSON.stringify([id])
         }).then(({ data }) => {
           if (data.msg === 'success') {
-            
+
           } else {
             message.error(data.msg);
           }
@@ -194,7 +210,7 @@ class Edit extends React.Component {
 
     return (
       <div>
-        <div style={{'paddingBottom': '12px'}}>
+        <div style={{ 'paddingBottom': '12px' }}>
           <Breadcrumb>
             <Breadcrumb.Item>
               <Link to="/personnel/record">员工档案</Link>
