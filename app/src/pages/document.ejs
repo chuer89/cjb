@@ -12,7 +12,9 @@
 </head>
 
 <body>
-  <div id="js_up_browser"></div>
+  <div id="js_up_browser" style="display: none">
+    <h1>您的浏览器版本太低了。请升级或更换高级浏览器！</h1>
+  </div>
   <script>
     function IsInternetExplorer() {
       var b_version = navigator.appVersion;
@@ -26,12 +28,10 @@
       return true;
     }
     function upExplorerTips() {
-      document.getElementById('js_up_browser').innerHTML('<h1>您的浏览器版本太低了。请升级或更换高级浏览器！</h1>');
+      document.getElementById('js_up_browser').style.display = 'block';
     }
 
     if (!IsInternetExplorer()) {
-      alert(1)
-      alert(document.getElementById('js_up_browser'))
       upExplorerTips();
     }
   </script>
