@@ -1,0 +1,51 @@
+.publishModal {
+  position: fixed;
+  z-index: 30;
+  width: 382px;
+  height: 216px;
+  top: 120px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 1px 1px 1px 1px #cecece, -1px -1px 1px 1px #cecece;
+
+  .publishModalContent {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      cursor: pointer;
+    }
+
+    :global {
+      .success {
+        font-size: 58px;
+        color: #009E00;
+      }
+
+      .error {
+        font-size: 58px;
+        color: red;
+      }
+
+      p {
+        color: #2B2C2E;
+        font-size: 18px;
+      }
+
+      .ant-btn {
+        margin: 28px 0 0;
+      }
+    }
+  }
+}

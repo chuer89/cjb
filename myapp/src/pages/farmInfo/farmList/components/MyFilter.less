@@ -1,0 +1,33 @@
+.MyFilter {
+  display: flex;
+  background: #fff;
+  padding-top: 24px;
+  justify-content: flex-start;
+  padding: 24px 24px 0;
+
+  .inputGroup {
+    display: flex;
+
+    .input {
+      display: block;
+      flex: 1;
+    }
+  }
+
+  .split {
+    padding: 0 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  :global {
+    .ant-form-item-control {
+      line-height: inherit;
+    }
+
+    .ant-col-8 {
+      width: auto;
+    }
+  }
+}

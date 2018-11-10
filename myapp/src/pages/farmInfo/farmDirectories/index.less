@@ -1,0 +1,50 @@
+.farmContainer {
+  padding: 24px;
+  background: #fff;
+  .actionGroup {
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 24px;
+
+    .searchBtn {
+      margin-left: 56px;
+    }
+
+    .resetBtn {
+      margin-left: 24px;
+      background: #788194;
+      color: #fff;
+    }
+
+    .resetBtn:hover {
+      background: #8791a7;
+      border-color: #8791a7;
+    }
+  }
+
+  .imgContainer {
+    width: 96px;
+    height: 54px;
+    background: #fefefe;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  :global {
+    .ant-table-pagination.ant-pagination {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    tr:nth-child(2n - 1) {
+      background: #fff;
+    }
+
+    .ant-table-tbody > tr > td {
+      border: none;
+    }
+  }
+}

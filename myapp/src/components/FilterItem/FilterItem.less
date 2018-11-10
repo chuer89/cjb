@@ -1,0 +1,28 @@
+.filterItem {
+  display: flex;
+  // justify-content: space-between;
+  // align-items: center;
+  .labelWrap {
+    width: 64px;
+    line-height: 28px;
+    margin-right: 12px;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+  }
+
+  .spaceBetween {
+    .labelWrap;
+    justify-content: space-between;
+  }
+
+  .flexEnd {
+    .labelWrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  .item {
+    flex: 1;
+  }
+}

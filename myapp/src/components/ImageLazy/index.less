@@ -1,0 +1,23 @@
+.imageLazyContainer {
+  width: 100%;
+  height: 192px;
+  overflow: hidden;
+
+  .img {
+    width: 100%;
+  }
+
+  .defaultImgContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global {
+    .ant-spin-nested-loading > div > .ant-spin {
+      max-height: auto;
+    }
+  }
+}

@@ -1,12 +1,14 @@
-import styles from './index.css';
+import { LocaleProvider } from 'antd'
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import withRouter from 'umi/withRouter'
+import App from './app'
 
-function BasicLayout(props) {
+export default withRouter((props) => {
   return (
-    <div className={styles.normal}>
-      <h1 className={styles.title}>Yay! Welcome to umi!</h1>
-      { props.children }
-    </div>
-  );
-}
-
-export default BasicLayout;
+    <LocaleProvider locale={zh_CN}>
+      <App>
+        { props.children }
+      </App>
+    </LocaleProvider>
+  )
+})

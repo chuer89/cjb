@@ -1,0 +1,48 @@
+// 输入框
+.chart-input {
+  border-top: 1px solid #E4E6EA;
+  .chart-opera {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    .chart-groups {
+      display: flex;
+      justify-items: center;
+      .inputFile {
+        display: none;
+      }
+      .icon-item {
+        margin-right: 20px;
+        :global {
+          .iconfont {
+            cursor: pointer;
+            font-size: 24px;
+            color: #2B2C2E;
+          }
+        }
+      }
+    }
+    .chart-invite {
+      width:116px;
+      height:30px;
+      line-height: 30px;
+      text-align: center;
+      border-radius:2px;
+      border:1px solid rgba(0,158,0,1);
+      color: #009E00;
+      cursor: pointer;
+    }
+  }
+  .chart-input-textarea {
+    textarea {
+      width: 100%;
+      height: 150px;
+      border: 0;
+      resize: none;
+      outline: 0;
+      padding: 24px;
+      padding-top: 0;
+      box-sizing: border-box;
+    }
+  }
+}
