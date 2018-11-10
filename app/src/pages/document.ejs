@@ -12,8 +12,24 @@
 </head>
 
 <body>
-  <div id="js_up_browser" style="display: none">
-    <h1>您的浏览器版本太低了。请升级或更换高级浏览器！</h1>
+  <style>
+    .up_browser_box{
+      width: 1200px;
+      margin: 0 auto;
+      font-size: 18px;
+      padding-top: 30px;
+    }
+    .up_browser_box h1{
+      color: #F40;
+      font-size: 24px;
+    }
+  </style>
+  <div id="js_up_browser" class="up_browser_box" style="display: none">
+    <h1>温馨提醒：您的浏览器版本太低了，存在安全风险，请升级或更换高级浏览器！</h1>
+    <div>
+        我们推荐浏览器：<a target="_blank" href="https://www.google.cn/intl/zh-CN/chrome/browser/desktop/">谷歌浏览器</a>、
+        <a target="_blank" href="http://www.mozilla.com/firefox/">火狐浏览器</a>
+    </div>
   </div>
   <script>
     function IsInternetExplorer() {
@@ -35,7 +51,7 @@
       upExplorerTips();
     }
   </script>
-  <div id="root"></div>
+  <div id="root" style="display: none"></div>
 </body>
 
 </html>
