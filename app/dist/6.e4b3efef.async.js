@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[6],{RXBc:function(e,t,n){"use strict";var o=n("TqRt");Object.defineProperty(t,"__esModule",{value:!0}),t.default=void 0;var u=o(n("q1tI")),a=o(n("dPBl")),d=function(){return u.default.createElement(a.default,{to:"/login"})};t.default=d}}]);
