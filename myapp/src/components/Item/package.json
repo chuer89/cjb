@@ -1,6 +1,0 @@
-{
-  "name": "item",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./item.js"
-}

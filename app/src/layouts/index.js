@@ -140,7 +140,7 @@ class App extends React.Component {
       <LocaleProvider locale={zh_CN}>
         <Layout>
           <Helmet>
-            <link rel="shortcut icon" href={require('../assets/favicon.ico')} />
+            <link rel="shortcut icon" href={require('@assets/favicon.ico')} />
           </Helmet>
           <Header className={style.headerBox}>
             <div className={style.headerItem}>
@@ -209,7 +209,14 @@ const LayoutRender = ({ app, user, structure, location, children }) => {
 
   if (pathname === '/login' || pathname === '/register' || pathname === '/initstructure' || pathname === '/404') {
     renderChilder = (
-      <div>{children}</div>
+      <div>
+        <Helmet>
+          <link rel="shortcut icon" href={require('@assets/favicon.ico')} />
+        </Helmet>
+        <div>
+          {children}
+        </div>
+      </div>
     )
   }
 

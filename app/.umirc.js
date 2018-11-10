@@ -24,9 +24,9 @@ export default {
       hardSource: false,
     }],
   ],
-  // targets: {
-  //   ie: 9,
-  // },
+  targets: {
+    ie: 9,
+  },
   hash: true,
   alias: {
     '@config': resolve(__dirname,"./src/config"),
