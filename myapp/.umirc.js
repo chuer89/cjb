@@ -15,4 +15,10 @@ export default {
       hardSource: true,
     }],
   ],
+
+  targets: {
+    ie: 11,
+  },
+
+  hash: true,
 }
