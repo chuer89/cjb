@@ -3,7 +3,6 @@
       var version = b_version.split(";");
       if (version.length > 1) {
         var trim_Version = parseInt(version[1].replace(/[ ]/g, "").replace(/MSIE/g, ""), 10);
-        alert(trim_Version, b_version)
         if (trim_Version < 9) {
           return false;
         }
@@ -15,5 +14,7 @@
     }
 
     if (!IsInternetExplorer()) {
+      alert(1)
+      alert(document.getElementById('js_up_browser'))
       upExplorerTips();
     }</script><div id="root"></div><script src="/umi.195fa179.js"></script></body></html>
