@@ -62,7 +62,11 @@ let httpApi = {
 	// 登录
 	login(param = {}) {
 		return post('base', '/sso/login', param);
-  },
+	},
+	// 发送验证码
+	sendCode(param = {}) {
+		return post('base', '/sso/sendCode', param);
+	},
   // 注册
   register(param = {}) {
     return post('base', '/sso/register', param);

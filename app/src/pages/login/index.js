@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Row, Form, Input, message } from 'antd'
+import { Button, Row, Col, Form, Input, message } from 'antd'
 import styles from './index.less'
 import Link from 'umi/link';
 import services from '@services/';
@@ -19,6 +19,13 @@ class Login extends React.Component {
     password: '',
     index: '',
     userType: '',
+    vcode: '',
+
+    smsLogin: false, // 短信登录
+    checkLogin: '短信登录',
+
+    isSendSms: false,
+    sendSmsTips: '获取验证码',
   }
 
   UNSAFE_componentWillMount() {
@@ -68,16 +75,29 @@ class Login extends React.Component {
 
   handerEntery({ index, userType }) {
     let { dispatch } = this.props;
-    let { phone, password } = this.state;
+    let { phone, password, vcode } = this.state;
     dispatch({
       type: 'user/login',
       payload: {
-        phone, 
-        password, 
-        index, 
+        phone,
+        password,
+        index,
         userType,
+        vcode,
       },
     });
+  }
+
+  handerSendCode(phone) {
+    services.sendCode({
+      phone
+    }).then(({data}) => {
+      if (data.msg === 'success') {
+        message.success('请注意查收短信验证码');
+      } else {
+        message.error(data.msg);
+      }
+    })
   }
 
   render() {
@@ -86,10 +106,11 @@ class Login extends React.Component {
       form: {
         getFieldDecorator,
         validateFieldsAndScroll,
+        getFieldValue,
       },
     } = this.props;
     let self = this;
-    let { visibleCompany, companyData } = this.state;
+    let { visibleCompany, companyData, smsLogin, checkLogin, isSendSms, sendSmsTips } = this.state;
 
     // 选择角色 组件
     let companyOpt = {
@@ -97,7 +118,7 @@ class Login extends React.Component {
       companyData,
       handleOk({ index, userType }) {
         self.handerEntery({
-          index, 
+          index,
           userType
         });
       },
@@ -117,11 +138,89 @@ class Login extends React.Component {
         self.save({
           phone: values.phone,
           password: values.password,
+          vcode: values.vcode,
         });
-        
+
         self.handerPhone(values.phone);
       })
     };
+    // 切换登录方式
+    let changeLogin = () => {
+      let checkLogin = '短信登录'
+      if (!smsLogin) {
+        checkLogin = '密码登录'
+      }
+      self.save({
+        smsLogin: !smsLogin,
+        checkLogin,
+      })
+    }
+
+    // 发送验证码
+    let handerSendSms = () => {
+      let phone = getFieldValue('phone');
+      if (!phone) {
+        message.error('请输入正确的手机号');
+        return false
+      }
+
+      self.save({
+        isSendSms: true,
+      })
+
+      let time = 60;
+      let interTime = setInterval(() => {
+        time -= 1;
+        if (!time) {
+          self.save({
+            isSendSms: false,
+            sendSmsTips: '获取验证码',
+          })
+          clearInterval(interTime);
+          return false;
+        }
+        self.save({
+          sendSmsTips: time + '秒后，再试',
+        })
+      }, 1000)
+
+      self.handerSendCode(phone)
+    }
+
+    let renderPassword = '';
+    if (smsLogin) {
+      renderPassword = (
+        <FormItem>
+          <Row gutter={8}>
+            <Col span={14}>
+              {getFieldDecorator('vcode', {
+                rules: [
+                  { required: true, message: '请输入短信验证码' },
+                  { pattern: common.reg.msCode, message: '请输入正确短信验证码', }
+                ],
+              })(
+                <Input maxLength={4} size="large" onPressEnter={handleOk} placeholder="短信验证码" />
+              )}
+            </Col>
+            <Col span={10}>
+              <Button disabled={isSendSms} size="large" onClick={handerSendSms}>{sendSmsTips}</Button>
+            </Col>
+          </Row>
+        </FormItem>
+      )
+    } else {
+      renderPassword = (
+        <FormItem hasFeedback>
+          {getFieldDecorator('password', {
+            rules: [
+              {
+                required: true, message: '请输入密码'
+              },
+            ],
+          })(<Input type="password" maxLength={32} size="large" autoComplete="off" onPressEnter={handleOk} placeholder="密码" />)}
+        </FormItem>
+      )
+    }
 
     return (
       <div className={styles.form}>
@@ -129,7 +228,7 @@ class Login extends React.Component {
           <Company {...companyOpt} />
         </div>
         <div className={styles.logo}>
-          <img src={require('../../assets/logo.png')} alt=""/>
+          <img src={require('@assets/logo.png')} alt="" />
           <span>餐匠帮运营系统</span>
         </div>
         <form>
@@ -143,20 +242,13 @@ class Login extends React.Component {
               ],
             })(<Input size="large" maxLength={11} onPressEnter={handleOk} autoComplete="off" placeholder="手机号" />)}
           </FormItem>
-          <FormItem hasFeedback>
-            {getFieldDecorator('password', {
-              rules: [
-                {
-                  required: true, message: '请输入密码'
-                },
-              ],
-            })(<Input type="password" maxLength={32} size="large" autoComplete="off" onPressEnter={handleOk} placeholder="密码" />)}
-          </FormItem>
+          {renderPassword}
           <Row>
             <Button type="primary" size="large" onClick={handleOk} loading={false}>登录</Button>
           </Row>
         </form>
         <div style={{ 'paddingTop': '10px' }}>
+          <span className={styles.smsLogin} onClick={changeLogin}>{checkLogin}</span>
           <Link to="/register">去注册</Link>
         </div>
       </div>
