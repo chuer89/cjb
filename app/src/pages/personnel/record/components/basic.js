@@ -98,6 +98,24 @@ class Basic extends React.Component {
       label: '应聘渠道', value: invitationChannelObj[userDetails.applyChannel] || '--'
     }, {
       label: '身份证地址', value: userDetails.idcardAddr || '--'
+    }, {
+      label: '银行', value: userDetails.bank || '--'
+    }, {
+      label: '籍贯', value: userDetails.nativePlace || '--'
+    }, {
+      label: '学校', value: userDetails.school || '--'
+    }, {
+      label: '专业', value: userDetails.major || '--'
+    }, {
+      label: '与紧急联系人关系', value: userDetails.emergencyContactRelation || '--'
+    }, {
+      label: '现居地址', value: userDetails.location || '--'
+    }, {
+      label: '合同主体', value: userDetails.contractSubject || '--'
+    }, {
+      label: '推荐人门店', value: userDetails.referrerStore || '--'
+    }, {
+      label: '备注', value: userDetails.remark || '--'
     }];
 
     // 离职

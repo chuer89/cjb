@@ -131,7 +131,7 @@ class Dashboard extends React.Component {
         return (
           <div key={index} className={style.messageListBox}>
             <div className={style.messageContent}>
-              <Link to={'/personnel/userdetails/' + item.uid} target="_blank">{item.content}</Link>
+              <Link to={'/personnel/record/userdetails/' + item.uid} target="_blank">{item.content}</Link>
             </div>
             <div className={style.messageDate}>{time}</div>
           </div>

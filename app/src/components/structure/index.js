@@ -4,6 +4,8 @@ import { Button, Input, Row, Col, Modal, message } from 'antd'
 import styles from './index.less'
 import _ from 'lodash';
 import services from '@services/';
+import Link from 'umi/link';
+import routerRedux from 'umi/router';
 
 import Modify from './modify';
 import ConfigStore from './configStore';
@@ -306,6 +308,12 @@ class Structure extends React.Component {
         visiblePosition: true,
       });
     }
+    // 添加员工
+    let handerAddUser = ({ sid }) => {
+      routerRedux.push({
+        pathname: '/personnel/record/addUser'
+      })
+    }
 
     let renderStructure = '';
     if (!_.isEmpty(storeStructure)) {
@@ -329,7 +337,8 @@ class Structure extends React.Component {
                         {itemStore.sname}
                       </div>
                       <div className={styles.operateBox}>
-                        <span onClick={() => { handerOpenPosition(itemStore) }} style={{ display: 'none' }}>岗位管理</span>
+                        <Link target="_blank" to="/personnel/record/addUser">添加员工</Link>
+                        <span onClick={() => { handerAddUser(itemStore) }} style={{ display: 'none' }}>添加员工</span>
                         <span onClick={() => { self.updateCommonStoreById(itemStore) }}>编辑门店</span>
                         <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
                       </div>

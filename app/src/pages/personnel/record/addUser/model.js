@@ -15,7 +15,7 @@ export default {
 
     storeStructure: [], // 门店架构
     userOrganizations: [], // 行政部门组织架构
-    departmentType: '1', // 部门类型 1门店 2行政
+    departmentType: '2', // 部门类型 1门店 2行政
 
     uid: '', // 操作当前的uid
     positionData: [], // 当前门店职级

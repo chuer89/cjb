@@ -30,6 +30,27 @@ class BasicForm extends React.Component {
       rankType: rankTypeMap,
 
       tagTwoDepartment: '',
+
+      // 附加信息
+      additionInfoList: [{
+        label: '银行', placeholder: '请输入银行卡号', key: 'bank',
+      }, {
+        label: '籍贯', placeholder: '请输入籍贯', key: 'nativePlace',
+      }, {
+        label: '学校', placeholder: '请输入学校', key: 'school',
+      }, {
+        label: '专业', placeholder: '请输入专业', key: 'major',
+      }, {
+        label: '与紧急联系人关系', placeholder: '请输入与紧急联系人关系', key: 'emergencyContactRelation',
+      }, {
+        label: '现居地址', placeholder: '请输入现居地址', key: 'location',
+      }, {
+        label: '合同主体', placeholder: '请输入合同主体', key: 'contractSubject',
+      }, {
+        label: '推荐人门店', placeholder: '请输入推荐人门店', key: 'referrerStore',
+      }, {
+        label: '备注', placeholder: '请输入备注', key: 'remark',
+      }]
     }
   }
 
@@ -54,8 +75,11 @@ class BasicForm extends React.Component {
       let contractEndtime = '';
       let joinTime = '';
       let healthCertificateTime = '';
+      let insuranceTime = '';
+
       if (!err) {
         joinTime = common.format(values.joinTime);
+        insuranceTime = common.format(values.insuranceTime);
         healthCertificateTime = common.format(values.healthCertificateTime);
         contractStarttime = common.format(values.contractDate[0]);
         contractEndtime = common.format(values.contractDate[1]);
@@ -71,6 +95,7 @@ class BasicForm extends React.Component {
 
         _.extend(values, {
           joinTime,
+          insuranceTime,
           healthCertificateTime,
           contractStarttime,
           contractEndtime,
@@ -87,12 +112,13 @@ class BasicForm extends React.Component {
     let { userDetails, form, positionData, twoDepartmentData } = this.props;
     const { getFieldDecorator } = form;
     let { invitationChannel, rankType, tagTwoDepartment,
-      isRecommendChannel, contractType } = this.state;
+      isRecommendChannel, contractType, additionInfoList } = this.state;
     let self = this;
 
     userDetails = userDetails || {};
-    let { joinTime, contractStarttime, contractEndtime, healthCertificateTime } = userDetails;
+    let { joinTime, contractStarttime, contractEndtime, healthCertificateTime, insuranceTime } = userDetails;
     let joinTimeInit = moment(joinTime || new Date()) || null;
+    let insuranceTimeInit = insuranceTime ? moment(insuranceTime) : null;
     let healthCertificateTimeInit = healthCertificateTime ? moment(healthCertificateTime) : null;
     let contractDateInit = contractStarttime ? [moment(contractStarttime), moment(contractEndtime)] : [];
 
@@ -225,6 +251,19 @@ class BasicForm extends React.Component {
       )
     }
 
+    // 附属信息
+    let renderAddition = additionInfoList.map((item, index) => {
+      return (
+        <FormItem {...formItemLayout} label={item.label} key={index}>
+          {getFieldDecorator(item.key, {
+            initialValue: userDetails[item.key],
+          })(
+            <Input placeholder={item.placeholder} autoComplete="off" maxLength="32" />
+          )}
+        </FormItem>
+      )
+    })
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
@@ -288,6 +327,14 @@ class BasicForm extends React.Component {
             initialValue: userDetails.salary
           })(
             <InputNumber min={0} />
+          )}
+        </FormItem>
+        {renderAddition}
+        <FormItem {...formItemLayout} label="保险过期日期">
+          {getFieldDecorator('insuranceTime', {
+            initialValue: insuranceTimeInit
+          })(
+            <DatePicker />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="应聘渠道">

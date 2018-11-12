@@ -5,7 +5,7 @@ import { Breadcrumb, Tabs, message } from 'antd';
 import { Link } from 'dva/router';
 import _ from 'lodash';
 import services from '@services/';
-import { routerRedux } from 'dva/router';
+import routerRedux from 'umi/router';
 
 import Department from '@components/addUser/department'; // 员工归属
 import Personal from '@components/addUser/personal'; // 个人信息

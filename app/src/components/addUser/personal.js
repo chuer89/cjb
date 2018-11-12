@@ -24,7 +24,7 @@ class PersonalForm extends React.Component {
     
     userDetails = userDetails || {};
     let { idcardTime } = userDetails;
-    let idcardTimeInit = moment(idcardTime) || '';
+    let idcardTimeInit = idcardTime ? moment(idcardTime) : null;
 
     let handleSubmit = (e) => {
       e.preventDefault();

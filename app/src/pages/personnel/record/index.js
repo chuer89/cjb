@@ -62,7 +62,7 @@ const UploadHead = ({ addFile, token }) => {
           }} uploadProps={{
             accept: '.xlsx,.xls,.xlt',
           }}>
-            <Button loading={loading} type="primary" icon="usergroup-add">批量添加</Button>
+            <Button loading={loading} type="primary" icon="usergroup-add">批量导入</Button>
           </UploadField>
         )
       }}
