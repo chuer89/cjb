@@ -8,7 +8,7 @@ export default {
   state: {
     storeStructure: [], // 门店组织结构
     sectionStructure: [], // 部门组织架构
-    positionStructure: [], // 岗位
+    positionStructure: [], // 职位
   },
 
   subscriptions: {

@@ -2,7 +2,7 @@ import React from 'react'
 import App from '../../app';
 import Structure from './../../../components/structure/position';
 
-// 岗位管理
+// 职位管理
 class Position extends React.Component {
 
   render() {

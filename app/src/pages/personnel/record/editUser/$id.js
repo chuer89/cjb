@@ -79,6 +79,12 @@ class Edit extends React.Component {
             userParam,
           }
         });
+        if (storeId) {
+          _.assign(userParam, {
+            orgId: '',
+          })
+        }
+
         // 请求岗位
         if (departmentType === '1' && storeId) {
           dispatch({

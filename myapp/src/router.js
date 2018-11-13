@@ -68,7 +68,7 @@ const Routers = function ({ history, app }) {
       component: () => import('./routes/deploy/section/')
     },
     {
-      path: '/deploy/position', // 岗位管理
+      path: '/deploy/position', // 职位管理
       component: () => import('./routes/deploy/position/')
     },
 

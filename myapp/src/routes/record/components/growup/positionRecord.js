@@ -6,7 +6,7 @@ import services from '../../../../services';
 import moment from 'moment';
 import style from './table.less';
 
-// 岗位调整记录
+// 职位调整记录
 class PositionRecord extends React.Component {
   state = {
     visibleAdd: false,
@@ -101,7 +101,7 @@ class PositionRecord extends React.Component {
     return (
       <div>
         <AddModule {...addOpt} />
-        <Card title="岗位调整记录" extra={renderExtra}>
+        <Card title="职位调整记录" extra={renderExtra}>
           <Table {...tableOpt} />
         </Card>
       </div>

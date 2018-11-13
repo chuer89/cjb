@@ -68,7 +68,7 @@ class Add extends React.Component {
             addUserParam,
           }
         });
-        // 请求岗位
+        // 请求职位
         if (departmentType === '1' && storeId) {
           dispatch({
             type: 'addUser/getPosition',

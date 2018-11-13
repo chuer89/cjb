@@ -116,14 +116,14 @@ class BasicForm extends React.Component {
     // 职位
     let renderPosition = ''
     if (!_.isEmpty(positionData)) {
-      // 岗位筛选
+      // 职位筛选
       let renderProfessionLevel = positionData.map((item) => {
         return (
           <Option value={item.id} key={item.id}>{item.name}</Option>
         )
       });
       renderPosition = (
-        <FormItem {...formItemLayout} label="岗位">
+        <FormItem {...formItemLayout} label="职位">
           {getFieldDecorator('position', {
             initialValue: userDetails.position || '',
           })(

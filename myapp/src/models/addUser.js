@@ -40,7 +40,7 @@ export default {
       yield put({ type: 'save' });
     },
 
-    // 获取当前岗位
+    // 获取当前职位
     *getPosition({ payload }, { call, put }) {
       let temp = yield call(services.getPosition, payload);
       let { data } = temp;

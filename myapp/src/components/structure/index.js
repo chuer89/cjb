@@ -22,7 +22,7 @@ class Structure extends React.Component {
     initialValue: '',
 
     visibleStroe: false, // 配置门店
-    visiblePosition: false, // 岗位
+    visiblePosition: false, // 职位
   }
 
   UNSAFE_componentWillMount() {
@@ -291,7 +291,7 @@ class Structure extends React.Component {
       mapKey,
     }
 
-    // 岗位
+    // 职位
     let positionManageAttr = {
       visible: visiblePosition,
       onCancel() {
@@ -329,7 +329,7 @@ class Structure extends React.Component {
                         {itemStore.sname}
                       </div>
                       <div className={styles.operateBox}>
-                        <span onClick={() => { handerOpenPosition(itemStore) }} style={{ display: 'none' }}>岗位管理</span>
+                        <span onClick={() => { handerOpenPosition(itemStore) }} style={{ display: 'none' }}>职位管理</span>
                         <span onClick={() => { self.updateCommonStoreById(itemStore) }}>编辑门店</span>
                         <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
                       </div>

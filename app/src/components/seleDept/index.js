@@ -21,7 +21,7 @@ class DeptSele extends React.Component {
   }
 
   render() {
-    let { structure, userType, onChange, defaultValue, getPopupContainerId } = this.props;
+    let { structure, userType, onChange, defaultValue, getPopupContainerId, cascaderConfig } = this.props;
     let { storeStructure, sectionStructure } = structure;
 
     // userType 0：企业账号；1：员工账号 2: 直属部门
@@ -106,6 +106,7 @@ class DeptSele extends React.Component {
       expandTrigger: 'hover',
       changeOnSelect: userType === 1 ? false : true,
       getPopupContainer: () => document.getElementById(getPopupContainerId || 'js_sele_dept'),
+      ...cascaderConfig,
     }
 
     return (

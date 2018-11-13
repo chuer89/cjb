@@ -1,6 +1,6 @@
 // 指派
 import { Modal } from 'antd';
-import DeptSele from '../../../../components/seleDept/';
+import DeptSele from '@components/seleDept/';
 
 const Designate = ({ visible, onCancel, handleOk, handleChange, structure, userType }) => {
   let deptOpt = {

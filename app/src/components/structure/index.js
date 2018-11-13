@@ -24,7 +24,7 @@ class Structure extends React.Component {
     initialValue: '',
 
     visibleStroe: false, // 配置门店
-    visiblePosition: false, // 岗位
+    visiblePosition: false, // 职位
   }
 
   UNSAFE_componentWillMount() {
@@ -236,7 +236,7 @@ class Structure extends React.Component {
   }
 
   render() {
-    let { structure, app } = this.props;
+    let { structure, app, dispatch } = this.props;
     let { storeStructure } = structure;
     let { mapKey } = app;
     let { visibleModify, modifyTitle, visiblePosition,
@@ -293,7 +293,7 @@ class Structure extends React.Component {
       mapKey,
     }
 
-    // 岗位
+    // 职位
     let positionManageAttr = {
       visible: visiblePosition,
       onCancel() {
@@ -307,12 +307,6 @@ class Structure extends React.Component {
       self.save({
         visiblePosition: true,
       });
-    }
-    // 添加员工
-    let handerAddUser = ({ sid }) => {
-      routerRedux.push({
-        pathname: '/personnel/record/addUser'
-      })
     }
 
     let renderStructure = '';
@@ -329,6 +323,7 @@ class Structure extends React.Component {
             if (!_.isEmpty(store)) {
               // 门店
               renderStore = store.map((itemStore, indexStore) => {
+                let linkTo = `/personnel/record/addUser?departmentType=1&storeId=${itemStore.sid}`
                 return (
                   <div key={indexStore} className={styles.storeBox}>
                     <div className={styles.titleBox}>
@@ -337,8 +332,7 @@ class Structure extends React.Component {
                         {itemStore.sname}
                       </div>
                       <div className={styles.operateBox}>
-                        <Link target="_blank" to="/personnel/record/addUser">添加员工</Link>
-                        <span onClick={() => { handerAddUser(itemStore) }} style={{ display: 'none' }}>添加员工</span>
+                        <Link target="_blank" to={linkTo}>添加员工</Link>
                         <span onClick={() => { self.updateCommonStoreById(itemStore) }}>编辑门店</span>
                         <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
                       </div>

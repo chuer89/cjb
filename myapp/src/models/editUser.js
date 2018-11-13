@@ -13,7 +13,7 @@ export default {
     experienceDisabled: true, // 工作经验
     portrayalDisabled: true,  // 员工画像
 
-    positionData: [], // 岗位
+    positionData: [], // 职位
     twoDepartmentData: [], // 二级部门
 
     uid: '', // 操作当前的uid
@@ -24,7 +24,7 @@ export default {
     portrayalImg: {}, // 员工画像资料
 
     salaryRecord: [], // 工作调整记录
-    positionRecord: [], // 岗位调整记录
+    positionRecord: [], // 职位调整记录
   },
 
   subscriptions: {
@@ -48,7 +48,7 @@ export default {
               type: 'getUserById',
             });
             
-            // 岗位列表
+            // 职位列表
             dispatch({
               type: 'getPosition'
             });
@@ -100,7 +100,7 @@ export default {
       }
     },
 
-    // 获取当前岗位
+    // 获取当前职位
     *getPosition({ payload }, { call, put }) {
       let temp = yield call(services.getPosition, payload);
       let { data } = temp;
@@ -214,7 +214,7 @@ export default {
       }
     },
 
-    // 获取当前用户岗位变化
+    // 获取当前用户职位变化
     *getUserPositionRecordByUid({ payload }, { call, put, select }) {
       const { uid } = yield select(_ => _.editUser);
       let param = {};

@@ -9,6 +9,8 @@ import moment from 'moment';
 import services from '@services/';
 import { UploadField, Uploader } from '@navjobs/upload';
 
+import BatchEditUser from './components/batchEditUser'; // 批量修改
+
 const Option = Select.Option;
 const confirm = Modal.confirm;
 
@@ -234,8 +236,9 @@ class RecordList extends React.Component {
 
   render() {
     let self = this;
-    let { record, user, dispatch } = this.props;
-    let { dataBody, statusData, contractType, warningData, searchParam, pageSize, firstPage } = record;
+    let { record, user, dispatch, structure } = this.props;
+    let { dataBody, statusData, contractType, warningData, 
+      searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
     let { dept, userInfo: { token, userType } } = user;
     let inputStyle = {
       'width': '180px',
@@ -244,6 +247,7 @@ class RecordList extends React.Component {
     let { records, total } = dataBody;
 
     let btnDisabled = total <= 0; // 列表无数据，导出按钮不可用
+    let batchEditBtnDisabled = _.isEmpty(selectedRowUserId); // 批量修改按钮状态
 
     let handerSearch = () => {
       dispatch({
@@ -299,6 +303,22 @@ class RecordList extends React.Component {
       )
     })
 
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        dispatch({
+          type: 'record/save',
+          payload: {
+            selectedRowUserId: selectedRowKeys,
+          }
+        })
+        // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      },
+      // getCheckboxProps: record => ({
+      //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      //   name: record.name,
+      // }),
+    };
+
     let tableOpt = {
       rowKey: 'id',
       dataSource: records || [],
@@ -306,6 +326,7 @@ class RecordList extends React.Component {
       locale: {
         emptyText: '暂无数据'
       },
+      rowSelection,
       pagination: {
         pageSize,
         total,
@@ -335,13 +356,45 @@ class RecordList extends React.Component {
     let exportUser = `${services.exportUser}?token=${token}&type=1&dept=${dept}`;
     let exportTemplate = `${services.exportUser}?token=${token}&type=2`;
 
+    // 批量修改员工
+    let batchUserProps = {
+      visible: visibleBatch,
+      structure,
+      userType,
+      onCancel() {
+        dispatch({
+          type: 'record/save',
+          payload: {
+            visibleBatch: false,
+          }
+        })
+      },
+      callBack(values) {
+        console.log(values, 'ss')
+      }
+    }
+    let handerOpenBatchEdit = () => {
+      dispatch({
+        type: 'record/save',
+        payload: {
+          visibleBatch: true,
+        }
+      })
+    }
+
     return (
       <div>
+        <div>
+          <BatchEditUser {...batchUserProps} />
+        </div>
         <div className={style.content}>
           <div className={style.operateTopBox}>
             <Link to="/personnel/record/addUser" target="_blank" className={style.operateTopBtn}>
               <Button type="primary" icon="user-add">添加员工</Button>
             </Link>
+            <span className={style.operateTopBtn}>
+              <Button onClick={handerOpenBatchEdit} type="primary" disabled={batchEditBtnDisabled} icon="edit">批量修改</Button>
+            </span>
             <a href={exportUser} className={style.operateTopBtn} target="_blank">
               <Button disabled={btnDisabled} type="primary" icon="export" >导出</Button>
             </a>
@@ -393,7 +446,8 @@ class RecordList extends React.Component {
   }
 }
 
-export default connect((({ record, user }) => ({
+export default connect((({ record, user, structure }) => ({
   record,
   user,
+  structure,
 })))(RecordList);

@@ -34,7 +34,7 @@ class DetailsInfo extends React.Component {
           type: 'editUser/getUserSalaryRecordByUid'
         });
 
-        // 岗位记录
+        // 职位记录
         dispatch({
           type: 'editUser/getUserPositionRecordByUid'
         });

@@ -39,7 +39,9 @@ class Add extends React.Component {
   render() {
     let self = this;
     let { uid } = this.state;
-    let { addUser, dispatch, app, user } = this.props;
+    let { addUser, dispatch, app, user, location: {
+      query
+    } } = this.props;
     let { defaultImg } = app;
     const { userInfo: { token } } = user;
     let { personalDisabled, basicDisabled, experienceDisabled, departmentType, positionData, twoDepartmentData,
@@ -53,10 +55,17 @@ class Add extends React.Component {
         }
       });
     }
+
+    let userDetails = {};
+    if (!_.isEmpty(query)) {
+      departmentType = query.departmentType;
+      userDetails.storeId = _.toNumber(query.storeId);
+    }
     
     // 归属
     let departmentOpt = {
       departmentType,
+      userDetails,
       handerChange(departmentType) {
         dispatch({
           type: 'addUser/save',
@@ -76,7 +85,7 @@ class Add extends React.Component {
             addUserParam,
           }
         });
-        // 请求岗位
+        // 请求职位
         if (departmentType === '1' && storeId) {
           dispatch({
             type: 'addUser/getPosition',

@@ -50,6 +50,9 @@ export default {
     searchParam: {
       page: 1,
     },
+
+    selectedRowUserId: '', // 选中的列
+    visibleBatch: false,
   },
 
   subscriptions: {

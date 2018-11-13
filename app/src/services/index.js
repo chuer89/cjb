@@ -92,6 +92,10 @@ let httpApi = {
 	addUser(param = {}) {
 		return post('base', '/user/addUser', param);
 	},
+	// 批量修改
+	updateAll(param = {}) {
+		return post('base', '/user/updateAll', param);
+	},
 	// 删除员工
 	deleteUserById(param = {}) {
 		return post('base', '/user/deleteUserById', param);
@@ -137,27 +141,27 @@ let httpApi = {
 		return post('base', '/userSalaryRecord/addUserSalaryRecord', param);
 	},
 
-	// 获取所有岗位
+	// 获取所有职位
 	getPosition(param = {}) {
 		return post('base', '/position/getAll', param);
 	},
-	// 添加岗位
+	// 添加职位
 	addPosition(param = {}) {
 		return post('base', '/position/addPosition', param);
 	},
-	// 更新岗位
+	// 更新职位
 	updatePositionById(param = {}) {
 		return post('base', '/position/updatePositionById', param);
 	},
-	// 删除岗位
+	// 删除职位
 	deletePositionById(param = {}) {
 		return post('base', '/position/deletePositionById', param);
 	},
-	// 获取当前用户岗位
+	// 获取当前用户职位
 	getUserPositionRecordByUid(param = {}) {
 		return post('base', '/userPosition/getUserPositionRecordByUid', param);
 	},
-	// 岗位变化
+	// 职位变化
 	updateUserPosition(param = {}) {
 		return post('base', '/userPosition/add', param);
 	},

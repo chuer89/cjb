@@ -52,10 +52,10 @@ class AddPosition extends React.Component {
       },
     };
 
-    // 岗位
+    // 职位
     let renderProfessionLevel = ''
     if (!_.isEmpty(positionData)) {
-      // 岗位筛选
+      // 职位筛选
       renderProfessionLevel = positionData.map((item) => {
         return (
           <Option value={item.id} key={item.id}>{item.name}</Option>
@@ -75,10 +75,10 @@ class AddPosition extends React.Component {
         onCancel={onCancel}>
         <div style={styleCss}>
           <form>
-            <FormItem {...formItemLayout} label="变更后岗位">
+            <FormItem {...formItemLayout} label="变更后职位">
               {getFieldDecorator('pid', {
                 rules: [{
-                  required: true, message: '请选择变更后岗位',
+                  required: true, message: '请选择变更后职位',
                 }],
               })(
                 <Select style={{ width: 120 }}>
