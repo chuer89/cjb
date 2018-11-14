@@ -261,13 +261,13 @@ class Structure extends React.Component {
     });
   }
   // 更新门店
-  updateCommonStoreById({sid, sname, saddress}) {
+  updateCommonStoreById({ sid, sname, saddress }) {
     let self = this;
     this.save({
       visibleStroe: true,
       modifyTitle: '修改门店',
       initialValue: {
-        sname, 
+        sname,
         saddress,
       },
       callBack(values) {
@@ -389,12 +389,7 @@ class Structure extends React.Component {
     let importUserAttr = {
       token,
       addFile() {
-        // dispatch({
-        //   type: 'record/getUserList',
-        //   payload: {
-        //     page: firstPage,
-        //   }
-        // })
+        message.success('导入成功');
       }
     }
 
@@ -476,6 +471,8 @@ class Structure extends React.Component {
       // console.log(brandData, '组织');
     }
 
+    let exportTemplate = `${services.exportUser}?token=${token}&type=3`;
+
     return (
       <div>
         <div>
@@ -494,6 +491,11 @@ class Structure extends React.Component {
             </Col>
             <Col span={4} style={{ 'paddingLeft': '24px' }}>
               <Button type="primary" onClick={handleAddBrand} loading={false}>添加</Button>
+            </Col>
+            <Col span={10} style={{ textAlign: 'right' }}>
+              <a href={exportTemplate} target="_blank">
+                <Button type="primary" icon="save">门店模版下载</Button>
+              </a>
             </Col>
           </Row>
         </div>

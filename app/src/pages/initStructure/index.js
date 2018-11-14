@@ -50,7 +50,7 @@ class Structure extends React.Component {
       <div className={styles.contentBox}>
         <div className={styles.content}>
           <div className={styles.toHome}>
-            <Link to="/personnel/index">
+            <Link to="personnel/workbench">
               <Button type="primary" disabled={homeDisabled}>进入首页 <Icon type="right" /></Button>
             </Link>
           </div>

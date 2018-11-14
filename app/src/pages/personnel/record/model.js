@@ -58,14 +58,9 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      const { location: {
-        query: { status, type }
-      } } = history;
-
       history.listen(({ pathname }) => {
         let status = _.get(history, 'location.query.status');
         let type = _.get(history, 'location.query.type');
-        console.log(pathname, status, 'st', type, 'ty')
         if (pathname === '/personnel/record') {
           dispatch({
             type: 'save',

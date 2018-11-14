@@ -43,9 +43,9 @@ class Dashboard extends React.Component {
     let personnelGeneral = [{
       name: '全职', number: workUserinfo.all, color: 'rgb(100, 234, 145)',
     }, {
-      name: '在职', number: workUserinfo.full, color: 'rgb(143, 201, 251)', status: '2'
+      name: '在职', number: workUserinfo.full, color: 'rgb(143, 201, 251)', status: '2',
     }, {
-      name: '实习', number: workUserinfo.practice, color: 'rgb(216, 151, 235)', status: '1'
+      name: '实习', number: workUserinfo.practice, color: 'rgb(216, 151, 235)', type: '3',
     }, {
       name: '兼职', number: workUserinfo.part, color: 'rgb(246, 152, 153)', type: '2',
     }];
