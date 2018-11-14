@@ -1,9 +1,9 @@
 // 职位 弹框
-import { Modal, Form, Input, Radio, Select } from 'antd';
+import { Modal, Form, message, Radio, Select } from 'antd';
 import React from 'react';
 import DeptSele from '../../../../components/seleDept/';
 import { educationMap, rankTypeMap, contractTypeMap } from '@components/addUser/config'
-// import _ from 'lodash';
+import _ from 'lodash';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -47,6 +47,30 @@ class BatchEditUser extends React.Component {
       e.preventDefault();
       validateFields((err, values) => {
         if (!err) {
+          
+          const { guishu } = values;
+
+          let storeId = ''; // 门店
+          let orgId = ''; // 组织
+          let lastId = '';
+
+          if (_.isArray(guishu)) {
+            lastId = _.last(_.last(guishu).split('.'));
+            
+            if (guishu[0] === '2') {
+              orgId = lastId;
+            } else {
+              storeId = lastId;
+            }
+
+            _.assign(values, {
+              orgId,
+              storeId,
+            })
+          }
+
+          delete values.guishu;
+
           callBack(values);
         }
       });
@@ -96,7 +120,7 @@ class BatchEditUser extends React.Component {
         <div id="js_sele_designate_department"></div>
           <form>
             <FormItem {...formItemLayout} label="员工归属">
-              {getFieldDecorator('name')(
+              {getFieldDecorator('guishu')(
                 <DeptSele {...deptOpt} />
               )}
             </FormItem>

@@ -20,6 +20,8 @@ const UploadHead = ({ addFile, token }) => {
   const reloadPage = () => {
     location.reload();
   }
+  let isLoading = false;
+
   return (
     <Uploader
       request={{
@@ -30,7 +32,12 @@ const UploadHead = ({ addFile, token }) => {
         withCredentials: false,
       }}
       onError={({ error }) => {
-        message.error('上传失败，请稍后再试。', reloadPage);
+        Modal.error({
+          title: '服务器有误',
+          content: '上传失败，请稍后再试。',
+          onOk: reloadPage,
+        });
+        // message.error('上传失败，请稍后再试。', reloadPage);
       }}
       onComplete={({ response }) => {
         let { msg, data } = response;
@@ -39,7 +46,12 @@ const UploadHead = ({ addFile, token }) => {
           message.success('导入成功');
           addFile(data);
         } else {
-          message.error(msg, reloadPage);
+          Modal.error({
+            title: '导入失败',
+            content: msg,
+            onOk: reloadPage,
+          });
+          // message.error(msg, reloadPage);
         }
       }}
       //upload on file selection, otherwise use `startUpload`
@@ -49,6 +61,7 @@ const UploadHead = ({ addFile, token }) => {
         let loading = false;
         if (progress && !complete) {
           loading = true;
+          // message.loading('上传中，请稍后。。。')
         }
 
         return (
@@ -237,7 +250,7 @@ class RecordList extends React.Component {
   render() {
     let self = this;
     let { record, user, dispatch, structure } = this.props;
-    let { dataBody, statusData, contractType, warningData, 
+    let { dataBody, statusData, contractType, warningData,
       searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
     let { dept, userInfo: { token, userType } } = user;
     let inputStyle = {
@@ -370,7 +383,21 @@ class RecordList extends React.Component {
         })
       },
       callBack(values) {
-        console.log(values, 'ss')
+        let change = JSON.stringify(values);
+
+        if (_.isEmpty(JSON.parse(change))) {
+          message.error('请选择要修改的值');
+          return false;
+        }
+
+        let payload = {
+          change,
+          userid: selectedRowUserId.join(','),
+        }
+        dispatch({
+          type: 'record/updateAll',
+          payload,
+        })
       }
     }
     let handerOpenBatchEdit = () => {

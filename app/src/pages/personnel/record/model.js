@@ -1,6 +1,7 @@
 // 档案管理
 import services from '@services/';
 import _ from 'lodash';
+import { message } from 'antd';
 
 export default {
 
@@ -58,12 +59,22 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        dispatch({
-          type: 'getUserList',
-          payload: {
-            page: 1,
-          }
-        })
+        if (pathname === '/personnel/record') {
+          dispatch({
+            type: 'getUserList',
+            payload: {
+              page: 1,
+            }
+          })
+
+          dispatch({
+            type: 'save',
+            payload: {
+              selectedRowUserId: '', // 选中的列
+              visibleBatch: false,
+            }
+          })
+        }
       })
     },
   },
@@ -77,16 +88,16 @@ export default {
     *getUserList({ payload }, { call, put, select }) {
       const { pageSize, searchParam } = yield select(_ => _.record);
       let param = {};
-      
+
       _.extend(param, searchParam, payload, {
         length: pageSize,
       });
 
-      let start = pageSize * ( param.page - 1 ) || 0;
+      let start = pageSize * (param.page - 1) || 0;
       param.start = start;
 
       const temp = yield call(services.getUserList, param);
-      
+
       let { data } = temp;
       if (data.msg === 'success') {
         yield put({
@@ -96,7 +107,29 @@ export default {
           }
         })
       }
-    }
+    },
+
+    // 批量修改
+    *updateAll({ payload }, { call, put }) {
+      const temp = yield call(services.updateAll, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        message.success('已修改');
+        
+        yield put({
+          type: 'save',
+          payload: {
+            visibleBatch: false,
+          }
+        });
+
+        yield put({
+          type: 'getUserList',
+        })
+      } else {
+        message.error(data.msg);
+      }
+    },
   },
 
   reducers: {
