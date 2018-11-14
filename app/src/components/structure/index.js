@@ -389,7 +389,7 @@ class Structure extends React.Component {
     let importUserAttr = {
       token,
       addFile() {
-        message.success('导入成功');
+        // message.success('导入成功');
       }
     }
 
