@@ -31,6 +31,7 @@ class BatchEditUser extends React.Component {
       },
       structure,
       userType,
+      positionData,
     } = this.props;
     const { education, rankType, contractType } = this.state;
 
@@ -107,6 +108,26 @@ class BatchEditUser extends React.Component {
       )
     });
 
+    // 职位
+    let renderPosition = ''
+    if (!_.isEmpty(positionData)) {
+      // 职位筛选
+      let renderProfessionLevel = positionData.map((item) => {
+        return (
+          <Option value={item.id} key={item.id}>{item.name}</Option>
+        )
+      });
+      renderPosition = (
+        <FormItem {...formItemLayout} label="职位">
+          {getFieldDecorator('position')(
+            <Select style={{ width: 120 }}>
+              {renderProfessionLevel}
+            </Select>
+          )}
+        </FormItem>
+      )
+    }
+
     return (
       <Modal
         title="批量修改资料"
@@ -139,6 +160,7 @@ class BatchEditUser extends React.Component {
                 </Select>
               )}
             </FormItem>
+            {renderPosition}
             <FormItem {...formItemLayout} label="职级">
               {getFieldDecorator('type')(
                 <Select style={{ width: 120 }}>

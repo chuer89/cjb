@@ -33,7 +33,8 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        if (pathname.indexOf('/personnel/record/userdetails/') === 0 || pathname.indexOf('/personnel/record/editUser/') === 0) {
+        if (pathname.indexOf('/personnel/record/userdetails/') === 0 || 
+          pathname.indexOf('/personnel/record/editUser/') === 0) {
           let _pathname = pathname.split('/');
           let pathnameLen = _pathname.length;
           let uid = _pathname[pathnameLen - 1];
@@ -58,6 +59,13 @@ export default {
               });
             }
           }
+        }
+
+        if (pathname === '/personnel/record') {
+          // 职位列表
+          dispatch({
+            type: 'getPosition'
+          });
         }
       });
     },

@@ -268,9 +268,9 @@ class BasicForm extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
           {getFieldDecorator('joinTime', {
-            rules: [{
-              required: true, message: '请选择入职日期',
-            }],
+            // rules: [{
+            //   required: true, message: '请选择入职日期',
+            // }],
             initialValue: joinTimeInit
           })(
             <DatePicker />
@@ -285,9 +285,9 @@ class BasicForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="职级">
           {getFieldDecorator('type', {
-            rules: [{
-              required: true, message: '请选择职级',
-            }],
+            // rules: [{
+            //   required: true, message: '请选择职级',
+            // }],
             initialValue: '' + (userDetails.type || '')
           })(
             <Select style={{ width: 120 }}>
@@ -299,9 +299,9 @@ class BasicForm extends React.Component {
         {renderTwoDepartment}{renderTwoDepartmentOwn}
         <FormItem {...formItemLayout} label="合同类型">
           {getFieldDecorator('contractType', {
-            rules: [{
-              required: true, message: '请选择合同类型',
-            }],
+            // rules: [{
+            //   required: true, message: '请选择合同类型',
+            // }],
             initialValue: '' + (userDetails.contractType || '')
           })(
             <Select style={{ width: 120 }}>
@@ -311,9 +311,9 @@ class BasicForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="合同有效期">
           {getFieldDecorator('contractDate', {
-            rules: [{
-              required: true, message: '请选择合同有效期',
-            }],
+            // rules: [{
+            //   required: true, message: '请选择合同有效期',
+            // }],
             initialValue: contractDateInit
           })(
             <RangePicker onChange={onChange} />
@@ -321,9 +321,9 @@ class BasicForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="当前薪水">
           {getFieldDecorator('salary', {
-            rules: [{
-              required: true, message: '请输入当前薪水',
-            }],
+            // rules: [{
+            //   required: true, message: '请输入当前薪水',
+            // }],
             initialValue: userDetails.salary
           })(
             <InputNumber min={0} />

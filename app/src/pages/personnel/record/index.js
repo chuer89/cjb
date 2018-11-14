@@ -249,7 +249,9 @@ class RecordList extends React.Component {
 
   render() {
     let self = this;
-    let { record, user, dispatch, structure } = this.props;
+    let { record, user, dispatch, structure, editUser: {
+      positionData,
+    } } = this.props;
     let { dataBody, statusData, contractType, warningData,
       searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
     let { dept, userInfo: { token, userType } } = user;
@@ -374,6 +376,7 @@ class RecordList extends React.Component {
       visible: visibleBatch,
       structure,
       userType,
+      positionData,
       onCancel() {
         dispatch({
           type: 'record/save',
@@ -473,8 +476,9 @@ class RecordList extends React.Component {
   }
 }
 
-export default connect((({ record, user, structure }) => ({
+export default connect((({ record, user, structure, editUser }) => ({
   record,
   user,
   structure,
+  editUser,
 })))(RecordList);

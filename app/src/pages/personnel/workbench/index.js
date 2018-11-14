@@ -41,26 +41,29 @@ class Dashboard extends React.Component {
     } } = this.props;
 
     let personnelGeneral = [{
-      name: '在职', number: workUserinfo.all, color: 'rgb(100, 234, 145)'
+      name: '全职', number: workUserinfo.all, color: 'rgb(100, 234, 145)',
     }, {
-      name: '全职', number: workUserinfo.full, color: 'rgb(143, 201, 251)'
+      name: '在职', number: workUserinfo.full, color: 'rgb(143, 201, 251)', status: '2'
     }, {
-      name: '实习', number: workUserinfo.practice, color: 'rgb(216, 151, 235)'
+      name: '实习', number: workUserinfo.practice, color: 'rgb(216, 151, 235)', status: '1'
     }, {
-      name: '兼职', number: workUserinfo.part, color: 'rgb(246, 152, 153)'
+      name: '兼职', number: workUserinfo.part, color: 'rgb(246, 152, 153)', type: '2',
     }];
 
     let renderPersonnel = personnelGeneral.map((item, index) => {
+      let link = `/personnel/record?status=${item.status || ''}&type=${item.type || ''}`
       return (
-        <Col span={6} key={index} className={style.generalBox}>
-          <div className={style.generalItem} style={{ 'backgroundColor': item.color }}>
-            <h4>{item.name}</h4>
-            <p>
-              <span className={style.generalNumber}>{item.number}</span>
-              <span className={style.generalUnit}>人</span>
-            </p>
-          </div>
-        </Col>
+        <Link to={link} key={index}>
+          <Col span={6} className={style.generalBox}>
+            <div className={style.generalItem} style={{ 'backgroundColor': item.color }}>
+              <h4>{item.name}</h4>
+              <p>
+                <span className={style.generalNumber}>{item.number}</span>
+                <span className={style.generalUnit}>人</span>
+              </p>
+            </div>
+          </Col>
+        </Link>
       )
     });
 

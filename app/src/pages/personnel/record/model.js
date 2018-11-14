@@ -58,12 +58,31 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
+      const { location: {
+        query: { status, type }
+      } } = history;
+
       history.listen(({ pathname }) => {
+        let status = _.get(history, 'location.query.status');
+        let type = _.get(history, 'location.query.type');
+        console.log(pathname, status, 'st', type, 'ty')
         if (pathname === '/personnel/record') {
+          dispatch({
+            type: 'save',
+            payload: {
+              searchParam: {
+                page: 1,
+                status,
+              }
+            }
+          })
+
           dispatch({
             type: 'getUserList',
             payload: {
               page: 1,
+              type,
+              status,
             }
           })
 
@@ -115,7 +134,7 @@ export default {
       let { data } = temp;
       if (data.msg === 'success') {
         message.success('已修改');
-        
+
         yield put({
           type: 'save',
           payload: {

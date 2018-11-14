@@ -78,7 +78,7 @@ class PersonalForm extends React.Component {
           {getFieldDecorator('phone', {
             initialValue: userDetails.phone,
             rules: [{
-              required: true, message: '请输入联系方式',
+              // required: true, message: '请输入联系方式',
               pattern: common.reg.phone, message: '请输入正确的手机号',
             }],
           })(
@@ -88,7 +88,7 @@ class PersonalForm extends React.Component {
         <FormItem {...formItemLayout} label="身份证">
           {getFieldDecorator('idcard', {
             rules: [{
-              required: true, message: '请输入身份证',
+              // required: true, message: '请输入身份证',
               pattern: common.reg.idcard, message: '请输入正确的身份证号',
             }],
             initialValue: userDetails.idcard,
@@ -98,9 +98,9 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="身份证到期日期">
           {getFieldDecorator('idcardTime', {
-            rules: [{
-              required: true, message: '请选择身份证到期日期',
-            }],
+            // rules: [{
+            //   required: true, message: '请选择身份证到期日期',
+            // }],
             initialValue: idcardTimeInit,
           })(
             <DatePicker />
@@ -108,9 +108,9 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="身份证地址">
           {getFieldDecorator('idcardAddr', {
-            rules: [{
-              required: true, message: '请输入身份证地址',
-            }],
+            // rules: [{
+            //   required: true, message: '请输入身份证地址',
+            // }],
             initialValue: userDetails.idcardAddr,
           })(
             <Input placeholder="请输入身份证地址" autoComplete="off" maxLength="32"/>
@@ -118,10 +118,10 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="银行卡号">
           {getFieldDecorator('bankCard', {
-            rules: [{
-              required: true, message: '请输入银行卡号',
-              pattern: common.reg.bankCard, message: '请输入正确的银行卡号',
-            }],
+            // rules: [{
+            //   required: true, message: '请输入银行卡号',
+            //   pattern: common.reg.bankCard, message: '请输入正确的银行卡号',
+            // }],
             initialValue: userDetails.bankCard
           })(
             <Input placeholder="请输入银行卡号" autoComplete="off" maxLength="32"/>

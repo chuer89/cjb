@@ -6,12 +6,87 @@ import _ from 'lodash';
 import services from '@services/';
 import Link from 'umi/link';
 import routerRedux from 'umi/router';
+import { UploadField, Uploader } from '@navjobs/upload';
 
 import Modify from './modify';
 import ConfigStore from './configStore';
 import PositionManage from './positionManage';
 
+
 const confirm = Modal.confirm;
+
+// 上传
+const UploadHead = ({ addFile, token, sid }) => {
+  let action = services.importUser + '?token=' + token + '&sid=' + sid;
+  const reloadPage = () => {
+    location.reload();
+  }
+
+  return (
+    <Uploader
+      request={{
+        fileName: 'file',
+        url: action,
+        method: 'POST',
+        // use credentials for cross-site requests
+        withCredentials: false,
+      }}
+      onError={({ error }) => {
+        Modal.error({
+          title: '服务器有误',
+          content: '上传失败，请稍后再试。',
+          onOk: reloadPage,
+        });
+        // message.error('上传失败，请稍后再试。', reloadPage);
+      }}
+      onComplete={({ response }) => {
+        let { msg, data } = response;
+
+        if (msg === 'success') {
+          message.success('导入成功');
+          addFile(data);
+        } else {
+          Modal.error({
+            title: '导入失败',
+            content: msg,
+            onOk: reloadPage,
+          });
+          // message.error(msg, reloadPage);
+        }
+      }}
+      //upload on file selection, otherwise use `startUpload`
+      uploadOnSelection={true}
+    >
+      {({ onFiles, progress, complete }) => {
+        let loading = false;
+        let upText = '导入员工';
+
+        if (progress && !complete) {
+          loading = true;
+          upText = '上传中';
+          // message.loading('上传中，请稍后。。。')
+        }
+
+        return (
+          <UploadField onFiles={(file) => {
+            if (!_.isEmpty(file)) {
+              // 文件限制5m
+              if (file[0].size < 1024 * 1024 * 5) {
+                onFiles(file);
+              } else {
+                message.error('文件最大5M，请压缩文件大小');
+              }
+            }
+          }} uploadProps={{
+            accept: '.xlsx,.xls,.xlt',
+          }}>
+            <span style={{ padding: '0' }}>{upText}</span>
+          </UploadField>
+        )
+      }}
+    </Uploader>
+  )
+}
 
 // 门店组织架构
 class Structure extends React.Component {
@@ -236,7 +311,9 @@ class Structure extends React.Component {
   }
 
   render() {
-    let { structure, app, dispatch } = this.props;
+    let { structure, app, dispatch, user: {
+      userInfo: { token }
+    } } = this.props;
     let { storeStructure } = structure;
     let { mapKey } = app;
     let { visibleModify, modifyTitle, visiblePosition,
@@ -309,6 +386,18 @@ class Structure extends React.Component {
       });
     }
 
+    let importUserAttr = {
+      token,
+      addFile() {
+        // dispatch({
+        //   type: 'record/getUserList',
+        //   payload: {
+        //     page: firstPage,
+        //   }
+        // })
+      }
+    }
+
     let renderStructure = '';
     if (!_.isEmpty(storeStructure)) {
       brandData = storeStructure[0].brand;
@@ -328,11 +417,13 @@ class Structure extends React.Component {
                   <div key={indexStore} className={styles.storeBox}>
                     <div className={styles.titleBox}>
                       <div className={styles.title}>
+                        <span>门店：</span>
                         <i className="iconfont">&#xe650;</i>
                         {itemStore.sname}
                       </div>
                       <div className={styles.operateBox}>
-                        <Link target="_blank" to={linkTo}>添加员工</Link>
+                        <span><Link target="_blank" to={linkTo}>添加员工</Link></span>
+                        <span><UploadHead {...importUserAttr} sid={itemStore.sid} /></span>
                         <span onClick={() => { self.updateCommonStoreById(itemStore) }}>编辑门店</span>
                         <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
                       </div>
@@ -347,6 +438,7 @@ class Structure extends React.Component {
               <div key={indexArea} className={styles.areaBox}>
                 <div className={styles.titleBox}>
                   <div className={styles.title}>
+                    <span>区域：</span>
                     <i className="iconfont">&#xe657;</i>
                     {itemArea.aname}
                   </div>
@@ -367,6 +459,7 @@ class Structure extends React.Component {
           <div key={index} className={styles.brandBox}>
             <div className={styles.titleBox}>
               <div className={styles.title}>
+                <span>品牌：</span>
                 <i className="iconfont">&#xe612;</i>
                 {item.bname}
               </div>
@@ -410,7 +503,8 @@ class Structure extends React.Component {
   }
 }
 
-export default connect(({ structure, app }) => ({
+export default connect(({ structure, app, user }) => ({
   structure,
   app,
+  user,
 }))(Structure)
