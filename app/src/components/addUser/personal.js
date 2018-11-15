@@ -41,7 +41,7 @@ class PersonalForm extends React.Component {
     let renderfastEntry = '';
     if (_.isFunction(handerFastEntry)) {
       renderfastEntry = (
-        <Button size="large" onClick={(e) => { handleSubmit(e, true) }}>立即入职</Button>
+        <Button size="large" onClick={(e) => { handleSubmit(e, true) }}>快速入职</Button>
       )
     }
 
