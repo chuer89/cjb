@@ -55,7 +55,7 @@ export const rankTypeMap = [{
 }, {
   value: '兼职', code: '2'
 }, {
-  value: '见习期', code: '3'
+  value: '实习', code: '3'
 }, {
   value: '小店', code: '4'
 }, {
@@ -70,4 +70,16 @@ export const rankTypeObj = {
 // 性别
 export const genderObj = {
   '1': '男', '2': '女', '0': '未知',
+}
+
+// 在职状态
+export const statusMap = [{
+  value: '试用', code: '1'
+}, {
+  value: '在职', code: '2'
+}, {
+  value: '离职', code: '3'
+}];
+export const statusMapObj = {
+  '1': '试用', '2': '在职', '3': '离职'
 }

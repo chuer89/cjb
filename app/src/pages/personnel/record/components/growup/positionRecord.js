@@ -82,7 +82,7 @@ class PositionRecord extends React.Component {
 
     let renderExtra = (
       <div>
-        <Button onClick={handerOpenAdd}>添加</Button>
+        <Button type="primary" onClick={handerOpenAdd}>添加</Button>
       </div>
     )
     if (!showAdd) {

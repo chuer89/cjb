@@ -74,9 +74,9 @@ class DynamicFieldSet extends React.Component {
     }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = (e, isFast) => {
     e.preventDefault();
-    let { form, handerNext, userWork } = this.props;
+    let { form, handerNext, userWork, handerFastEntry } = this.props;
     form.validateFields((err, values) => {
       let { keys } = values;
       let params = [];
@@ -113,14 +113,18 @@ class DynamicFieldSet extends React.Component {
             params.push(workParm);
           }
 
-          handerNext(params);
+          if (isFast) {
+            handerFastEntry(params);
+          } else {
+            handerNext(params);
+          }
         });
       }
     });
   }
 
   render() {
-    const { userWork, form } = this.props;
+    const { userWork, form, handerFastEntry } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { disabledAdd } = this.state;
     const formItemLayout = {
@@ -131,6 +135,14 @@ class DynamicFieldSet extends React.Component {
         sm: { span: 22 },
       },
     };
+
+    let renderfastEntry = '';
+    if (_.isFunction(handerFastEntry)) {
+      renderfastEntry = (
+        <Button size="large" onClick={(e) => { self.handleSubmit(e, true) }}>立即入职</Button>
+      )
+    }
+
     const formItemLayoutWithOutLabel = {
       wrapperCol: {
         sm: { span: 20 },
@@ -197,14 +209,14 @@ class DynamicFieldSet extends React.Component {
             </Col>
             <Col span={1}>
               <div style={delIconStyle}>
-              {keys.length > 1 ? (
-                <Icon
-                  className="dynamic-delete-button"
-                  type="minus-circle-o"
-                  disabled={keys.length === 1}
-                  onClick={() => this.remove(k)}
-                />
-              ) : null}
+                {keys.length > 1 ? (
+                  <Icon
+                    className="dynamic-delete-button"
+                    type="minus-circle-o"
+                    disabled={keys.length === 1}
+                    onClick={() => this.remove(k)}
+                  />
+                ) : null}
               </div>
             </Col>
           </Row>
@@ -226,8 +238,9 @@ class DynamicFieldSet extends React.Component {
           </Button>
         </FormItem>
         <FormItem {...formItemLayoutWithOutLabel}>
-          <div className={style.submitBtnBox}>
-            <Button block type="primary" htmlType="submit" size="large">下一步</Button>
+          <div className={style.submitNextBtnBox}>
+            <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
+            {renderfastEntry}
           </div>
         </FormItem>
       </Form>
@@ -237,11 +250,12 @@ class DynamicFieldSet extends React.Component {
 
 const WrappedDynamicFieldSet = Form.create()(DynamicFieldSet);
 
-const Personal = ({ handerNext, userWork, handerDel }) => {
+const Personal = ({ handerNext, userWork, handerDel, handerFastEntry }) => {
   let opt = {
     handerNext,
     userWork,
     handerDel,
+    handerFastEntry,
   };
 
   return (

@@ -8,6 +8,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import services from '@services/';
 import { UploadField, Uploader } from '@navjobs/upload';
+import { rankTypeMap, contractTypeMap } from '@components/addUser/config';
 
 import BatchEditUser from './components/batchEditUser'; // 批量修改
 
@@ -102,14 +103,20 @@ class RecordList extends React.Component {
       },
 
       columns: [],
+
+      //职级
+      rankType: rankTypeMap,
+
+      // 合同类型
+      contractType: contractTypeMap,
     }
   }
 
   UNSAFE_componentWillMount() {
     this._isMounted = true;
     let { record } = this.props;
-    let { statusData, contractType } = record;
-    let { warningSele } = this.state;
+    let { statusData } = record;
+    let { contractType } = this.state;
     let self = this;
 
     let statusDataSele = {};
@@ -240,6 +247,7 @@ class RecordList extends React.Component {
       // content: '',
       okText: '确认',
       cancelText: '取消',
+      okType: 'danger',
       onOk() {
         callBack();
       },
@@ -258,7 +266,7 @@ class RecordList extends React.Component {
     let inputStyle = {
       'width': '180px',
     }
-    let { columns } = this.state;
+    let { columns, rankType } = this.state;
     let { records, total } = dataBody;
 
     let btnDisabled = total <= 0; // 列表无数据，导出按钮不可用
@@ -306,6 +314,13 @@ class RecordList extends React.Component {
 
     // 合同类型
     let renderContractType = contractType.map((item) => {
+      return (
+        <Option value={item.code} key={item.code}>{item.value}</Option>
+      )
+    });
+
+    // 职级
+    let renderRankType = rankType.map((item) => {
       return (
         <Option value={item.code} key={item.code}>{item.value}</Option>
       )
@@ -412,6 +427,31 @@ class RecordList extends React.Component {
       })
     }
 
+    // 批量删除
+    let handerOpenBatchDelete = () => {
+      let uids = selectedRowUserId.join(',');
+
+      self.handerDel(() => {
+        services.delUserAll({
+          uids,
+        }).then(({ data }) => {
+          if (data.msg === 'success') {
+            message.success('删除成功');
+            dispatch({
+              type: 'record/getUserList',
+              payload: {
+                page: 1,
+              }
+            });
+          } else {
+            message.error(data.msg);
+          }
+        })
+      });
+    }
+
+    // 筛选条件：入职时间、离职时间、部门、年龄、性别、电话、合同类型、应聘渠道、到期时间
+
     return (
       <div>
         <div>
@@ -424,6 +464,9 @@ class RecordList extends React.Component {
             </Link>
             <span className={style.operateTopBtn}>
               <Button onClick={handerOpenBatchEdit} type="primary" disabled={batchEditBtnDisabled} icon="edit">批量修改</Button>
+            </span>
+            <span className={style.operateTopBtn}>
+              <Button onClick={handerOpenBatchDelete} type="primary" disabled={batchEditBtnDisabled} icon="delete">批量删除</Button>
             </span>
             <a href={exportUser} className={style.operateTopBtn} target="_blank">
               <Button disabled={btnDisabled} type="primary" icon="export" >导出</Button>
@@ -439,15 +482,25 @@ class RecordList extends React.Component {
                 <span>工号：</span>
                 <Input value={searchParam.code} onChange={(e) => { handerChangeSearch('code', e.target.value) }} placeholder="请输入工号" maxLength={32} style={inputStyle} />
               </div>
+
               <div className={style.searchItem}>
-                <span>姓名：</span>
-                <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => { handerChangeSearch('name', e.target.value) }} maxLength={32} style={inputStyle} />
-              </div>
-              <div className={style.searchItem}>
-                <span>状态：</span>
+                <span>在职状态：</span>
                 <Select value={searchParam.status || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('status', e) }}>
                   {renderSeleStatus}
                 </Select>
+              </div>
+              <div className={style.searchItem}>
+                <span>职级：</span>
+                <Select value={searchParam.type || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('type', e) }}>
+                  <Option value="">全部</Option>
+                  {renderRankType}
+                </Select>
+              </div>
+            </div>
+            <div className={style.searchItemBox + ' clearfix'}>
+              <div className={style.searchItem}>
+                <span>姓名：</span>
+                <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => { handerChangeSearch('name', e.target.value) }} maxLength={32} style={inputStyle} />
               </div>
               <div className={style.searchItem}>
                 <span>合同类型：</span>
@@ -455,8 +508,6 @@ class RecordList extends React.Component {
                   {renderContractType}
                 </Select>
               </div>
-            </div>
-            <div className={style.searchItemBox + ' clearfix'}>
               <div className={style.searchItem}>
                 <span>信息预警：</span>
                 <Select value={searchParam.warning || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('warning', e) }}>

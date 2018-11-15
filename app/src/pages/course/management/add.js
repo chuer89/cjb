@@ -1,5 +1,5 @@
 import React from 'react';
-import { Breadcrumb, Form, Input, Button, Select, Upload, Icon, message } from 'antd';
+import { Breadcrumb, Form, Input, Button, Select, Upload, Icon, message, Checkbox } from 'antd';
 import style from './add.less';
 import Link from 'umi/link';
 import _ from 'lodash';
@@ -10,6 +10,7 @@ import { connect } from 'dva';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
+const CheckboxGroup = Checkbox.Group;
 
 class CourseAddForm extends React.Component {
   state = {
@@ -41,7 +42,7 @@ class CourseAddForm extends React.Component {
 
   render() {
     let { tag, tagValue } = this.state;
-    let { form, handerAdd, tagTypeData, token } = this.props;
+    let { form, handerAdd, tagTypeData, token, positionStructure } = this.props;
     const { getFieldDecorator } = form;
     let self = this;
 
@@ -65,6 +66,7 @@ class CourseAddForm extends React.Component {
 
           _.extend(param, values, {
             fileId: fileId.join(','),
+            pidstr: values.position.join(','),
             fileFile: '',
             tag,
             tags: '',
@@ -126,6 +128,29 @@ class CourseAddForm extends React.Component {
         </FormItem>
       )
     }
+
+    let renderCheckboxposition = '';
+    if (!_.isEmpty(positionStructure)) {
+      let options = [];
+      _.forEach(positionStructure, (item) => {
+        options.push({
+          label: item.name,
+          value: item.id,
+        })
+      })
+      
+      renderCheckboxposition = (
+        <FormItem {...formItemLayout} label="选择岗位">
+          {getFieldDecorator('position', {
+            rules: [{
+              required: true, message: '请选择岗位',
+            }],
+          })(
+            <CheckboxGroup options={options} />
+          )}
+        </FormItem>
+      )
+    }
     
     // 
     const fileProps = {
@@ -158,7 +183,7 @@ class CourseAddForm extends React.Component {
                 </Select>
               )}
             </FormItem>
-            {renderOwnTag}
+            {renderOwnTag}{renderCheckboxposition}
             <FormItem {...formItemLayout} label="课程讲师">
               {getFieldDecorator('teacher', {
                 rules: [{
@@ -168,7 +193,6 @@ class CourseAddForm extends React.Component {
                 <Input placeholder="请输入课程讲师" autoComplete="off" maxLength="32" style={{ width: 320 }} />
               )}
             </FormItem>
-
             <FormItem {...formItemLayout} label="资料上传">
               {getFieldDecorator('fileFile', {
                 rules: [{
@@ -211,7 +235,9 @@ class CourseAddForm extends React.Component {
 
 const WrappedCourseAddForm = Form.create()(CourseAddForm);
 
-const CourseAdd = ({ dispatch, course, user }) => {
+const CourseAdd = ({ dispatch, course, user, structure: {
+  positionStructure
+} }) => {
   let { tagTypeData } = course;
   const { userInfo: { token } } = user;
   let listPath = '/course/management';
@@ -232,6 +258,7 @@ const CourseAdd = ({ dispatch, course, user }) => {
     tagTypeData,
     handerAdd,
     token,
+    positionStructure,
   }
 
   return (
@@ -252,7 +279,8 @@ const CourseAdd = ({ dispatch, course, user }) => {
   );
 };
 
-export default connect((({ course, user }) => ({
+export default connect((({ course, user, structure }) => ({
   course,
   user,
+  structure,
 })))(CourseAdd);

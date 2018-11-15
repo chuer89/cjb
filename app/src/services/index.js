@@ -100,6 +100,10 @@ let httpApi = {
 	deleteUserById(param = {}) {
 		return post('base', '/user/deleteUserById', param);
 	},
+	// 批量删除
+	delUserAll(param = {}) {
+		return post('base', '/user/deleteAll', param);
+	},
 	// 修改员工
 	updateUser(param = {}) {
 		return post('base', '/user/updateUserById', param);
@@ -314,6 +318,10 @@ let httpApi = {
 	// 培训 - 添加课程
 	addTrainStorePositionRef(param = {}) {
 		return post('base', '/trainStorePositionRef/addTrainStorePositionRef', param);
+	},
+	// 课程学习状态
+	getClassByPosition(param = {}) {
+		return post('base', '/trainUserLibrary/getClassByPosition', param);
 	},
 };
 

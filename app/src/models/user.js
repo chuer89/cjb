@@ -46,6 +46,9 @@ export default {
       'class-summary': { // 课程概况
         icon: '&#xe62c;', isFont: true, path: '/course/summary'
       },
+      'learn-config': { // 学习概况
+        icon: 'fund', path: '/course/study'
+      }
     },
   },
 

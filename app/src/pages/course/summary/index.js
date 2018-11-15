@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Card, Tag } from 'antd';
 import style from './index.less';
 import { connect } from 'dva';
 import SearchConfig from './components/search';
@@ -73,6 +73,14 @@ class CourseSummary extends React.Component {
         let renderDesc = (
           <div className={style.descBox}>{item.desc}</div>
         )
+        let renderStudy = (
+          <Tag color="#2db7f5">学习中</Tag>
+        )
+        if (item.status) {
+          renderStudy = (
+            <Tag color="#87d068">学习完成</Tag>
+          )
+        }
         return (
           <div key={index} className={style.listItem}>
             <a href={openUrl} target="_blank">
@@ -86,6 +94,9 @@ class CourseSummary extends React.Component {
                   description={renderDesc}
                   className={style.descBox}
                 />
+                <div style={{ textAlign: 'right' }}>
+                  {renderStudy}
+                </div>
               </Card>
             </a>
           </div>

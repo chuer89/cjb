@@ -68,6 +68,7 @@ export default {
               searchParam: {
                 page: 1,
                 status,
+                type,
               }
             }
           })

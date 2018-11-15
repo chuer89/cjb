@@ -258,7 +258,7 @@ class Dashboard extends React.Component {
         <div className={style.box}>
           <Row>{renderPieZhi}</Row>
         </div>
-        <div className={style.box}><Comments /></div>
+        <div className={style.box} style={{ display: 'none' }}><Comments /></div>
       </div>
     );
   }

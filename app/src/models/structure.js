@@ -8,22 +8,12 @@ export default {
   state: {
     storeStructure: [], // 门店组织结构
     sectionStructure: [], // 部门组织架构
-    positionStructure: [], // 职位
+    positionStructure: [], // 岗位
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        // if (pathname === '/deploy/section') { // 部门架构
-        //   dispatch({
-        //     type: 'getUserOrganizations',
-        //   });
-        // } else if (pathname === '/deploy/store' || pathname === '/initstructure') { // 门店架构
-        //   dispatch({
-        //     type: 'getOrganizations',
-        //   });
-        // }
-
         dispatch({
           type: 'getUserOrganizations',
         });
@@ -32,7 +22,10 @@ export default {
           type: 'getOrganizations',
         });
 
-        if (pathname === '/deploy/position') {
+        if (pathname === '/deploy/position' 
+        || pathname === '/course/management/add' 
+        || pathname === '/course/management'
+        || pathname === '/course/study') {
           dispatch({
             type: 'getPosition',
           });

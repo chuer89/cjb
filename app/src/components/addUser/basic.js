@@ -4,7 +4,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import style from './add.less';
 import common from '@common';
-import { invitationChannelMap, contractTypeMap, rankTypeMap } from './config';
+import { invitationChannelMap, contractTypeMap, rankTypeMap, statusMap } from './config';
 
 // const { TextArea } = Input;
 
@@ -28,6 +28,9 @@ class BasicForm extends React.Component {
 
       //职级
       rankType: rankTypeMap,
+
+      // 在职状态
+      statusMapList: statusMap,
 
       tagTwoDepartment: '',
 
@@ -67,9 +70,9 @@ class BasicForm extends React.Component {
     }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = (e, isFast) => {
     e.preventDefault();
-    let { form, handerNext } = this.props;
+    let { form, handerNext, handerFastEntry } = this.props;
     form.validateFields((err, values) => {
       let contractStarttime = '';
       let contractEndtime = '';
@@ -103,16 +106,20 @@ class BasicForm extends React.Component {
         });
 
         console.log('Received values of form: ', values);
-        handerNext(values);
+        if (isFast) {
+          handerFastEntry(values)
+        } else {
+          handerNext(values);
+        }
       }
     });
   }
 
   render() {
-    let { userDetails, form, positionData, twoDepartmentData } = this.props;
+    let { userDetails, form, positionData, twoDepartmentData, handerFastEntry } = this.props;
     const { getFieldDecorator } = form;
     let { invitationChannel, rankType, tagTwoDepartment,
-      isRecommendChannel, contractType, additionInfoList } = this.state;
+      isRecommendChannel, contractType, additionInfoList, statusMapList } = this.state;
     let self = this;
 
     userDetails = userDetails || {};
@@ -137,6 +144,13 @@ class BasicForm extends React.Component {
 
     let handleChange = (value) => {
       console.log(value, 'v');
+    }
+
+    let renderfastEntry = '';
+    if (_.isFunction(handerFastEntry)) {
+      renderfastEntry = (
+        <Button size="large" onClick={(e) => {self.handleSubmit(e, true)}}>立即入职</Button>
+      )
     }
 
     // 职位
@@ -264,6 +278,27 @@ class BasicForm extends React.Component {
       )
     })
 
+    // 在职状态
+    let renderStatus = '';
+    if (!_.isEmpty(userDetails)) {
+      let renderSeleStatus = statusMapList.map((item) => {
+        return (
+          <Option value={item.code} key={item.code}>{item.value}</Option>
+        )
+      });
+      renderStatus = (
+        <FormItem {...formItemLayout} label="在职状态">
+          {getFieldDecorator('status', {
+            initialValue: '' + (userDetails.status || '')
+          })(
+            <Select style={{ width: 120 }}>
+              {renderSeleStatus}
+            </Select>
+          )}
+        </FormItem>
+      )
+    }
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
@@ -276,6 +311,7 @@ class BasicForm extends React.Component {
             <DatePicker />
           )}
         </FormItem>
+        {renderStatus}
         <FormItem {...formItemLayout} label="健康证到期时间">
           {getFieldDecorator('healthCertificateTime', {
             initialValue: healthCertificateTimeInit
@@ -372,8 +408,9 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          <div className={style.submitBtnBox}>
-            <Button block type="primary" htmlType="submit" size="large">下一步</Button>
+          <div className={style.submitNextBtnBox}>
+            <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
+            {renderfastEntry}
           </div>
         </FormItem>
       </Form>
@@ -383,13 +420,14 @@ class BasicForm extends React.Component {
 
 const WrappedBasicForm = Form.create()(BasicForm);
 
-const Basic = ({ handerNext, userDetails, positionData, twoDepartmentData }) => {
+const Basic = ({ handerNext, userDetails, positionData, twoDepartmentData, handerFastEntry }) => {
 
   let opt = {
     handerNext,
     userDetails,
     positionData,
     twoDepartmentData,
+    handerFastEntry,
   };
 
   return (

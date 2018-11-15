@@ -71,11 +71,11 @@ class PositionManage extends React.Component {
                 rules: [{
                   required: true, message: '请选择是否拥有门店管理权限'
                 }],
-                initialValue: admin ? '0' : '1',
+                initialValue: admin ? '1' : '0',
               })(
                 <Radio.Group>
-                  <Radio value="0">是</Radio>
-                  <Radio value="1">否</Radio>
+                  <Radio value="1">是</Radio>
+                  <Radio value="0">否</Radio>
                 </Radio.Group>
               )}
             </FormItem>

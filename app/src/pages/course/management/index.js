@@ -165,11 +165,11 @@ class CourseConfig extends React.Component {
           }
         });
       },
-      handleOk() {
-        if (!seleDeptIndex) {
-          message.error('请选择指派的部门');
-          return false;
-        }
+      handleOk(pidstr) {
+        // if (!seleDeptIndex) {
+        //   message.error('请选择指派的部门');
+        //   return false;
+        // }
         let fidArr = [];
         let tidArr = [];
         _.forEach(checkedList, (item) => {
@@ -183,13 +183,16 @@ class CourseConfig extends React.Component {
           }
         });
 
+        let param = {
+          // index: seleDeptIndex,
+          fidstr: fidArr.join(','),
+          tidstr: tidArr.join(','),
+          pidstr,
+        }
+
         dispatch({
           type: 'course/addTrainStorePositionRef',
-          payload: {
-            fidstr: fidArr.join(','),
-            tidstr: tidArr.join(','),
-            index: seleDeptIndex,
-          }
+          payload: param,
         });
       },
       handleChange(value) {

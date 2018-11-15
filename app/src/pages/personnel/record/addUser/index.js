@@ -61,7 +61,7 @@ class Add extends React.Component {
       departmentType = query.departmentType;
       userDetails.storeId = _.toNumber(query.storeId);
     }
-    
+
     // 归属
     let departmentOpt = {
       departmentType,
@@ -102,6 +102,25 @@ class Add extends React.Component {
       }
     }
 
+    // 员工成功、返回列表
+    let handerEntryCallBack = () => {
+      message.success('员工入职成功');
+      routerRedux.push({
+        pathname: '/personnel/record'
+      })
+    }
+    // 处理快速入职
+    let handerFastEntry = (values) => {
+      _.extend(addUserParam, values);
+        services.addUser(addUserParam).then(({ data }) => {
+          if (data.msg === 'success') {
+            handerEntryCallBack();
+          } else {
+            message.error(data.msg);
+          }
+        })
+    }
+
     // 个人信息
     let personalOpt = {
       handerNext(values) {
@@ -114,9 +133,10 @@ class Add extends React.Component {
             addUserParam,
           }
         });
-      }
+      },
+      handerFastEntry,
     }
-    
+
     // 基本信息
     let baseOpt = {
       positionData,
@@ -144,7 +164,8 @@ class Add extends React.Component {
             message.error(data.msg);
           }
         });
-      }
+      },
+      handerFastEntry
     }
 
     // 工作经历
@@ -169,7 +190,8 @@ class Add extends React.Component {
             message.error(data.msg);
           }
         });
-      }
+      },
+      handerFastEntry,
     }
 
     // 员工画像
@@ -183,10 +205,7 @@ class Add extends React.Component {
 
         services.addUserPortrayal(param).then(({ data }) => {
           if (data.msg === 'success') {
-            message.success('员工添加成功')
-            routerRedux.push({
-              pathname: '/personnel/record'
-            })
+            handerEntryCallBack();
           } else {
             message.error(data.msg);
           }
@@ -196,7 +215,7 @@ class Add extends React.Component {
 
     return (
       <div>
-        <div style={{'paddingBottom': '12px'}}>
+        <div style={{ 'paddingBottom': '12px' }}>
           <Breadcrumb>
             <Breadcrumb.Item>
               <Link to="/personnel/record">员工档案</Link>

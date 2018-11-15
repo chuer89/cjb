@@ -91,6 +91,8 @@ class Dashboard extends React.Component {
         )
       });
     }
+
+    // 预警
     let renderWarnLevel = '暂无数据';
     if (!_.isEmpty(warnLevel)) {
       renderWarnLevel = warnLevel.map((item, index) => {
@@ -107,6 +109,8 @@ class Dashboard extends React.Component {
         )
       });
     }
+
+    // 提醒
     let renderRemindLevel = '暂无数据';
     if (!_.isEmpty(remindLevel)) {
       renderRemindLevel = remindLevel.map((item, index) => {
@@ -150,15 +154,15 @@ class Dashboard extends React.Component {
           </Card>
         </div>
         <div className={style.itemBox}>
-          <Card loading={loading} title="代办事项">
+          <Card loading={loading} title="提醒事项">
             <Tabs tabPosition={'left'}>
               <TabPane tab="全部" key="1">
                 <ul>{renderAllList}</ul>
               </TabPane>
-              <TabPane tab="预警" key="2">
+              <TabPane tab="提醒" key="2">
                 <ul>{renderRemindLevel}</ul>
               </TabPane>
-              <TabPane tab="提醒" key="3">
+              <TabPane tab="预警" key="3">
                 <ul>{renderWarnLevel}</ul>
               </TabPane>
             </Tabs>

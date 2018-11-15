@@ -3,7 +3,7 @@ import style from './basic.less';
 import common from '@common';
 import _ from 'lodash';
 import { educationObj, genderObj, contractTypeObj,
-  rankTypeObj, invitationChannelObj } from '@components/addUser/config'
+  rankTypeObj, invitationChannelObj, statusMapObj } from '@components/addUser/config'
 
 // 基本信息
 class Basic extends React.Component {
@@ -23,13 +23,14 @@ class Basic extends React.Component {
       '1': '已婚', '0': '未婚',
     },
 
+    // 生育情况
+    bear: {'1': '是', '0': '否'},
+
     // 合同类型
     contractType: contractTypeObj,
 
     // 在职状态
-    status: {
-      '1': '试用', '2': '在职', '3': '离职'
-    },
+    status: statusMapObj,
 
     warningSele: { // 预警信息
       '0': '正常', '1': '身份证', '2': '健康证', '3': '劳动合同',
@@ -38,7 +39,7 @@ class Basic extends React.Component {
 
   render() {
     let { userDetails, defaultHead } = this.props;
-    let { gender, education, marry, contractType, status } = this.state;
+    let { gender, education, marry, contractType, status, bear } = this.state;
 
     let importantData = [{
       label: '姓名', value: userDetails.name || '--',
@@ -69,6 +70,8 @@ class Basic extends React.Component {
     }, {
       label: '婚姻状况', value: marry[userDetails.marry] || '--',
     }, {
+      label: '是否生育', value: bear[userDetails.bear] || '--'
+    }, {
       label: '特长', value: userDetails.specialty || '--',
     }, {
       label: '紧急联系人', value: userDetails.emergencyContact || '--'
@@ -77,7 +80,13 @@ class Basic extends React.Component {
     }, {
       label: '薪水', value: userDetails.salary || '--'
     }, {
+      label: '岗位名称', value: userDetails.positionName || '--',
+    }, {
+      label: '归属部门', value: userDetails.deptName || '--'
+    }, {
       label: '入职时间', value: common.format(userDetails.joinTime) || '--'
+    }, {
+      label: '转正时间', value: common.format(userDetails.positiveTime) || '--'
     }, {
       label: '工作年限', value: userDetails.workAge || '--',
     }, {
