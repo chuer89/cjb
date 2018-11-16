@@ -19,7 +19,7 @@ class RecordList extends React.Component {
       ],
 
       columns: [{
-        title: '课程名称', dataIndex: 'name'
+        title: '课程名称', dataIndex: 'filename'
       }, {
         title: '老师', dataIndex: 'teacher'
       }, {

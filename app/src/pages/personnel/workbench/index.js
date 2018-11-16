@@ -41,13 +41,13 @@ class Dashboard extends React.Component {
     } } = this.props;
 
     let personnelGeneral = [{
-      name: '全职', number: workUserinfo.full, color: 'rgb(100, 234, 145)',
+      name: '全职', number: workUserinfo.all, color: 'rgb(100, 234, 145)', status: '2',
     }, {
-      name: '在职', number: workUserinfo.all, color: 'rgb(143, 201, 251)', status: '2',
+      name: '实习', number: workUserinfo.practice, color: 'rgb(143, 201, 251)', status: '1',
     }, {
-      name: '实习', number: workUserinfo.practice, color: 'rgb(216, 151, 235)', type: '3',
+      name: '兼职', number: workUserinfo.part, color: 'rgb(246, 152, 153)', status: '5',
     }, {
-      name: '兼职', number: workUserinfo.part, color: 'rgb(246, 152, 153)', type: '2',
+      name: '离职', number: workUserinfo.leave, color: 'rgb(216, 151, 235)', status: '3',
     }];
 
     let renderPersonnel = personnelGeneral.map((item, index) => {

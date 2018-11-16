@@ -89,12 +89,14 @@ export const statusMap = [{
 }, {
   value: '全职', code: '2'
 }, {
+  value: '兼职', code: '5',
+}, {
   value: '离职', code: '3'
 }, {
   value: '待离职', code: '4'
 }];
 export const statusMapObj = {
-  '1': '实习', '2': '全职', '3': '离职', '4': '待离职'
+  '1': '实习', '2': '全职', '5': '兼职', '3': '离职', '4': '待离职'
 }
 
 // 婚姻情况

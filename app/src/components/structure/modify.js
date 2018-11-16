@@ -24,7 +24,8 @@ class Modify extends React.Component {
       callBack,
     } = this.props;
 
-    let handleOk = () => {
+    let handleOk = (e) => {
+      e.preventDefault();
       validateFieldsAndScroll((errors, values) => {
         if (errors) {
           return
