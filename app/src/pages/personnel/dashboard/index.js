@@ -230,7 +230,7 @@ class Dashboard extends React.Component {
         type: 'value'
       },
       series: [{
-        name: '在职',
+        name: '入职',
         data: inService,
         type: 'line',
         smooth: true
