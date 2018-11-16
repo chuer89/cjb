@@ -21,6 +21,8 @@ class RecordList extends React.Component {
       columns: [{
         title: '课程名称', dataIndex: 'filename'
       }, {
+        title: '员工姓名', dataIndex: 'name',
+      }, {
         title: '老师', dataIndex: 'teacher'
       }, {
         title: '学习状态', dataIndex: 'learnStatus', render(learnStatus, item) {

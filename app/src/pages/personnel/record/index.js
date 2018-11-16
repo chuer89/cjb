@@ -110,9 +110,10 @@ class RecordList extends React.Component {
     }, {
       title: '年龄', dataIndex: 'age',
     }, {
-      title: '性别', dataIndex: 'gender', render: (gender) => {
+      title: '性别', dataIndex: 'gender', 
+      render: (gender) => {
         return (
-          <span>{genderObj[gender]}</span>
+          <div>{genderObj[gender]}</div>
         )
       }
     }, {
@@ -360,7 +361,7 @@ class RecordList extends React.Component {
           return `[${range.join('-')}]； 总计：${total}`
         }
       },
-      scroll: { x: 1500, y: 500 },
+      scroll: { x: 1500 },
       onChange({ current }) {
         dispatch({
           type: 'record/getUserList',
