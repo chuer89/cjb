@@ -1,4 +1,4 @@
-// 职位 弹框
+// 岗位 弹框
 import { Modal, Form, Input, Radio } from 'antd';
 import React from 'react';
 // import _ from 'lodash';
@@ -56,14 +56,14 @@ class PositionManage extends React.Component {
         onCancel={onCancel}>
         <div>
           <form>
-            <FormItem {...formItemLayout} label="职位名称">
+            <FormItem {...formItemLayout} label="岗位名称">
               {getFieldDecorator('name', {
                 rules: [{
-                  required: true, message: '请输入职位名称'
+                  required: true, message: '请输入岗位名称'
                 }],
                 initialValue: name,
               })(
-                <Input placeholder="请输入职位名称" autoComplete="off" maxLength="32" />
+                <Input placeholder="请输入岗位名称" autoComplete="off" maxLength="32" />
               )}
             </FormItem>
             <FormItem {...formItemLayout} label="门店管理权限">
@@ -79,11 +79,11 @@ class PositionManage extends React.Component {
                 </Radio.Group>
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label="职位描述">
+            <FormItem {...formItemLayout} label="岗位描述">
               {getFieldDecorator('description', {
                 initialValue: description,
               })(
-                <TextArea rows={3} placeholder="请输入职位描述" maxLength="300" />
+                <TextArea rows={3} placeholder="请输入岗位描述" maxLength="300" />
               )}
             </FormItem>
           </form>

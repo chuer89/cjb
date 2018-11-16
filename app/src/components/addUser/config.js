@@ -49,7 +49,7 @@ export const contractTypeObj = {
   '1': '固定期限', '2': '非固定期限', '3': '试用'
 }
 
-//岗位 1转正 2兼职 3见习期 4小店 5储备期 6其他
+//职级 1转正 2兼职 3见习期 4小店 5储备期 6其他
 export const rankTypeMap = [{
   value: '转正', code: '1'
 }, {

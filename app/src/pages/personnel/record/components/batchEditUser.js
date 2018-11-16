@@ -1,4 +1,4 @@
-// 职位 弹框
+// 岗位 弹框
 import { Modal, Form, message, Radio, Select } from 'antd';
 import React from 'react';
 import DeptSele from '../../../../components/seleDept/';
@@ -111,17 +111,17 @@ class BatchEditUser extends React.Component {
       )
     });
 
-    // 职位
+    // 岗位
     let renderPosition = ''
     if (!_.isEmpty(positionData)) {
-      // 职位筛选
+      // 岗位筛选
       let renderProfessionLevel = positionData.map((item) => {
         return (
           <Option value={item.id} key={item.id}>{item.name}</Option>
         )
       });
       renderPosition = (
-        <FormItem {...formItemLayout} label="职位">
+        <FormItem {...formItemLayout} label="岗位">
           {getFieldDecorator('position')(
             <Select style={{ width: 120 }}>
               {renderProfessionLevel}
@@ -171,7 +171,7 @@ class BatchEditUser extends React.Component {
               )}
             </FormItem>
             {renderPosition}
-            <FormItem {...formItemLayout} label="岗位">
+            <FormItem {...formItemLayout} label="职级">
               {getFieldDecorator('type')(
                 <Select style={{ width: 120 }}>
                   {renderRankType}

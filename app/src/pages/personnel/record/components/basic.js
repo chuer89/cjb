@@ -88,7 +88,7 @@ class Basic extends React.Component {
     }, {
       label: '工作年限', value: userDetails.workAge || '--',
     }, {
-      label: '岗位', value: rankTypeObj[userDetails.type] || '--'
+      label: '职级', value: rankTypeObj[userDetails.type] || '--'
     }, {
       label: '在职状态', value: status[userDetails.status] || '--'
     }, {
@@ -101,6 +101,8 @@ class Basic extends React.Component {
       label: '身份证到期时间', value: common.format(userDetails.idcardTime) || '--'
     }, {
       label: '健康证到期时间', value: common.format(userDetails.healthCertificateTime) || '--'
+    }, {
+      label: '保险过期时间', value: common.format(userDetails.insuranceTime) || '--'
     }, {
       label: '应聘渠道', value: invitationChannelObj[userDetails.applyChannel] || '--'
     }, {

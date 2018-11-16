@@ -60,7 +60,7 @@ export default {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
         let status = _.get(history, 'location.query.status');
-        let type = _.get(history, 'location.query.type');
+        // let type = _.get(history, 'location.query.type');
         if (pathname === '/personnel/record') {
           dispatch({
             type: 'save',
@@ -68,7 +68,6 @@ export default {
               searchParam: {
                 page: 1,
                 status,
-                type,
               }
             }
           })
@@ -77,7 +76,6 @@ export default {
             type: 'getUserList',
             payload: {
               page: 1,
-              type,
               status,
             }
           })

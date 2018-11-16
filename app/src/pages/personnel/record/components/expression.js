@@ -25,7 +25,7 @@ class Expression extends React.Component {
 
     const showAdd = userType === 1 ? false : true;
 
-    // 职位
+    // 岗位
     let salaryAttr = {
       uid,
       salaryRecord,

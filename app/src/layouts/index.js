@@ -105,7 +105,7 @@ class App extends React.Component {
     // 选择部门
     let handerChangeDept = (value) => {
       // console.log(value, 'xuanzhong')
-      let dept = _.last(value);
+      let dept = _.last(value) || '';
       localStorage.setItem('dept', dept);
       window.location.reload();
     }

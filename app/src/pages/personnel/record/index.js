@@ -1,15 +1,17 @@
 // 档案管理列表
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Input, Select, Modal, message, Divider } from 'antd';
+import { Table, Button, Input, Select, Modal, message, Divider, Upload, Icon } from 'antd';
 import style from './record.less';
 import Link from 'umi/link';
 import _ from 'lodash';
 import moment from 'moment';
 import services from '@services/';
 import { UploadField, Uploader } from '@navjobs/upload';
-import { rankTypeMap, contractTypeMap, genderObj, 
-  educationObj, statusMap, statusMapObj } from '@components/addUser/config';
+import {
+  rankTypeMap, contractTypeMap, genderObj,
+  educationObj, statusMap, statusMapObj
+} from '@components/addUser/config';
 
 import BatchEditUser from './components/batchEditUser'; // 批量修改
 
@@ -84,6 +86,49 @@ const UploadHead = ({ addFile, token }) => {
         )
       }}
     </Uploader>
+  )
+}
+
+// 上传
+const UploadFile = ({ addFile, token }) => {
+  let props = {
+    name: 'file',
+    action: services.importUser + '?token=' + token,
+    accept: '.xlsx,.xls,.xlt',
+    showUploadList: false,
+    beforeUpload() {
+      message.loading('上传中，请稍后。。。', 0.8)
+    },
+    onChange(info) {
+      if (info.file.status === 'uploading') {
+        // loading = true;
+      }
+
+      if (info.file.status === 'done') {
+        let response = info.file.response;
+        let { msg, data } = response;
+
+        if (msg === 'success') {
+          message.success('导入成功');
+          addFile(data);
+        } else {
+          Modal.error({
+            title: '导入失败',
+            content: msg,
+          });
+        }
+      } else if (info.file.status === 'error') {
+        Modal.error({
+          title: '服务器有误',
+          content: '上传失败，请稍后再试。',
+        });
+      }
+    }
+  }
+  return (
+    <Upload {...props}>
+      <Button type="primary"><Icon type="upload" /> 批量导入</Button>
+    </Upload>
   )
 }
 
@@ -334,10 +379,17 @@ class RecordList extends React.Component {
       )
     });
 
-    // 岗位
+    // 职级
     let renderRankType = rankType.map((item) => {
       return (
         <Option value={item.code} key={item.code}>{item.value}</Option>
+      )
+    });
+
+    // 岗位筛选
+    let renderProfessionLevel = positionData.map((item) => {
+      return (
+        <Option value={item.id} key={item.id}>{item.name}</Option>
       )
     });
 
@@ -379,7 +431,7 @@ class RecordList extends React.Component {
           return `[${range.join('-')}]； 总计：${total}`
         }
       },
-      scroll: {x: 1500, y: 500},
+      scroll: { x: 1500, y: 500 },
       onChange({ current }) {
         dispatch({
           type: 'record/getUserList',
@@ -490,7 +542,7 @@ class RecordList extends React.Component {
             <a href={exportUser} className={style.operateTopBtn} target="_blank">
               <Button disabled={btnDisabled} type="primary" icon="export" >导出</Button>
             </a>
-            <span className={style.operateTopBtn}><UploadHead {...importUserAttr} /></span>
+            <span className={style.operateTopBtn}><UploadFile {...importUserAttr} /></span>
             <a href={exportTemplate} className={style.operateTopBtn} target="_blank">
               <Button type="primary" icon="save" className={style.operateTopBtn}>模版下载</Button>
             </a>
@@ -510,10 +562,17 @@ class RecordList extends React.Component {
                 </Select>
               </div>
               <div className={style.searchItem}>
-                <span>岗位：</span>
+                <span>职级：</span>
                 <Select value={searchParam.type || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('type', e) }}>
                   <Option value="">全部</Option>
                   {renderRankType}
+                </Select>
+              </div>
+              <div className={style.searchItem}>
+                <span>岗位：</span>
+                <Select value={searchParam.position || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('position', e) }}>
+                  <Option value="">全部</Option>
+                  {renderProfessionLevel}
                 </Select>
               </div>
             </div>

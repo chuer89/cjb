@@ -99,7 +99,7 @@ class Structure extends React.Component {
     initialValue: '',
 
     visibleStroe: false, // 配置门店
-    visiblePosition: false, // 职位
+    visiblePosition: false, // 岗位
   }
 
   UNSAFE_componentWillMount() {
@@ -370,7 +370,7 @@ class Structure extends React.Component {
       mapKey,
     }
 
-    // 职位
+    // 岗位
     let positionManageAttr = {
       visible: visiblePosition,
       onCancel() {

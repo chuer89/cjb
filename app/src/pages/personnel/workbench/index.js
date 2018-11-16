@@ -51,7 +51,7 @@ class Dashboard extends React.Component {
     }];
 
     let renderPersonnel = personnelGeneral.map((item, index) => {
-      let link = `/personnel/record?status=${item.status || ''}&type=${item.type || ''}`
+      let link = `/personnel/record?status=${item.status || ''}`
       return (
         <Link to={link} key={index}>
           <Col span={6} className={style.generalBox}>

@@ -35,7 +35,7 @@ export default {
       'dept-config': {
         icon: 'team', path: '/deploy/section'
       },
-      'position-config': { // 职位
+      'position-config': { // 岗位
         icon: 'solution', path: '/deploy/position'
       },
 

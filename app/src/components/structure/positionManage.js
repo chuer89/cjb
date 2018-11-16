@@ -1,4 +1,4 @@
-// 职位 弹框
+// 岗位 弹框
 import { Modal, Button } from 'antd';
 import React from 'react';
 // import _ from 'lodash';
@@ -15,7 +15,7 @@ class PositionManage extends React.Component {
 
     return (
       <Modal
-        title="职位管理"
+        title="岗位管理"
         width={600}
         destroyOnClose={true}
         visible={visible}

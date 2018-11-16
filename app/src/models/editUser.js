@@ -16,7 +16,7 @@ export default {
 
     departmentType: '1', // 部门类型 1门店 2行政
 
-    positionData: [], // 职位
+    positionData: [], // 岗位
     twoDepartmentData: [], // 二级部门
 
     uid: '', // 操作当前的uid
@@ -27,7 +27,7 @@ export default {
     portrayalImg: {}, // 员工画像资料
 
     salaryRecord: [], // 工作调整记录
-    positionRecord: [], // 职位调整记录
+    positionRecord: [], // 岗位调整记录
   },
 
   subscriptions: {
@@ -53,7 +53,7 @@ export default {
                 type: 'getUserById',
               });
 
-              // 职位列表
+              // 岗位列表
               dispatch({
                 type: 'getPosition'
               });
@@ -62,7 +62,7 @@ export default {
         }
 
         if (pathname === '/personnel/record') {
-          // 职位列表
+          // 岗位列表
           dispatch({
             type: 'getPosition'
           });
@@ -113,7 +113,7 @@ export default {
       }
     },
 
-    // 获取当前职位
+    // 获取当前岗位
     *getPosition({ payload }, { call, put }) {
       let temp = yield call(services.getPosition, payload);
       let { data } = temp;
@@ -227,7 +227,7 @@ export default {
       }
     },
 
-    // 获取当前用户职位变化
+    // 获取当前用户岗位变化
     *getUserPositionRecordByUid({ payload }, { call, put, select }) {
       const { uid } = yield select(_ => _.editUser);
       let param = {};

@@ -8,7 +8,7 @@ import ModifyPosition from './modifyPosition';
 
 const confirm = Modal.confirm;
 
-// 职位组织架构
+// 岗位组织架构
 class Structure extends React.Component {
   state = {
     visibleModify: false,
@@ -74,12 +74,12 @@ class Structure extends React.Component {
     });
   }
 
-  // 修改职位 弹框
+  // 修改岗位 弹框
   handerModifySection(data) {
     let self = this;
     const { id } = data;
     this.handerOpenModify({
-      modifyTitle: '修改职位',
+      modifyTitle: '修改岗位',
       data,
       callBack(values) {
         let param = {};
@@ -98,7 +98,7 @@ class Structure extends React.Component {
   handerAdd() {
     let self = this;
     this.handerOpenModify({
-      modifyTitle: '添加职位',
+      modifyTitle: '添加岗位',
       data: {},
       callBack(values) {
         services.addPosition(values)
@@ -109,7 +109,7 @@ class Structure extends React.Component {
     });
   }
 
-  // 删除职位
+  // 删除岗位
   deletePositionById(id) {
     let self = this;
     this.handerShowDel(() => {
