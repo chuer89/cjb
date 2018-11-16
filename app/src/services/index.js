@@ -36,8 +36,8 @@ let post = (region, api, params = {}) => {
 		// 102,"无效的token" 103,"token已过期"
 		if (data && (data.code === 103 || data.code === 102)) {
 			// 去登录
-			window.location.hash = '#/login';
-			window.location.reload();
+			window.location = '/login';
+			// window.location.reload();
 		}
 	}).catch(function () {
 		message.warning('服务器有误，请稍候再试。');

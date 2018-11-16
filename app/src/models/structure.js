@@ -14,13 +14,15 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        dispatch({
-          type: 'getUserOrganizations',
-        });
-
-        dispatch({
-          type: 'getOrganizations',
-        });
+        if (pathname !== '/login' && pathname !== '/register') {
+          dispatch({
+            type: 'getUserOrganizations',
+          });
+  
+          dispatch({
+            type: 'getOrganizations',
+          });
+        }
 
         if (pathname === '/deploy/position' 
         || pathname === '/course/management/add' 
