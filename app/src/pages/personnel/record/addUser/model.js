@@ -18,7 +18,7 @@ export default {
     departmentType: '1', // 部门类型 1门店 2行政
 
     uid: '', // 操作当前的uid
-    positionData: [], // 当前门店职级
+    positionData: [], // 当前门店岗位
     twoDepartmentData: [], // 二级部门
   },
 

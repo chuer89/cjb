@@ -49,7 +49,7 @@ export const contractTypeObj = {
   '1': '固定期限', '2': '非固定期限', '3': '试用'
 }
 
-//职级 1转正 2兼职 3见习期 4小店 5储备期 6其他
+//岗位 1转正 2兼职 3见习期 4小店 5储备期 6其他
 export const rankTypeMap = [{
   value: '转正', code: '1'
 }, {
@@ -62,9 +62,20 @@ export const rankTypeMap = [{
   value: '储备期', code: '5'
 }, {
   value: '其他', code: '6'
+}, {
+  value: '学徒', code: '7'
+}, {
+  value: '一星', code: '8'
+}, {
+  value: '二星', code: '9'
+}, {
+  value: '三星', code: '10'
+}, {
+  value: '组长', code: '11'
 }];
 export const rankTypeObj = {
-  '1': '转正', '2': '兼职', '3': '见习期', '4': '小店', '5': '储备期', '6': '其他'
+  '1': '转正', '2': '兼职', '3': '见习期', '4': '小店', '5': '储备期', '6': '其他',
+  '7': '学徒', '8': '一星', '9': '二星', '10': '三星', '11': '组长',
 }
 
 // 性别
@@ -74,12 +85,26 @@ export const genderObj = {
 
 // 在职状态
 export const statusMap = [{
-  value: '试用', code: '1'
+  value: '实习', code: '1'
 }, {
-  value: '在职', code: '2'
+  value: '全职', code: '2'
 }, {
   value: '离职', code: '3'
+}, {
+  value: '待离职', code: '4'
 }];
 export const statusMapObj = {
-  '1': '试用', '2': '在职', '3': '离职'
+  '1': '实习', '2': '全职', '3': '离职', '4': '待离职'
 }
+
+// 婚姻情况
+export const marryMapObj = {
+  '1': '已婚', '0': '未婚', '2': '离异'
+}
+export const marryMap = [{
+  value: '未婚', code: '0'
+}, {
+  value: '已婚', code: '1'
+}, {
+  value: '离异', code: '2'
+}]

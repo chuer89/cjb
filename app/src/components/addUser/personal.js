@@ -150,8 +150,9 @@ class PersonalForm extends React.Component {
             initialValue: '' + (userDetails.marry || '0')
           })(
             <Radio.Group>
-              <Radio value="1">已婚</Radio>
               <Radio value="0">未婚</Radio>
+              <Radio value="1">已婚</Radio>
+              <Radio value="2">离异</Radio>
             </Radio.Group>
           )}
         </FormItem>
@@ -160,8 +161,8 @@ class PersonalForm extends React.Component {
             initialValue: ''+ (userDetails.bear || '0'),
           })(
             <Radio.Group>
-              <Radio value="1">已育</Radio>
               <Radio value="0">未育</Radio>
+              <Radio value="1">已育</Radio>
             </Radio.Group>
           )}
         </FormItem>

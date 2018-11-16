@@ -8,7 +8,8 @@ import _ from 'lodash';
 import moment from 'moment';
 import services from '@services/';
 import { UploadField, Uploader } from '@navjobs/upload';
-import { rankTypeMap, contractTypeMap } from '@components/addUser/config';
+import { rankTypeMap, contractTypeMap, genderObj, 
+  educationObj, statusMap, statusMapObj } from '@components/addUser/config';
 
 import BatchEditUser from './components/batchEditUser'; // 批量修改
 
@@ -92,7 +93,7 @@ class RecordList extends React.Component {
     // 设置 initial state
     this.state = {
       // 状态筛选
-      statusDataSele: {},
+      statusData: statusMap,
       // 合同类型
       contractTypeSele: {},
       warningSele: { // 预警信息
@@ -104,7 +105,7 @@ class RecordList extends React.Component {
 
       columns: [],
 
-      //职级
+      //岗位
       rankType: rankTypeMap,
 
       // 合同类型
@@ -114,15 +115,8 @@ class RecordList extends React.Component {
 
   UNSAFE_componentWillMount() {
     this._isMounted = true;
-    let { record } = this.props;
-    let { statusData } = record;
     let { contractType } = this.state;
     let self = this;
-
-    let statusDataSele = {};
-    _.forEach(statusData, (item) => {
-      statusDataSele['' + item.code] = item.value;
-    });
 
     let contractTypeSele = {};
     _.forEach(contractType, (item) => {
@@ -132,15 +126,35 @@ class RecordList extends React.Component {
     let columns = [{
       title: '工号',
       dataIndex: 'code',
+      fixed: 'left',
+      width: 100,
     }, {
       title: '姓名',
       dataIndex: 'name',
+      fixed: 'left',
+      width: 100,
+    }, {
+      title: '年龄', dataIndex: 'age',
+    }, {
+      title: '性别', dataIndex: 'gender', render: (gender) => {
+        return (
+          <span>{genderObj[gender]}</span>
+        )
+      }
     }, {
       title: '状态',
       dataIndex: 'status',
       render: (item) => {
         return (
-          <div>{statusDataSele[item] || ''}</div>
+          <div>{statusMapObj[item] || ''}</div>
+        )
+      }
+    }, {
+      title: '所属部门', dataIndex: 'referrerStore',
+    }, {
+      title: '学历', dataIndex: 'education', render: (education) => {
+        return (
+          <span>{educationObj[education]}</span>
         )
       }
     }, {
@@ -182,6 +196,8 @@ class RecordList extends React.Component {
       title: '操作',
       key: 'handle',
       align: 'center',
+      fixed: 'right',
+      width: 150,
       render(item) {
         return self.operateRender(item);
       },
@@ -189,7 +205,6 @@ class RecordList extends React.Component {
 
     this.setState({
       columns,
-      statusDataSele,
       contractTypeSele,
     });
   }
@@ -260,13 +275,13 @@ class RecordList extends React.Component {
     let { record, user, dispatch, structure, editUser: {
       positionData,
     } } = this.props;
-    let { dataBody, statusData, contractType, warningData,
+    let { dataBody, contractType, warningData,
       searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
     let { dept, userInfo: { token, userType } } = user;
     let inputStyle = {
       'width': '180px',
     }
-    let { columns, rankType } = this.state;
+    let { columns, rankType, statusData } = this.state;
     let { records, total } = dataBody;
 
     let btnDisabled = total <= 0; // 列表无数据，导出按钮不可用
@@ -319,7 +334,7 @@ class RecordList extends React.Component {
       )
     });
 
-    // 职级
+    // 岗位
     let renderRankType = rankType.map((item) => {
       return (
         <Option value={item.code} key={item.code}>{item.value}</Option>
@@ -360,7 +375,11 @@ class RecordList extends React.Component {
       pagination: {
         pageSize,
         total,
+        showTotal: (total, range) => {
+          return `[${range.join('-')}]； 总计：${total}`
+        }
       },
+      scroll: {x: 1500, y: 500},
       onChange({ current }) {
         dispatch({
           type: 'record/getUserList',
@@ -486,11 +505,12 @@ class RecordList extends React.Component {
               <div className={style.searchItem}>
                 <span>在职状态：</span>
                 <Select value={searchParam.status || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('status', e) }}>
+                  <Option value="">全部</Option>
                   {renderSeleStatus}
                 </Select>
               </div>
               <div className={style.searchItem}>
-                <span>职级：</span>
+                <span>岗位：</span>
                 <Select value={searchParam.type || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('type', e) }}>
                   <Option value="">全部</Option>
                   {renderRankType}

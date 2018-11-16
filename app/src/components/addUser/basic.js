@@ -26,7 +26,7 @@ class BasicForm extends React.Component {
       // 合同类型
       contractType: contractTypeMap,
 
-      //职级
+      //岗位
       rankType: rankTypeMap,
 
       // 在职状态
@@ -43,6 +43,12 @@ class BasicForm extends React.Component {
         label: '学校', placeholder: '请输入学校', key: 'school',
       }, {
         label: '专业', placeholder: '请输入专业', key: 'major',
+      }, {
+        label: '特长', placeholder: '请输入特长', key: 'specialty', maxLength: 64
+      }, {
+        label: '紧急联系人姓名', placeholder: '请输入紧急联系人姓名', key: 'emergencyContact'
+      }, {
+        label: '紧急联系人联系方式', placeholder: '请输入紧急联系人联系方式', key: 'emergencyContactPhone', maxLength: 11
       }, {
         label: '与紧急联系人关系', placeholder: '请输入与紧急联系人关系', key: 'emergencyContactRelation',
       }, {
@@ -226,7 +232,7 @@ class BasicForm extends React.Component {
       )
     });
 
-    // 职级
+    // 岗位
     let renderRankType = rankType.map((item) => {
       return (
         <Option value={item.code} key={item.code}>{item.value}</Option>
@@ -267,12 +273,13 @@ class BasicForm extends React.Component {
 
     // 附属信息
     let renderAddition = additionInfoList.map((item, index) => {
+      let maxLength = item.maxLength || '32';
       return (
         <FormItem {...formItemLayout} label={item.label} key={index}>
           {getFieldDecorator(item.key, {
             initialValue: userDetails[item.key],
           })(
-            <Input placeholder={item.placeholder} autoComplete="off" maxLength="32" />
+            <Input placeholder={item.placeholder} autoComplete="off" maxLength={maxLength} />
           )}
         </FormItem>
       )
@@ -319,10 +326,10 @@ class BasicForm extends React.Component {
             <DatePicker />
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="职级">
+        <FormItem {...formItemLayout} label="岗位">
           {getFieldDecorator('type', {
             // rules: [{
-            //   required: true, message: '请选择职级',
+            //   required: true, message: '请选择岗位',
             // }],
             initialValue: '' + (userDetails.type || '')
           })(
@@ -383,30 +390,6 @@ class BasicForm extends React.Component {
           )}
         </FormItem>
         {renderRecommendChannel}
-        <FormItem {...formItemLayout} label="特长">
-          {getFieldDecorator('specialty', {
-            initialValue: userDetails.specialty
-          })(
-            <Input placeholder="请输入特长" autoComplete="off" maxLength="64" />
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="紧急联系人姓名">
-          {getFieldDecorator('emergencyContact', {
-            initialValue: userDetails.emergencyContact,
-          })(
-            <Input placeholder="请输入紧急联系人姓名" autoComplete="off" maxLength="32" />
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="紧急联系人联系方式">
-          {getFieldDecorator('emergencyContactPhone', {
-            initialValue: userDetails.emergencyContactPhone,
-            rules: [{
-              pattern: common.reg.phone, message: '请输入正确的手机号',
-            }],
-          })(
-            <Input placeholder="请输入紧急联系人联系方式" autoComplete="off" maxLength="11" />
-          )}
-        </FormItem>
         <FormItem>
           <div className={style.submitNextBtnBox}>
             <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>

@@ -101,11 +101,14 @@ export default {
 
     // 获取列表
     *getUserList({ payload }, { call, put, select }) {
+      const { dept } = yield select(_ => _.user);
       const { pageSize, searchParam } = yield select(_ => _.record);
+      
       let param = {};
 
       _.extend(param, searchParam, payload, {
         length: pageSize,
+        dept,
       });
 
       let start = pageSize * (param.page - 1) || 0;

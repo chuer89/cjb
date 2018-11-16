@@ -14,7 +14,7 @@ class RecordList extends React.Component {
     this.state = {
       statusData: [
         { value: '全部', code: '' },
-        { value: '进行中', code: '0' },
+        { value: '待完成', code: '0' },
         { value: '已完成', code: '1' }
       ],
 
@@ -25,7 +25,7 @@ class RecordList extends React.Component {
       }, {
         title: '学习状态', dataIndex: 'learnStatus', render(learnStatus, item) {
           return (
-            <span>{learnStatus ? '已完成' : '进行中'}</span>
+            <span>{learnStatus ? '已完成' : '待完成'}</span>
           )
         }
       }, {

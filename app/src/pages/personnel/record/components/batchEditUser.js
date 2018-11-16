@@ -13,7 +13,7 @@ class BatchEditUser extends React.Component {
     // 学历
     education: educationMap,
 
-    //职级
+    //岗位
     rankType: rankTypeMap,
 
     // 合同类型
@@ -98,7 +98,7 @@ class BatchEditUser extends React.Component {
         <Option value={item.code} key={item.code}>{item.value}</Option>
       )
     });
-    // 职级
+    // 岗位
     let renderRankType = rankType.map((item) => {
       return (
         <Option value={item.code} key={item.code}>{item.value}</Option>
@@ -171,7 +171,7 @@ class BatchEditUser extends React.Component {
               )}
             </FormItem>
             {renderPosition}
-            <FormItem {...formItemLayout} label="职级">
+            <FormItem {...formItemLayout} label="岗位">
               {getFieldDecorator('type')(
                 <Select style={{ width: 120 }}>
                   {renderRankType}

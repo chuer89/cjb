@@ -2,7 +2,7 @@ import React from 'react';
 import style from './basic.less';
 import common from '@common';
 import _ from 'lodash';
-import { educationObj, genderObj, contractTypeObj,
+import { educationObj, genderObj, contractTypeObj, marryMapObj,
   rankTypeObj, invitationChannelObj, statusMapObj } from '@components/addUser/config'
 
 // 基本信息
@@ -10,7 +10,7 @@ class Basic extends React.Component {
   state = {
 
     invitationChannelObj, // 应聘渠道
-    rankTypeObj, // 职级
+    rankTypeObj, // 岗位
 
     // 性别
     gender: genderObj,
@@ -19,9 +19,7 @@ class Basic extends React.Component {
     education: educationObj,
 
     // 婚姻
-    marry: {
-      '1': '已婚', '0': '未婚',
-    },
+    marry: marryMapObj,
 
     // 生育情况
     bear: {'1': '是', '0': '否'},
@@ -90,7 +88,7 @@ class Basic extends React.Component {
     }, {
       label: '工作年限', value: userDetails.workAge || '--',
     }, {
-      label: '职级', value: rankTypeObj[userDetails.type] || '--'
+      label: '岗位', value: rankTypeObj[userDetails.type] || '--'
     }, {
       label: '在职状态', value: status[userDetails.status] || '--'
     }, {
