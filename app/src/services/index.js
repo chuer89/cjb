@@ -242,11 +242,11 @@ let httpApi = {
 	},
 	// 删除行政部门
 	deleteEnterpriseOrgInfoById(param = {}) {
-		return post('base', 'enterpriseOrgInfo/deleteEnterpriseOrgInfoById', param);
+		return post('base', '/enterpriseOrgInfo/deleteEnterpriseOrgInfoById', param);
 	},
 	// 编辑行政部门
 	editEnterpriseOrgInfoById(param = {}) {
-		return post('base', 'enterpriseOrgInfo/editEnterpriseOrgInfoById', param);
+		return post('base', '/enterpriseOrgInfo/updateEnterpriseOrgInfoById', param);
 	},
 
 	// 年龄分布

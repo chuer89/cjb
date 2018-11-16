@@ -249,7 +249,7 @@ class Login extends React.Component {
         </form>
         <div style={{ 'paddingTop': '10px' }}>
           <span className={styles.smsLogin} onClick={changeLogin}>{checkLogin}</span>
-          <Link to="/register">去注册</Link>
+          <Link to="/register">注册企业账号</Link>
         </div>
       </div>
     )

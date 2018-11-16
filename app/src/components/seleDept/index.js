@@ -79,18 +79,12 @@ class DeptSele extends React.Component {
         label: '门店',
         children: bChildren
       }];
-    } else if (userType === 0) {
+    } else if (userType === 0 || userType === 2) {
       deptData = [{
         value: '1',
         label: '门店',
         children: bChildren
       }, {
-        value: '2',
-        label: '直属部门',
-        children: sChildren,
-      }];
-    } else if (userType === 2) {
-      deptData = [{
         value: '2',
         label: '直属部门',
         children: sChildren,

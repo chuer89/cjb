@@ -2,7 +2,7 @@
 import { Modal, Form, message, Radio, Select } from 'antd';
 import React from 'react';
 import DeptSele from '../../../../components/seleDept/';
-import { educationMap, rankTypeMap, contractTypeMap } from '@components/addUser/config'
+import { educationMap, rankTypeMap, contractTypeMap, statusMap } from '@components/addUser/config'
 import _ from 'lodash';
 
 const FormItem = Form.Item;
@@ -18,6 +18,9 @@ class BatchEditUser extends React.Component {
 
     // 合同类型
     contractType: contractTypeMap,
+
+    // 在职状态
+    statusMapList: statusMap,
   }
 
   render() {
@@ -33,7 +36,7 @@ class BatchEditUser extends React.Component {
       userType,
       positionData,
     } = this.props;
-    const { education, rankType, contractType } = this.state;
+    const { education, rankType, contractType, statusMapList } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -48,7 +51,7 @@ class BatchEditUser extends React.Component {
       e.preventDefault();
       validateFields((err, values) => {
         if (!err) {
-          
+
           const { guishu } = values;
 
           let storeId = ''; // 门店
@@ -57,7 +60,7 @@ class BatchEditUser extends React.Component {
 
           if (_.isArray(guishu)) {
             lastId = _.last(_.last(guishu).split('.'));
-            
+
             if (guishu[0] === '2') {
               orgId = lastId;
             } else {
@@ -128,6 +131,13 @@ class BatchEditUser extends React.Component {
       )
     }
 
+    // 在职状态
+    let renderSeleStatus = statusMapList.map((item) => {
+      return (
+        <Option value={item.code} key={item.code}>{item.value}</Option>
+      )
+    });
+
     return (
       <Modal
         title="批量修改资料"
@@ -138,7 +148,7 @@ class BatchEditUser extends React.Component {
         onOk={handerSubmit}
         onCancel={onCancel}>
         <div>
-        <div id="js_sele_designate_department"></div>
+          <div id="js_sele_designate_department"></div>
           <form>
             <FormItem {...formItemLayout} label="员工归属">
               {getFieldDecorator('guishu')(
@@ -172,6 +182,13 @@ class BatchEditUser extends React.Component {
               {getFieldDecorator('contractType')(
                 <Select style={{ width: 120 }}>
                   {renderContractType}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="在职状态">
+              {getFieldDecorator('status')(
+                <Select style={{ width: 120 }}>
+                  {renderSeleStatus}
                 </Select>
               )}
             </FormItem>
