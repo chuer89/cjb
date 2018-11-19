@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Checkbox, Modal, message } from 'antd';
+import { Card, Checkbox, Modal } from 'antd';
 import style from './index.less';
 import { connect } from 'dva';
 import SearchConfig from './components/search';
@@ -83,6 +83,7 @@ class CourseConfig extends React.Component {
       classTypeData,
       tag,
       classType,
+      userType,
       disabled: _.isEmpty(checkedList),
       handerDel() {
         self.handerDel.call(self)

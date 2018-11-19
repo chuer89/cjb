@@ -10,7 +10,7 @@ class SearchConfig extends React.Component {
   }
 
   render() {
-    let { tagTypeData, classTypeData, disabled, handerOpenDesignate,
+    let { tagTypeData, classTypeData, disabled, handerOpenDesignate, userType,
       handerTag, tag, handerType, classType, handerName, handerDel } = this.props;
 
     let renderType = classTypeData.map((item) => {
@@ -42,6 +42,14 @@ class SearchConfig extends React.Component {
       )
     });
 
+    // 管理员才有删除权限
+    let renderDelete = '';
+    if (userType === 0) {
+      renderDelete = (
+        <Button type="primary" disabled={disabled} onClick={handerDel} style={{ marginRight: '24px' }}>删除</Button>
+      )
+    }
+
     return (
       <div className={style.box}>
         <div className={style.searchBox}>
@@ -59,9 +67,9 @@ class SearchConfig extends React.Component {
           <div className={style.itemLabel}>体系：</div>
           {renderTag}
           <div className={style.operateBox}>
-            <Link to="/course/management/add"><Button type="primary">上传</Button></Link>
-            <Button type="primary" disabled={disabled} onClick={handerDel} style={{ margin: '0 24px' }}>删除</Button>
-            <Button type="primary" onClick={handerOpenDesignate} disabled={disabled}>指派</Button>
+            <Link to="/course/management/add" style={{ marginRight: '24px' }}><Button type="primary">上传</Button></Link>
+            {renderDelete}
+            <Button type="primary" onClick={handerOpenDesignate} disabled={disabled}>分配</Button>
           </div>
         </div>
       </div>

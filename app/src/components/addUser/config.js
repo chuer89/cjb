@@ -52,8 +52,8 @@ export const contractTypeObj = {
 //职级 1转正 2兼职 3见习期 4小店 5储备期 6其他
 export const rankTypeMap = [{
   value: '转正', code: '1'
-}, {
-  value: '兼职', code: '2'
+// }, {
+//   value: '兼职', code: '2'
 }, {
   value: '实习', code: '3'
 }, {

@@ -1,7 +1,7 @@
 // 档案管理列表
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Input, Select } from 'antd';
+import { Table, Button, Input, Select, Divider } from 'antd';
 import style from './index.less';
 import Link from 'umi/link';
 
@@ -11,6 +11,12 @@ class RecordList extends React.Component {
   constructor(props) {
     super(props);
     let { officeWebUrl } = props.app;
+    let {
+      userInfo: {
+        userType
+      }
+    } = props.user;
+
     this.state = {
       statusData: [
         { value: '全部', code: '' },
@@ -45,8 +51,21 @@ class RecordList extends React.Component {
           if (item.suffix === '.ppt' || item.suffix === '.pptx') {
             openUrl = officeWebUrl + item.allow_path;
           }
+          let renderDown = '';
+          if (userType === 0) {
+            renderDown = (
+              <span>
+                <Divider type="vertical" />
+                <a href={item.allow_path} target="_blank">下载</a>
+              </span>
+            )
+          }
           return (
-            <a href={openUrl} target="_blank">预览</a>
+            <div>
+              <a href={openUrl} target="_blank">预览</a>
+              {renderDown}
+            </div>
+
           )
         }
       }]
@@ -166,8 +185,9 @@ class RecordList extends React.Component {
   }
 }
 
-export default connect((({ courseStudy, structure, app }) => ({
+export default connect((({ courseStudy, structure, app, user }) => ({
   courseStudy,
   structure,
   app,
+  user,
 })))(RecordList);
