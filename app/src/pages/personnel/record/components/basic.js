@@ -80,7 +80,7 @@ class Basic extends React.Component {
     }, {
       label: '岗位名称', value: userDetails.positionName || '--',
     }, {
-      label: '归属部门', value: userDetails.deptName || '--'
+      label: '所在部门', value: userDetails.deptName || '--'
     }, {
       label: '入职时间', value: common.format(userDetails.joinTime) || '--'
     }, {

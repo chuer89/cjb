@@ -125,7 +125,7 @@ class RecordList extends React.Component {
         )
       }
     }, {
-      title: '所属部门', dataIndex: 'referrerStore',
+      title: '所在部门', dataIndex: 'deptName',
     }, {
       title: '学历', dataIndex: 'education', render: (education) => {
         return (
