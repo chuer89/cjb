@@ -108,6 +108,9 @@ class RecordList extends React.Component {
       fixed: 'left',
       width: 100,
     }, {
+      title: '联系方式',
+      dataIndex: 'phone',
+    }, {
       title: '年龄', dataIndex: 'age',
     }, {
       title: '性别', dataIndex: 'gender', 
@@ -164,9 +167,6 @@ class RecordList extends React.Component {
           <div>{moment(item).format('YYYY-MM-DD')}</div>
         )
       }
-    }, {
-      title: '联系方式',
-      dataIndex: 'phone',
     }, {
       title: '操作',
       key: 'handle',

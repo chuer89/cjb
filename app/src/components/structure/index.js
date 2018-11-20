@@ -312,7 +312,7 @@ class Structure extends React.Component {
 
   render() {
     let { structure, app, dispatch, user: {
-      userInfo: { token }
+      userInfo: { token, userType }
     } } = this.props;
     let { storeStructure } = structure;
     let { mapKey } = app;
@@ -407,7 +407,14 @@ class Structure extends React.Component {
             if (!_.isEmpty(store)) {
               // 门店
               renderStore = store.map((itemStore, indexStore) => {
-                let linkTo = `/personnel/record/addUser?departmentType=1&storeId=${itemStore.sid}`
+                let linkTo = `/personnel/record/addUser?departmentType=1&storeId=${itemStore.sid}`;
+                // 企业管理员，可以删除门店
+                let renderDelete = '';
+                if (userType === 0) {
+                  renderDelete = (
+                    <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
+                  )
+                }
                 return (
                   <div key={indexStore} className={styles.storeBox}>
                     <div className={styles.titleBox}>
@@ -420,7 +427,7 @@ class Structure extends React.Component {
                         <span><Link target="_blank" to={linkTo}>添加员工</Link></span>
                         <span><UploadHead {...importUserAttr} sid={itemStore.sid} /></span>
                         <span onClick={() => { self.updateCommonStoreById(itemStore) }}>编辑门店</span>
-                        <span onClick={() => { self.deleteCommonStoreById(itemStore.sid) }}>删除门店</span>
+                        {renderDelete}
                       </div>
                     </div>
                   </div>

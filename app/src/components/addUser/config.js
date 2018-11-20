@@ -31,10 +31,17 @@ export const invitationChannelMap = [{
 }, {
   value: '58同城', code: '6'
 }, {
+  value: '再入职', code: '7'
+}, {
+  value: '自主招聘', code: '8'
+}, {
+  value: '现场招聘', code: '9'
+}, {
   value: '其他', code: '3'
 }];
 export const invitationChannelObj = {
-  '1': '内推', '2': '网络招聘', '3': '其他', '4': '门店海报招聘', '5': '51job', '6': '58同城'
+  '1': '内推', '2': '网络招聘', '3': '其他', '4': '门店海报招聘', '5': '51job', '6': '58同城',
+  '7': '再入职', '8': '自主招聘', '9': '现场招聘',
 }
 
 // 合同类型
@@ -44,9 +51,11 @@ export const contractTypeMap = [{
   value: '非固定期限', code: '2'
 }, {
   value: '试用', code: '3'
+}, {
+  value: '劳务协议', code: '4'
 }];
 export const contractTypeObj = {
-  '1': '固定期限', '2': '非固定期限', '3': '试用'
+  '1': '固定期限', '2': '非固定期限', '3': '试用', '4': '劳务协议'
 }
 
 //职级 1转正 2兼职 3见习期 4小店 5储备期 6其他

@@ -56,8 +56,6 @@ class BasicForm extends React.Component {
       }, {
         label: '合同主体', placeholder: '请输入合同主体', key: 'contractSubject',
       }, {
-        label: '推荐人门店', placeholder: '请输入推荐人门店', key: 'referrerStore',
-      }, {
         label: '备注', placeholder: '请输入备注', key: 'remark',
       }]
     }
@@ -232,7 +230,7 @@ class BasicForm extends React.Component {
       )
     });
 
-    // 岗位
+    // 职级
     let renderRankType = rankType.map((item) => {
       return (
         <Option value={item.code} key={item.code}>{item.value}</Option>
@@ -255,9 +253,9 @@ class BasicForm extends React.Component {
         isRecommendChannel: channel,
       });
     }
-    // 推荐人
+    // 推荐人 & 推荐人门店
     let renderRecommendChannel = '';
-    if (isRecommendChannel) {
+    if (isRecommendChannel || userDetails.applyChannel === 1) {
       renderRecommendChannel = (
         <div>
           <FormItem {...formItemLayout} label="推荐人">
@@ -265,6 +263,13 @@ class BasicForm extends React.Component {
               initialValue: userDetails.referrer,
             })(
               <Input placeholder="请输入推荐人" autoComplete="off" maxLength="32" />
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="推荐人门店">
+            {getFieldDecorator('referrerStore', {
+              initialValue: userDetails.referrer,
+            })(
+              <Input placeholder="请输入推荐人门店" autoComplete="off" maxLength="32" />
             )}
           </FormItem>
         </div>
