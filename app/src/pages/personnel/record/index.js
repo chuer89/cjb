@@ -1,7 +1,7 @@
 // 档案管理列表
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Input, Select, Modal, message, Divider, Upload, Icon } from 'antd';
+import { Table, Button, Input, Select, Modal, message, Divider, Upload, Icon, Dropdown, Menu } from 'antd';
 import style from './record.less';
 import Link from 'umi/link';
 import _ from 'lodash';
@@ -14,6 +14,7 @@ import {
 } from '@components/addUser/config';
 
 import BatchEditUser from './components/batchEditUser'; // 批量修改
+import JobStatus from './components/jobStatus'; // 在职状态
 
 const Option = Select.Option;
 const confirm = Modal.confirm;
@@ -56,7 +57,7 @@ const UploadFile = ({ addFile, token }) => {
   }
   return (
     <Upload {...props}>
-      <Button type="primary"><Icon type="upload" /> 批量导入</Button>
+      <Icon type="upload" />批量导入
     </Upload>
   )
 }
@@ -113,7 +114,7 @@ class RecordList extends React.Component {
     }, {
       title: '年龄', dataIndex: 'age',
     }, {
-      title: '性别', dataIndex: 'gender', 
+      title: '性别', dataIndex: 'gender',
       render: (gender) => {
         return (
           <div>{genderObj[gender]}</div>
@@ -250,7 +251,7 @@ class RecordList extends React.Component {
     let { record, user, dispatch, structure, editUser: {
       positionData,
     } } = this.props;
-    let { dataBody, contractType, warningData,
+    let { dataBody, contractType, warningData, visibleJobStatus,
       searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
     let { dept, userInfo: { token, userType } } = user;
     let inputStyle = {
@@ -428,6 +429,44 @@ class RecordList extends React.Component {
       })
     }
 
+    // 在职状态修改
+    let jobStatusProps = {
+      visible: visibleJobStatus,
+      onCancel() {
+        dispatch({
+          type: 'record/save',
+          payload: {
+            visibleJobStatus: false,
+          }
+        })
+      },
+      callBack(values) {
+        // let change = JSON.stringify(values);
+
+        // if (_.isEmpty(JSON.parse(change))) {
+        //   message.error('请选择要修改的值');
+        //   return false;
+        // }
+
+        // let payload = {
+        //   change,
+        //   userid: selectedRowUserId.join(','),
+        // }
+        // dispatch({
+        //   type: 'record/updateAll',
+        //   payload,
+        // })
+      }
+    }
+    let handerOpenJobStatus = () => {
+      dispatch({
+        type: 'record/save',
+        payload: {
+          visibleJobStatus: true,
+        }
+      })
+    }
+
     // 批量删除
     let handerOpenBatchDelete = () => {
       let uids = selectedRowUserId.join(',');
@@ -453,30 +492,59 @@ class RecordList extends React.Component {
 
     // 筛选条件：入职时间、离职时间、部门、年龄、性别、电话、合同类型、应聘渠道、到期时间
 
+    let renderBatchOperate = (
+      <Menu className={style.operateTopBox}>
+        <Menu.Item>
+          <Link to="/personnel/record/addUser" target="_blank">
+            <Icon type="user-add" />添加员工
+          </Link>
+        </Menu.Item>
+        <Menu.Item disabled={userType === 2}>
+          <span onClick={handerOpenJobStatus}>
+            <Icon type="form" />在职状态
+          </span>
+        </Menu.Item>
+        <Menu.Item disabled={batchEditBtnDisabled}>
+          <span onClick={handerOpenBatchEdit}>
+            <Icon type="edit" />批量修改
+          </span>
+        </Menu.Item>
+        <Menu.Item disabled={batchEditBtnDisabled}>
+          <span onClick={handerOpenBatchDelete}>
+            <Icon type="delete" />批量删除
+          </span>
+        </Menu.Item>
+        <Menu.Item disabled={btnDisabled}>
+          <a href={exportUser} target="_blank">
+            <Icon type="export" />导出表格
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+          <span><UploadFile {...importUserAttr} /></span>
+        </Menu.Item>
+        <Menu.Item>
+          <a href={exportTemplate} target="_blank">
+            <Icon type="save" />模版下载
+          </a>
+        </Menu.Item>
+      </Menu>
+    )
+
     return (
       <div>
         <div>
           <BatchEditUser {...batchUserProps} />
+          <JobStatus {...jobStatusProps} />
         </div>
         <div className={style.content}>
-          <div className={style.operateTopBox}>
-            <Link to="/personnel/record/addUser" target="_blank" className={style.operateTopBtn}>
-              <Button type="primary" icon="user-add">添加员工</Button>
-            </Link>
-            <span className={style.operateTopBtn}>
-              <Button onClick={handerOpenBatchEdit} type="primary" disabled={batchEditBtnDisabled} icon="edit">批量修改</Button>
-            </span>
-            <span className={style.operateTopBtn}>
-              <Button onClick={handerOpenBatchDelete} type="primary" disabled={batchEditBtnDisabled} icon="delete">批量删除</Button>
-            </span>
-            <a href={exportUser} className={style.operateTopBtn} target="_blank">
-              <Button disabled={btnDisabled} type="primary" icon="export" >导出</Button>
-            </a>
-            <span className={style.operateTopBtn}><UploadFile {...importUserAttr} /></span>
-            <a href={exportTemplate} className={style.operateTopBtn} target="_blank">
-              <Button type="primary" icon="save" className={style.operateTopBtn}>模版下载</Button>
-            </a>
+          <div className={style.operateTopeEtrance}>
+            <Dropdown overlay={renderBatchOperate}>
+              <Button type="primary" className="ant-dropdown-link">
+                更多操作<Icon type="down" />
+              </Button>
+            </Dropdown>
           </div>
+
           <div className={style.searchBox}>
             <div className={'clearfix'}>
               <div className={style.searchItem}>

@@ -54,6 +54,7 @@ export default {
 
     selectedRowUserId: '', // 选中的列
     visibleBatch: false,
+    visibleJobStatus: false,
   },
 
   subscriptions: {
