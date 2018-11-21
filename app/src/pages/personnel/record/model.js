@@ -131,12 +131,13 @@ export default {
       const temp = yield call(services.updateAll, payload);
       let { data } = temp;
       if (data.msg === 'success') {
-        message.success('已修改');
+        message.success('修改成功');
 
         yield put({
           type: 'save',
           payload: {
             visibleBatch: false,
+            visibleJobStatus: false,
           }
         });
 

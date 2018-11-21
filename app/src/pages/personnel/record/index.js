@@ -441,21 +441,21 @@ class RecordList extends React.Component {
         })
       },
       callBack(values) {
-        // let change = JSON.stringify(values);
+        let change = JSON.stringify(values);
 
-        // if (_.isEmpty(JSON.parse(change))) {
-        //   message.error('请选择要修改的值');
-        //   return false;
-        // }
+        if (_.isEmpty(JSON.parse(change))) {
+          message.error('请选择要修改的值');
+          return false;
+        }
 
-        // let payload = {
-        //   change,
-        //   userid: selectedRowUserId.join(','),
-        // }
-        // dispatch({
-        //   type: 'record/updateAll',
-        //   payload,
-        // })
+        let payload = {
+          change,
+          userid: selectedRowUserId.join(','),
+        }
+        dispatch({
+          type: 'record/updateAll',
+          payload,
+        })
       }
     }
     let handerOpenJobStatus = () => {
@@ -499,7 +499,7 @@ class RecordList extends React.Component {
             <Icon type="user-add" />添加员工
           </Link>
         </Menu.Item>
-        <Menu.Item disabled={userType === 2}>
+        <Menu.Item disabled={userType === 2 || batchEditBtnDisabled}>
           <span onClick={handerOpenJobStatus}>
             <Icon type="form" />在职状态
           </span>

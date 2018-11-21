@@ -290,27 +290,6 @@ class BasicForm extends React.Component {
       )
     })
 
-    // 在职状态
-    let renderStatus = '';
-    if (!_.isEmpty(userDetails)) {
-      let renderSeleStatus = statusMapList.map((item) => {
-        return (
-          <Option value={item.code} key={item.code}>{item.value}</Option>
-        )
-      });
-      renderStatus = (
-        <FormItem {...formItemLayout} label="在职状态">
-          {getFieldDecorator('status', {
-            initialValue: '' + (userDetails.status || '')
-          })(
-            <Select style={{ width: 120 }}>
-              {renderSeleStatus}
-            </Select>
-          )}
-        </FormItem>
-      )
-    }
-
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
@@ -323,7 +302,6 @@ class BasicForm extends React.Component {
             <DatePicker />
           )}
         </FormItem>
-        {renderStatus}
         <FormItem {...formItemLayout} label="健康证到期时间">
           {getFieldDecorator('healthCertificateTime', {
             initialValue: healthCertificateTimeInit

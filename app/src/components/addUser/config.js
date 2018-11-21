@@ -119,3 +119,17 @@ export const marryMap = [{
 }, {
   value: '离异', code: '2'
 }]
+
+// 离职类型
+export const resignationTypeMap = [{
+  value: '自离', code: 1,
+}, {
+  value: '辞退', code: 2
+}, {
+  value: '辞职', code: 3
+}, {
+  value: '开除', code: 4
+}]
+export const resignationTypeObj = {
+  '1': '自离', '2': '辞退', '3': '辞职', '4': '开除',
+}

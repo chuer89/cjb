@@ -1,8 +1,9 @@
 // 岗位 弹框
-import { Modal, Form, Select } from 'antd';
+import { Modal, Form, Select, DatePicker, Input } from 'antd';
 import React from 'react';
-import { statusMap } from '@components/addUser/config'
+import { statusMap, resignationTypeMap } from '@components/addUser/config'
 import _ from 'lodash';
+import common from '@common';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -11,6 +12,8 @@ class JobStatusUser extends React.Component {
   state = {
     // 在职状态
     statusMapList: statusMap,
+
+    isSeleLeave: false,
   }
 
   render() {
@@ -23,7 +26,8 @@ class JobStatusUser extends React.Component {
         validateFields,
       },
     } = this.props;
-    const { statusMapList } = this.state;
+    const { statusMapList, isSeleLeave } = this.state;
+    const self = this;
 
     const formItemLayout = {
       labelCol: {
@@ -38,6 +42,7 @@ class JobStatusUser extends React.Component {
       e.preventDefault();
       validateFields((err, values) => {
         if (!err) {
+          values.resignationTime = common.format(values.resignationTime);
           callBack(values);
         }
       });
@@ -49,6 +54,47 @@ class JobStatusUser extends React.Component {
         <Option value={item.code} key={item.code}>{item.value}</Option>
       )
     });
+
+    let renderReason = '';
+    if (isSeleLeave) {
+      renderReason = (
+        <div>
+          <FormItem {...formItemLayout} label="离职类型">
+            {getFieldDecorator('resignationType')(
+              <Select style={{ width: 180 }}>
+                {
+                  resignationTypeMap.map((item) => {
+                    return (
+                      <Option value={item.code} key={item.code}>{item.value}</Option>
+                    )
+                  })
+                }
+              </Select>
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="离职时间">
+            {getFieldDecorator('resignationTime')(
+              <DatePicker />
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="离职原因">
+            {getFieldDecorator('resignationReason')(
+              <Input placeholder="请输入离职原因" autoComplete="off" maxLength="32" />
+            )}
+          </FormItem>
+        </div>
+      )
+    }
+
+    let handerChange = (values) => {
+      let seleLeave = false;
+      if (values === '3') {
+        seleLeave = true;
+      }
+      self.setState({
+        isSeleLeave: seleLeave,
+      })
+    }
 
     return (
       <Modal
@@ -62,12 +108,17 @@ class JobStatusUser extends React.Component {
         <div>
           <form>
             <FormItem {...formItemLayout} label="在职状态">
-              {getFieldDecorator('status')(
-                <Select style={{ width: 120 }}>
+              {getFieldDecorator('status', {
+                rules: [{
+                  required: true, message: '请选择在职状态',
+                }],
+              })(
+                <Select style={{ width: 180 }} onChange={handerChange}>
                   {renderSeleStatus}
                 </Select>
               )}
             </FormItem>
+            {renderReason}
           </form>
         </div>
       </Modal>
