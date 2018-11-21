@@ -185,13 +185,6 @@ class BatchEditUser extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label="在职状态">
-              {getFieldDecorator('status')(
-                <Select style={{ width: 120 }}>
-                  {renderSeleStatus}
-                </Select>
-              )}
-            </FormItem>
           </form>
         </div>
       </Modal>
