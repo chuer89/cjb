@@ -1,34 +1,25 @@
 import React from 'react'
 import { connect } from 'dva'
 import { Button, Input, Row, Col, Modal, message } from 'antd'
-import styles from './index.less'
 import _ from 'lodash';
 import services from '@services/';
-import ModifyPosition from './modifyPosition';
+import styles from './index.less'
+import Modify from './components/modify';
 
 const confirm = Modal.confirm;
 
-// 岗位组织架构
-class Structure extends React.Component {
+// 岗位管理
+class UserStaffing extends React.Component {
   state = {
     visibleModify: false,
-    modifyTitle: '', // 弹框标题
+    modifyTitle: '',
     callBack: () => { },
     initialValue: '',
     data: {},
   }
 
-  UNSAFE_componentWillMount() {
-    this._isMounted = true;
-  }
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
   save(payload) {
-    if (this._isMounted) {
-      this.setState(payload);
-    }
+    this.setState(payload);
   }
 
   // 打开弹框
@@ -53,7 +44,7 @@ class Structure extends React.Component {
       self.handerCloseModify();
       message.success('操作成功');
       dispatch({
-        type: 'structure/getPosition'
+        type: 'userStaffing/getList'
       });
     } else {
       message.error(data.msg);
@@ -74,34 +65,14 @@ class Structure extends React.Component {
     });
   }
 
-  // 修改岗位 弹框
-  handerModifySection(data) {
-    let self = this;
-    const { id } = data;
-    this.handerOpenModify({
-      modifyTitle: '修改岗位',
-      data,
-      callBack(values) {
-        let param = {};
-        _.extend(param, values, {
-          id,
-        });
-        services.updatePositionById(param)
-          .then(({ data }) => {
-            self.handerAjaxBack(data);
-          });
-      }
-    });
-  }
-
   // 新增
   handerAdd() {
     let self = this;
     this.handerOpenModify({
-      modifyTitle: '添加岗位',
+      modifyTitle: '添加编制',
       data: {},
       callBack(values) {
-        services.addPosition(values)
+        services.addUserStaffing(values)
           .then(({ data }) => {
             self.handerAjaxBack(data);
           });
@@ -113,7 +84,7 @@ class Structure extends React.Component {
   deletePositionById(id) {
     let self = this;
     this.handerShowDel(() => {
-      services.deletePositionById({
+      services.deleteUserStaffing({
         id,
       }).then(({ data }) => {
         self.handerAjaxBack(data);
@@ -122,14 +93,36 @@ class Structure extends React.Component {
   }
 
   render() {
-    let self = this;
-    let { structure: { positionStructure } } = this.props;
-    let { visibleModify, modifyTitle, data,
-      callBack, initialValue } = this.state;
+    const {
+      userStaffing: {
+        list
+      },
+      structure,
+      user: {
+        userInfo: { userType }
+      }
+    } = this.props;
+    const { visibleModify, modifyTitle, callBack, initialValue, data } = this.state;
+    const self = this;
+
+    let modifyOpt = {
+      visible: visibleModify,
+      title: modifyTitle,
+      initialValue,
+      onCancel() {
+        self.save({
+          visibleModify: false,
+        });
+      },
+      callBack,
+      data,
+      structure,
+      userType,
+    }
 
     let renderStructure = '暂无数据';
-    if (!_.isEmpty(positionStructure)) {
-      renderStructure = positionStructure.map((item, index) => {
+    if (!_.isEmpty(list)) {
+      renderStructure = list.map((item, index) => {
         return (
           <div key={index} className={styles.areaBox}>
             <div className={styles.titleBox}>
@@ -146,34 +139,22 @@ class Structure extends React.Component {
         )
       })
     }
-
-    let modifyOpt = {
-      visible: visibleModify,
-      title: modifyTitle,
-      initialValue,
-      onCancel() {
-        self.save({
-          visibleModify: false,
-        });
-      },
-      callBack,
-      data,
-    }
-
     return (
-      <div>
-        <div>
-          <ModifyPosition {...modifyOpt} />
-        </div>
-        <div className={styles.addBtnBox} style={{ textAlign: 'right' }}>
+      <div className={styles.contentStyle}>
+        <div className={styles.addBtnBox}>
           <Button type="primary" size="large" onClick={() => { self.handerAdd() }} style={{ width: '140px' }}>添加</Button>
         </div>
         <div>{renderStructure}</div>
+        <div>
+          <Modify {...modifyOpt} />
+        </div>
       </div>
     )
   }
 }
 
-export default connect(({ structure }) => ({
-  structure
-}))(Structure)
+export default connect(({ userStaffing, structure, user }) => ({
+  userStaffing,
+  structure,
+  user,
+}))(UserStaffing)

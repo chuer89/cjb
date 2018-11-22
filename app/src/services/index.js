@@ -170,6 +170,23 @@ let httpApi = {
 		return post('base', '/userPosition/add', param);
 	},
 
+	// 员工编制 添加
+	addUserStaffing(param = {}) {
+		return post('base', '/userStaffing/add', param);
+	},
+	// 员工编制 更新
+	updateUserStaffing(param = {}) {
+		return post('base', '/userStaffing/update', param);
+	},
+	// 员工编制 删除
+	deleteUserStaffing(param = {}) {
+		return post('base', '/userStaffing/delete', param);
+	},
+	// 员工编制 获取
+	getUserStaffing(param = {}) {
+		return post('base', '/userStaffing/get', param);
+	},
+
 	// 获取门店的二级部门
 	getTwoDepartmentBySid(param = {}) {
 		return post('base', '/user/getTwoDepartmentBySid', param);

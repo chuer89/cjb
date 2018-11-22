@@ -22,10 +22,18 @@ export default {
         icon: 'desktop', path: '/personnel/workbench'
       },
       'summary': {
-        icon: 'pie-chart', path: '/personnel/dashboard',
+        icon: 'bar-chart', path: '/personnel/dashboard',
+      },
+      // 离职分析
+      'quit-info': {
+        icon: 'pie-chart', path: '/personnel/separation'
       },
       'user': {
         icon: 'copy', path: '/personnel/record',
+      },
+      // 操作记录
+      'operation-info': {
+        icon: 'file-text', path: '/personnel/operate'
       },
 
       // 后台管理
@@ -33,7 +41,8 @@ export default {
         icon: 'hdd', path: '/deploy/store'
       },
       'dept-config': {
-        icon: 'team', path: '/deploy/section'
+        // icon: 'team', path: '/deploy/section'
+        icon: 'contacts', path: '/deploy/user_staffing'
       },
       'position-config': { // 岗位
         icon: 'solution', path: '/deploy/position'

@@ -27,7 +27,8 @@ export default {
         if (pathname === '/deploy/position' 
         || pathname === '/course/management/add' 
         || pathname === '/course/management'
-        || pathname === '/course/study') {
+        || pathname === '/course/study'
+        || pathname === '/deploy/user_staffing') {
           dispatch({
             type: 'getPosition',
           });
