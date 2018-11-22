@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Input, Row, Col, Modal, message } from 'antd'
+import { Button, Table, Modal, message, Divider } from 'antd'
 import _ from 'lodash';
 import services from '@services/';
 import styles from './index.less'
@@ -16,10 +16,47 @@ class UserStaffing extends React.Component {
     callBack: () => { },
     initialValue: '',
     data: {},
+    columns: [],
   }
 
   save(payload) {
     this.setState(payload);
+  }
+
+  UNSAFE_componentWillMount() {
+    const self = this;
+    let columns = [{
+      title: '岗位',
+      dataIndex: 'positionName',
+    }, {
+      title: '部门',
+      dataIndex: 'pid',
+    }, {
+      title: '标配人数',
+      dataIndex: 'num',
+    }, {
+      title: '在职人数', dataIndex: 'realNum',
+    }, {
+      title: '差异人数', dataIndex: 'difNum',
+    }, {
+      title: '操作',
+      key: 'handle',
+      align: 'center',
+      width: 150,
+      render(item) {
+        return (
+          <div>
+            <span onClick={(e) => { self.handerModifySection(item) }} className={styles.operateBtn}>编辑</span>
+            <Divider type="vertical" />
+            <span onClick={(e) => { self.deletePositionById(item.id) }} className={styles.operateBtn}>删除</span>
+          </div>
+        )
+      },
+    }];
+
+    this.save({
+      columns,
+    });
   }
 
   // 打开弹框
@@ -33,6 +70,26 @@ class UserStaffing extends React.Component {
   handerCloseModify() {
     this.save({
       visibleModify: false,
+    });
+  }
+
+  // 修改岗位 弹框
+  handerModifySection(data) {
+    let self = this;
+    const { id } = data;
+    this.handerOpenModify({
+      modifyTitle: '修改岗位',
+      data,
+      callBack(values) {
+        let param = {};
+        _.extend(param, values, {
+          id,
+        });
+        services.updateUserStaffing(param)
+          .then(({ data }) => {
+            self.handerAjaxBack(data);
+          });
+      }
     });
   }
 
@@ -102,7 +159,7 @@ class UserStaffing extends React.Component {
         userInfo: { userType }
       }
     } = this.props;
-    const { visibleModify, modifyTitle, callBack, initialValue, data } = this.state;
+    const { visibleModify, modifyTitle, callBack, initialValue, data, columns } = this.state;
     const self = this;
 
     let modifyOpt = {
@@ -120,31 +177,22 @@ class UserStaffing extends React.Component {
       userType,
     }
 
-    let renderStructure = '暂无数据';
-    if (!_.isEmpty(list)) {
-      renderStructure = list.map((item, index) => {
-        return (
-          <div key={index} className={styles.areaBox}>
-            <div className={styles.titleBox}>
-              <div className={styles.title}>
-                <i className="iconfont">&#xe601;</i>
-                {item.name}
-              </div>
-              <div className={styles.operateBox}>
-                <span onClick={(e) => {self.handerModifySection(item)}}>编辑</span>
-                <span onClick={(e) => {self.deletePositionById(item.id)}}>删除</span>
-              </div>
-            </div>
-          </div>
-        )
-      })
+    let tableOpt = {
+      rowKey: 'pid',
+      dataSource: list || [],
+      columns,
+      locale: {
+        emptyText: '暂无数据'
+      },
+      pagination: false,
     }
+
     return (
       <div className={styles.contentStyle}>
         <div className={styles.addBtnBox}>
           <Button type="primary" size="large" onClick={() => { self.handerAdd() }} style={{ width: '140px' }}>添加</Button>
         </div>
-        <div>{renderStructure}</div>
+        <div><Table {...tableOpt} /></div>
         <div>
           <Modify {...modifyOpt} />
         </div>
