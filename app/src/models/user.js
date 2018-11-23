@@ -41,11 +41,13 @@ export default {
         icon: 'hdd', path: '/deploy/store'
       },
       'dept-config': {
-        // icon: 'team', path: '/deploy/section'
-        icon: 'contacts', path: '/deploy/user_staffing'
+        icon: 'team', path: '/deploy/section'
       },
       'position-config': { // 岗位
         icon: 'solution', path: '/deploy/position'
+      },
+      'emp-org': {
+        icon: 'contacts', path: '/deploy/user_staffing'
       },
 
       // 培训管理
