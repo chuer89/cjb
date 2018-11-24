@@ -253,7 +253,7 @@ class RecordList extends React.Component {
     } } = this.props;
     let { dataBody, contractType, warningData, visibleJobStatus,
       searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
-    let { dept, userInfo: { token, userType } } = user;
+    let { dept, userInfo: { token, userType, hr } } = user;
     let inputStyle = {
       'width': '180px',
     }
@@ -492,6 +492,17 @@ class RecordList extends React.Component {
 
     // 筛选条件：入职时间、离职时间、部门、年龄、性别、电话、合同类型、应聘渠道、到期时间
 
+    // 更多操作
+    let renderChangeJob = '';
+    if (userType === 0 || hr) {
+      renderChangeJob = (
+        <Menu.Item disabled={batchEditBtnDisabled}>
+          <span onClick={handerOpenJobStatus}>
+            <Icon type="form" />在职状态
+            </span>
+        </Menu.Item>
+      )
+    }
     let renderBatchOperate = (
       <Menu className={style.operateTopBox}>
         <Menu.Item>
@@ -499,11 +510,7 @@ class RecordList extends React.Component {
             <Icon type="user-add" />添加员工
           </Link>
         </Menu.Item>
-        <Menu.Item disabled={userType === 2 || batchEditBtnDisabled}>
-          <span onClick={handerOpenJobStatus}>
-            <Icon type="form" />在职状态
-          </span>
-        </Menu.Item>
+        {renderChangeJob}
         <Menu.Item disabled={batchEditBtnDisabled}>
           <span onClick={handerOpenBatchEdit}>
             <Icon type="edit" />批量修改

@@ -4,7 +4,7 @@ import { Button, Input, Row, Col, Modal, message } from 'antd'
 import styles from './index.less'
 import _ from 'lodash';
 import services from '@services/';
-import Modify from './modify';
+import Modify from './modifySection';
 
 const confirm = Modal.confirm;
 
@@ -76,8 +76,9 @@ class Structure extends React.Component {
   }
 
   // 修改品牌 弹框
-  handerModifySection(id, initialValue) {
+  handerModifySection(initialValue) {
     let self = this;
+    const { id } = initialValue;
     this.handerOpenModify({
       modifyTitle: '修改部门',
       modifyLabel: '请输入部门名称',
@@ -85,7 +86,7 @@ class Structure extends React.Component {
       callBack(values) {
         let param = {
           id,
-          name: values,
+          ...values,
         }
         services.editEnterpriseOrgInfoById(param)
           .then(({ data }) => {
@@ -154,7 +155,7 @@ class Structure extends React.Component {
               </div>
               <div className={styles.operateBox}>
                 <span onClick={(e) => {openConfigMenus(item.index)}}>配置菜单</span>
-                <span onClick={(e) => {self.handerModifySection(item.id)}}>编辑</span>
+                <span onClick={(e) => {self.handerModifySection(item)}}>编辑</span>
                 <span onClick={(e) => {self.deleteEnterpriseOrgInfoById(item.id)}}>删除</span>
               </div>
             </div>

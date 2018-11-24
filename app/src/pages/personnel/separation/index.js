@@ -6,6 +6,9 @@ import ReactEcharts from 'echarts-for-react';
 import common from '@common';
 import style from './index.less';
 
+import ChartWork from './components/work'; // 工作年限
+import ChartTime from './components/time'; // 时间维度
+
 class SeparationList extends React.Component {
   state = {
 
@@ -18,9 +21,9 @@ class SeparationList extends React.Component {
       chartDepartureEducation,
       chartDepartureWork,
       chartDepartureTime,
-    } } = this.props;
+    }, dispatch } = this.props;
 
-    console.log(chartDepartureWork, chartDepartureTime)
+    // console.log(chartDepartureWork, chartDepartureTime)
 
     let RowSpan3 = {
       span: 8,
@@ -95,19 +98,16 @@ class SeparationList extends React.Component {
       )
     });
 
-    let lineOption = {
-      xAxis: {
-        // data: xAxisData,
-        boundaryGap: false,
-      },
-      tooltip: {
-        trigger: 'axis',
-        // formatter: '{b} : {c}'
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: []
+    let chartTimeProps = {
+      data: chartDepartureTime,
+      handerChangeSearch(type) {
+        dispatch({
+          type: 'separationRate/chartDepartureTime',
+          payload: {
+            type,
+          }
+        })
+      }
     }
 
     return (
@@ -116,13 +116,11 @@ class SeparationList extends React.Component {
           <Row>{renderTopPie}</Row>
         </div>
         <div className={style.box}>
-          <Card title="离职率">
-            <ReactEcharts style={{ 'height': '400px' }} option={lineOption} />
-          </Card>
+          <ChartTime {...chartTimeProps} />
         </div>
         <div className={style.box}>
-          <Card title="年限分析">
-            <ReactEcharts style={{ 'height': '400px' }} option={lineOption} />
+          <Card title="工作年限分析">
+            <ChartWork data={chartDepartureWork} />
           </Card>
         </div>
       </div>
