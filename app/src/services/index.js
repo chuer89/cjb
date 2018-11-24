@@ -298,6 +298,10 @@ let httpApi = {
 	chartUserTurnover(param = {}) {
 		return post('base', '/statistics/userTurnover', param);
 	},
+	// 离职-原因
+	chartDepartureReason(param = {}) {
+		return post('base', '/statistics/resignation/reason', param);
+	},
 
 	// 工作台 - 人员信息
 	workUserinfo(param = {}) {

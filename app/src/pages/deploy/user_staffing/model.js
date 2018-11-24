@@ -6,7 +6,10 @@ export default {
   namespace: 'userStaffing',
 
   state: {
-    list: []
+    list: [],
+    
+    // 搜索条件
+    searchParam: {},
   },
 
   subscriptions: {
@@ -28,7 +31,15 @@ export default {
 
     // 获取列表
     *getList({ payload }, { call, put, select }) {
-      const temp = yield call(services.getUserStaffing, payload);
+      const { dept } = yield select(_ => _.user);
+      const { searchParam } = yield select(_ => _.userStaffing);
+
+      let param = {};
+      _.extend(param, searchParam, payload, {
+        dept,
+      });
+
+      const temp = yield call(services.getUserStaffing, param);
 
       let { data } = temp;
       if (data.msg === 'success') {

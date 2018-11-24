@@ -6,7 +6,7 @@ export default {
   namespace: 'separationRate',
 
   state: {
-    
+    chartDepartureReason: [],
   },
 
   subscriptions: {
@@ -25,6 +25,24 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
       yield put({ type: 'save' });
+    },
+
+    *chartDepartureReason({ payload }, { call, put }) {
+      const { dept } = yield select(_ => _.user);
+      let param = {};
+      _.extend(param, payload, {
+        dept,
+      });
+      let temp = yield call(services.chartDepartureReason, param);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            chartDepartureReason: data.data
+          }
+        });
+      }
     },
   },
 
