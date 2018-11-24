@@ -302,6 +302,22 @@ let httpApi = {
 	chartDepartureReason(param = {}) {
 		return post('base', '/statistics/resignation/reason', param);
 	},
+	// 离职 - 年龄分析
+	chartDepartureAge(param = {}) {
+		return post('base', '/statistics/resignation/age', param);
+	},
+	// 离职 - 学历分析
+	chartDepartureEducation(param = {}) {
+		return post('base', '/statistics/resignation/education', param);
+	},
+	// 离职 - 工作年限分析
+	chartDepartureWork(param = {}) {
+		return post('base', '/statistics/resignation/work', param);
+	},
+	// 离职 - 按时间纬度分析
+	chartDepartureTime(param = {}) {
+		return post('base', '/statistics/resignation/time', param);
+	},
 
 	// 工作台 - 人员信息
 	workUserinfo(param = {}) {

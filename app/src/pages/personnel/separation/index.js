@@ -12,19 +12,62 @@ class SeparationList extends React.Component {
   }
 
   render() {
+    const { separationRate: {
+      chartDepartureReason,
+      chartDepartureAge,
+      chartDepartureEducation,
+      chartDepartureWork,
+      chartDepartureTime,
+    } } = this.props;
+
+    console.log(chartDepartureWork, chartDepartureTime)
+
     let RowSpan3 = {
       span: 8,
     };
 
+    // 原因分布
+    let reasonPie = [];
+    if (_.isArray(chartDepartureReason.data)) {
+      _.forEach(chartDepartureReason.data, (item) => {
+        reasonPie.push({
+          name: item.name,
+          value: item.num,
+        });
+      })
+    }
+
+    // 年龄分布
+    let agePie = [];
+    if (_.isArray(chartDepartureAge.data)) {
+      _.forEach(chartDepartureAge.data, (item) => {
+        agePie.push({
+          name: item.name,
+          value: item.num,
+        });
+      })
+    }
+
+    // 学历分析
+    let educationPie = [];
+    if (_.isArray(chartDepartureEducation.data)) {
+      _.forEach(chartDepartureEducation.data, (item) => {
+        educationPie.push({
+          name: item.name,
+          value: item.num,
+        });
+      })
+    }
+
     let topPie = [{
-      title: '原因分析',
-      data: [],
+      title: '离职原因分析',
+      data: reasonPie,
     }, {
-      title: '年龄分析',
-      data: [],
+      title: '离职年龄分析',
+      data: agePie,
     }, {
-      title: '学历分析',
-      data: [],
+      title: '离职学历分析',
+      data: educationPie,
     }];
     let renderTopPie = topPie.map((item, index) => {
       let option = common.getPieOption(item.data);
