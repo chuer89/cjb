@@ -29,10 +29,15 @@ class OperateList extends React.Component {
     }
 
     let columns = [{
-      title: '姓名',
-      dataIndex: 'name',
+      title: '操作人姓名', dataIndex: 'operationName'
+    }, {
+      title: '被操作人姓名', dataIndex: 'name',
     }, {
       title: '部门', dataIndex: 'deptName',
+    }, {
+      title: '门店', dataIndex: 'storeName'
+    }, {
+      title: '电话', dataIndex: 'phone'
     }, {
       title: '操作类型',
       dataIndex: 'type',
@@ -54,7 +59,7 @@ class OperateList extends React.Component {
       key: 'handle',
       align: 'center',
       fixed: 'right',
-      width: 150,
+      width: 100,
       render(item) {
         return (
           <div>
@@ -132,6 +137,7 @@ class OperateList extends React.Component {
       locale: {
         emptyText: '暂无数据'
       },
+      scroll: { x: 1500 },
       pagination: {
         pageSize,
         total,

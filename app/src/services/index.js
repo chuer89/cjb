@@ -335,6 +335,10 @@ let httpApi = {
 	todoList(param = {}) {
 		return post('base', '/todo/list', param);
 	},
+	// 工作台 - 提醒信息完整性
+	remindIncomplete(param = {}) {
+		return post('base', '/remind/user/incomplete', param);
+	},
 
 	// 培训 - 上传培训资料
 	addTrainLibrary(param = {}) {

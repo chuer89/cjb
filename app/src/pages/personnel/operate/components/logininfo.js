@@ -14,11 +14,11 @@ class LoginInfo extends React.Component {
 
   UNSAFE_componentWillMount() {
     let columns = [{
-      title: '操作字段', dataIndex: 'field',
+      title: '操作字段', dataIndex: 'fieldName',
     }, {
-      title: '修改前', dataIndex: 'oldValue',
+      title: '修改前', dataIndex: 'oldName',
     }, {
-      title: '修改后', dataIndex: 'newValue',
+      title: '修改后', dataIndex: 'newName',
     }, {
       title: '操作时间',
       dataIndex: 'createTime',

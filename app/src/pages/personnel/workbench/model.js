@@ -9,6 +9,9 @@ export default {
     workUserinfo: {},
     workusercare: [],
     todoList: [],
+
+    dataBody: {}, // 内容
+    pageSize: 5, // 
   },
 
   subscriptions: {
@@ -25,6 +28,13 @@ export default {
 
           dispatch({
             type: 'todoList'
+          })
+
+          dispatch({
+            type: 'getRemindIncomplete',
+            payload: {
+              page: 1,
+            }
           })
         }
       })
@@ -90,6 +100,35 @@ export default {
             todoList: data.data,
           }
         });
+      }
+    },
+
+
+    // 员工信息待完善
+    *getRemindIncomplete({ payload }, { call, put, select }) {
+      const { dept } = yield select(_ => _.user);
+      const { pageSize } = yield select(_ => _.work);
+
+      let param = {};
+
+      _.extend(param, payload, {
+        length: pageSize,
+        dept,
+      });
+
+      let start = pageSize * (param.page - 1) || 0;
+      param.start = start;
+
+      const temp = yield call(services.remindIncomplete, param);
+
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            dataBody: data.data,
+          }
+        })
       }
     }
   },

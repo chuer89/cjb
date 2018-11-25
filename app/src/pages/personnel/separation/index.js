@@ -119,7 +119,7 @@ class SeparationList extends React.Component {
           <ChartTime {...chartTimeProps} />
         </div>
         <div className={style.box}>
-          <Card title="工作年限分析">
+          <Card title="离职人员工作年限分析">
             <ChartWork data={chartDepartureWork} />
           </Card>
         </div>

@@ -6,6 +6,8 @@ import Link from 'umi/link';
 import moment from 'moment';
 import common from '@common';
 
+import Remind from './components/remind'; // 提醒完善资料
+
 const TabPane = Tabs.TabPane;
 
 // 工作台
@@ -37,8 +39,15 @@ class Dashboard extends React.Component {
   render() {
     let { loading } = this.state;
     let { work: {
-      workUserinfo, workusercare, todoList
-    } } = this.props;
+      workUserinfo,
+      workusercare,
+      todoList,
+      pageSize,
+      dataBody: {
+        records,
+        total,
+      }
+    }, dispatch } = this.props;
 
     let personnelGeneral = [{
       name: '全职', number: workUserinfo.all, color: 'rgb(100, 234, 145)', status: '2',
@@ -146,11 +155,30 @@ class Dashboard extends React.Component {
       });
     }
 
+    let remindProps = {
+      pageSize,
+      records,
+      total,
+      handerChange(current) {
+        dispatch({
+          type: 'work/getRemindIncomplete',
+          payload: {
+            page: current,
+          }
+        })
+      }
+    }
+
     return (
       <div>
         <div className={style.itemBox}>
           <Card title="人事概况">
             <Row style={{ 'padding': '24px 0' }}>{renderPersonnel}</Row>
+          </Card>
+        </div>
+        <div className={style.itemBox}>
+          <Card title="员工信息待完善">
+            <Remind {...remindProps} />
           </Card>
         </div>
         <div className={style.itemBox}>

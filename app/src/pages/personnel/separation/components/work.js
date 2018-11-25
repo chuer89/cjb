@@ -28,7 +28,11 @@ export default ({ data }) => {
     },
     xAxis: {
       type: 'value',
-      boundaryGap: [0, 0.01]
+      minInterval: 1,
+      axisLabel: {
+        formatter: '{value}'
+      },
+      boundaryGap: [0, 0.1],
     },
     yAxis: {
       type: 'category',
