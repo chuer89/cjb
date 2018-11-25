@@ -239,7 +239,7 @@ class UserStaffing extends React.Component {
           <div className={styles.searchItemBox + ' clearfix'}>
 
             <div className={styles.searchItem}>
-              <span>员工手机：</span>
+              <span>岗位：</span>
               <Select value={searchParam.pid || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('pid', e) }}>
                 <Option value="">全部</Option>
                 {renderPosition}
