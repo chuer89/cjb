@@ -1,4 +1,4 @@
-// 岗位 弹框
+// 编制新增 弹框
 import { Modal, Form, Input, InputNumber, Select } from 'antd';
 import React from 'react';
 import DeptSele from '@components/seleDept/';

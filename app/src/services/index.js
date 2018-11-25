@@ -144,6 +144,10 @@ let httpApi = {
 	addUserSalaryRecord(param = {}) {
 		return post('base', '/userSalaryRecord/addUserSalaryRecord', param);
 	},
+	// 员工操作记录
+	getUserOperationLogList(param = {}) {
+		return post('base', '/userOperationLog/getUserOperationLogList', param);
+	},
 
 	// 获取所有岗位
 	getPosition(param = {}) {

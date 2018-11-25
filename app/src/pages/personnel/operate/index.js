@@ -2,66 +2,51 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Input } from 'antd';
 import style from './index.less';
+import moment from 'moment';
+
+import LoginInfo from './components/logininfo'; // 操作详情
 
 // 操作记录
 class OperateList extends React.Component {
   state = {
-    columns: []
+    columns: [],
+    operateTypeSele: {
+      '0': '新增', '1': '修改', '3': '删除'
+    },
+    visibleLoginfo: false,
+    loginInfoRecords: [],
   }
 
   UNSAFE_componentWillMount() {
+    const { operateTypeSele } = this.state;
+    const self = this;
+
+    let handerOpenLoginInfo = (loginInfoRecords) => {
+      self.save({
+        visibleLoginfo: true,
+        loginInfoRecords,
+      })
+    }
+
     let columns = [{
-      title: '工号',
-      dataIndex: 'code',
-      fixed: 'left',
-      width: 100,
-    }, {
       title: '姓名',
       dataIndex: 'name',
-      fixed: 'left',
-      width: 100,
     }, {
-      title: '联系方式',
-      dataIndex: 'phone',
+      title: '部门', dataIndex: 'deptName',
     }, {
-      title: '年龄', dataIndex: 'age',
-    }, {
-      title: '性别', dataIndex: 'gender',
-      render: (gender) => {
-        return (
-          <div>{genderObj[gender]}</div>
-        )
-      }
-    }, {
-      title: '状态',
-      dataIndex: 'status',
+      title: '操作类型',
+      dataIndex: 'type',
       render: (item) => {
         return (
-          <div>{statusMapObj[item] || ''}</div>
+          <div>{operateTypeSele[item] || ''}</div>
         )
       }
     }, {
-      title: '所在部门', dataIndex: 'deptName',
-    }, {
-      title: '学历', dataIndex: 'education', render: (education) => {
-        return (
-          <span>{educationObj[education]}</span>
-        )
-      }
-    }, {
-      title: '合作类型',
-      dataIndex: 'contractType',
+      title: '操作时间',
+      dataIndex: 'createTime',
       render: (item) => {
         return (
-          <div>{contractTypeSele[item] || ''}</div>
-        )
-      }
-    }, {
-      title: '入职时间',
-      dataIndex: 'joinTime',
-      render: (item) => {
-        return (
-          <div>{moment(item).format('YYYY-MM-DD')}</div>
+          <div>{moment(item).format('YYYY-MM-DD hh:mm')}</div>
         )
       }
     }, {
@@ -71,8 +56,11 @@ class OperateList extends React.Component {
       fixed: 'right',
       width: 150,
       render(item) {
-        // return self.operateRender(item);
-        return ''
+        return (
+          <div>
+            <span className={style.operateBtn} onClick={(e) => {handerOpenLoginInfo(item.loginfo)}}>详情</span>
+          </div>
+        )
       },
     }];
 
@@ -82,9 +70,7 @@ class OperateList extends React.Component {
   }
 
   save(payload) {
-    if (this._isMounted) {
-      this.setState(payload);
-    }
+    this.setState(payload);
   }
 
   render() {
@@ -92,9 +78,16 @@ class OperateList extends React.Component {
       operatingRecord: {
         searchParam,
         pageSize,
-      }
+        firstPage,
+        dataBody: {
+          records,
+          total,
+        }
+      },
+      dispatch,
     } = this.props;
-    let { columns } = this.state;
+    let { columns, visibleLoginfo, loginInfoRecords } = this.state;
+    const self = this;
 
     let handerSearch = () => {
       dispatch({
@@ -134,19 +127,18 @@ class OperateList extends React.Component {
 
     let tableOpt = {
       rowKey: 'id',
-      dataSource: [],
+      dataSource: records || [],
       columns,
       locale: {
         emptyText: '暂无数据'
       },
       pagination: {
         pageSize,
-        total: 10,
+        total,
         showTotal: (total, range) => {
           return `[${range.join('-')}]； 总计：${total}`
         }
       },
-      scroll: { x: 1500 },
       onChange({ current }) {
         dispatch({
           type: 'operatingRecord/getList',
@@ -157,23 +149,38 @@ class OperateList extends React.Component {
       }
     }
 
+    let loginInfoProps = {
+      visible: visibleLoginfo,
+      records: loginInfoRecords,
+      onCancel() {
+        self.save({
+          visibleLoginfo: false,
+        })
+      }
+    }
+
     return (
-      <div>
+      <div className={style.content}>
+        <div>
+          <LoginInfo {...loginInfoProps} />
+        </div>
         <div className={style.searchBox}>
           <div className={style.searchItemBox + ' clearfix'}>
             <div className={style.searchItem}>
-              <span>操作人：</span>
-              <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => { handerChangeSearch('operator', e.target.value) }} maxLength={32} style={inputStyle} />
+              <span>被操作人名称：</span>
+              <Input placeholder="请输入被操作人名称" value={searchParam.name} onChange={(e) => { handerChangeSearch('name', e.target.value) }} maxLength={32} style={inputStyle} />
             </div>
             <div className={style.searchItem}>
-              <span>员工姓名：</span>
-              <Input value={searchParam.code} onChange={(e) => { handerChangeSearch('userName', e.target.value) }} placeholder="请输入员工" maxLength={32} style={inputStyle} />
+              <span>操作人名称：</span>
+              <Input value={searchParam.operationName} onChange={(e) => { handerChangeSearch('operationName', e.target.value) }} placeholder="请输入操作人名称" maxLength={32} style={inputStyle} />
             </div>
             <div className={style.searchItem}>
-              <span>员工手机：</span>
-              <Input value={searchParam.code} onChange={(e) => { handerChangeSearch('phone', e.target.value) }} placeholder="员工手机号" maxLength={32} style={inputStyle} />
+              <span>手机号：</span>
+              <Input value={searchParam.phone} onChange={(e) => { handerChangeSearch('phone', e.target.value) }} placeholder="被操作人手机号码" maxLength={32} style={inputStyle} />
             </div>
-            <div className={style.searchItem}>
+          </div>
+          <div className={style.searchItemBox}>
+            <div className={style.searchBtnBox}>
               <Button type="primary" onClick={handerSearch} style={{ 'marginRight': '15px' }}>查询</Button>
               <Button onClick={resetSearch}>重置</Button>
             </div>
