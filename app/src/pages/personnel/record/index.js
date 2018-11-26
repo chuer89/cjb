@@ -558,14 +558,6 @@ class RecordList extends React.Component {
                 <span>工号：</span>
                 <Input value={searchParam.code} onChange={(e) => { handerChangeSearch('code', e.target.value) }} placeholder="请输入工号" maxLength={32} style={inputStyle} />
               </div>
-
-              <div className={style.searchItem}>
-                <span>在职状态：</span>
-                <Select value={searchParam.status || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('status', e) }}>
-                  <Option value="">全部</Option>
-                  {renderSeleStatus}
-                </Select>
-              </div>
               <div className={style.searchItem}>
                 <span>职级：</span>
                 <Select value={searchParam.type || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('type', e) }}>
@@ -578,6 +570,15 @@ class RecordList extends React.Component {
                 <Select value={searchParam.position || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('position', e) }}>
                   <Option value="">全部</Option>
                   {renderProfessionLevel}
+                </Select>
+              </div>
+              <div className={style.searchItem}>
+                <span>在职状态：</span>
+                <Select value={searchParam.status || []}
+                  style={{ width: 150 }}
+                  mode="multiple"
+                  onChange={(e) => { handerChangeSearch('status', e) }}>
+                  {renderSeleStatus}
                 </Select>
               </div>
             </div>

@@ -60,7 +60,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        let status = _.get(history, 'location.query.status');
+        let status = [_.get(history, 'location.query.status')];
         // let type = _.get(history, 'location.query.type');
         if (pathname === '/personnel/record') {
           dispatch({
@@ -104,10 +104,12 @@ export default {
       const { pageSize, searchParam } = yield select(_ => _.record);
       
       let param = {};
+      let status = searchParam.status || [];
 
       _.extend(param, searchParam, payload, {
         length: pageSize,
         dept,
+        status: status.join(',')
       });
 
       let start = pageSize * (param.page - 1) || 0;
