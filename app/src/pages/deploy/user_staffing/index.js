@@ -86,7 +86,7 @@ class UserStaffing extends React.Component {
   // 修改岗位 弹框
   handerModifySection(data) {
     let self = this;
-    this.handerOpenAdd({
+    this.handerOpenModify({
       modifyTitle: '修改编制',
       data,
       callBack(values) {
@@ -132,7 +132,7 @@ class UserStaffing extends React.Component {
   // 新增
   handerAdd() {
     let self = this;
-    this.handerOpenModify({
+    this.handerOpenAdd({
       modifyTitle: '添加编制',
       data: {},
       callBack(values) {
