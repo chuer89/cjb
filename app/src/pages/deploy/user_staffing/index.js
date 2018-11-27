@@ -87,7 +87,7 @@ class UserStaffing extends React.Component {
   handerModifySection(data) {
     let self = this;
     this.handerOpenAdd({
-      modifyTitle: '修改岗位',
+      modifyTitle: '修改编制',
       data,
       callBack(values) {
         let param = {};
@@ -171,7 +171,7 @@ class UserStaffing extends React.Component {
     const self = this;
 
     let modifyOpt = {
-      visible: visibleAdd,
+      visible: visibleModify,
       title: modifyTitle,
       initialValue,
       onCancel() {
@@ -184,12 +184,12 @@ class UserStaffing extends React.Component {
     }
 
     let addProps = {
-      visible: visibleModify,
+      visible: visibleAdd,
       title: modifyTitle,
       initialValue,
       onCancel() {
         self.save({
-          visibleModify: false,
+          visibleAdd: false,
         });
       },
       callBack,

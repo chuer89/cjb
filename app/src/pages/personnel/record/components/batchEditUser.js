@@ -58,7 +58,7 @@ class BatchEditUser extends React.Component {
           let orgId = ''; // 组织
           let lastId = '';
 
-          if (_.isArray(_.last(guishu))) {
+          if (_.isArray(guishu)) {
             lastId = _.last(_.last(guishu).split('.'));
 
             if (guishu[0] === '2') {
