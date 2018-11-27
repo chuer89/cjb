@@ -20,8 +20,8 @@ class Dashboard extends React.Component {
   render() {
     let { dispatch, dashboard } = this.props;
     let { month } = this.state;
-    let { chartAge, chartEducation, chartGender, chartApplyChannel,
-      chartResignation, chartJobType, chartOnJobProportion, chartUserTurnover } = dashboard;
+    let { chartAge, chartEducation, chartGender, chartApplyChannel, 
+      chartJobType, chartOnJobProportion, chartUserTurnover } = dashboard;
 
     let RowSpan3 = {
       span: 8,
@@ -74,17 +74,6 @@ class Dashboard extends React.Component {
       });
     }
 
-    // 离职率
-    let resignationPie = [];
-    if (_.isArray(chartResignation.data)) {
-      _.forEach(chartResignation.data, (item) => {
-        resignationPie.push({
-          name: item.name,
-          value: item.num,
-        });
-      });
-    }
-
     // 兼职全职分布
     let jobTypePie = [];
     if (_.isArray(chartJobType.data)) {
@@ -112,9 +101,6 @@ class Dashboard extends React.Component {
     }, {
       title: '学历分布',
       data: educationPie,
-    }, {
-      title: '性别分布',
-      data: genderPie,
     }];
     let renderTopPie = topPie.map((item, index) => {
       let option = common.getPieOption(item.data);
@@ -133,7 +119,7 @@ class Dashboard extends React.Component {
         )
       }
       return (
-        <Col {...RowSpan3} key={index}>
+        <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
             <Card title={item.title}>{renderEcharts}</Card>
           </div>
@@ -145,8 +131,8 @@ class Dashboard extends React.Component {
       title: '招聘渠道',
       data: applyChannelPie,
     }, {
-      title: '离职率',
-      data: resignationPie,
+      title: '性别分布',
+      data: genderPie,
     }];
     let renderPieQudao = pieData.map((item, index) => {
       let option = common.getPieOption(item.data);

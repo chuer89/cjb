@@ -21,6 +21,7 @@ class SeparationList extends React.Component {
       chartDepartureEducation,
       chartDepartureWork,
       chartDepartureTime,
+      chartResignation,
     }, dispatch } = this.props;
 
     // console.log(chartDepartureWork, chartDepartureTime)
@@ -28,6 +29,9 @@ class SeparationList extends React.Component {
     let RowSpan3 = {
       span: 8,
     };
+    let RowSpan2 = {
+      span: 12,
+    }
 
     // 原因分布
     let reasonPie = [];
@@ -38,6 +42,17 @@ class SeparationList extends React.Component {
           value: item.num,
         });
       })
+    }
+
+    // 离职率
+    let resignationPie = [];
+    if (_.isArray(chartResignation.data)) {
+      _.forEach(chartResignation.data, (item) => {
+        resignationPie.push({
+          name: item.name,
+          value: item.num,
+        });
+      });
     }
 
     // 年龄分布
@@ -62,10 +77,39 @@ class SeparationList extends React.Component {
       })
     }
 
-    let topPie = [{
+    let pieData = [{
       title: '离职原因分析',
       data: reasonPie,
     }, {
+      title: '离职率',
+      data: resignationPie,
+    }];
+    let renderPieQudao = pieData.map((item, index) => {
+      let option = common.getPieOption(item.data);
+      let colStyle = {};
+      if (index === 1) {
+        colStyle = {
+          'marginRight': '0',
+        }
+      }
+      let renderEcharts = (
+        <div className={style.notData}>暂无数据</div>
+      )
+      if (!_.isEmpty(item.data)) {
+        renderEcharts = (
+          <ReactEcharts option={option} />
+        )
+      }
+      return (
+        <Col {...RowSpan2} key={index}>
+          <div className={style.splitBox} style={colStyle}>
+            <Card title={item.title}>{renderEcharts}</Card>
+          </div>
+        </Col>
+      )
+    });
+
+    let topPie = [{
       title: '离职年龄分析',
       data: agePie,
     }, {
@@ -90,7 +134,7 @@ class SeparationList extends React.Component {
       }
 
       return (
-        <Col {...RowSpan3} key={index}>
+        <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
             <Card title={item.title}>{renderEcharts}</Card>
           </div>
@@ -112,6 +156,9 @@ class SeparationList extends React.Component {
 
     return (
       <div>
+        <div className={style.box}>
+          <Row>{renderPieQudao}</Row>
+        </div>
         <div className={style.box}>
           <Row>{renderTopPie}</Row>
         </div>

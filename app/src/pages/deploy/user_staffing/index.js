@@ -42,10 +42,10 @@ class UserStaffing extends React.Component {
       title: '操作',
       key: 'handle',
       align: 'center',
-      width: 150,
+      width: 100,
       render(item) {
         return (
-          <div>
+          <div style={{ display: 'none' }}>
             <span onClick={(e) => { self.handerModifySection(item) }} className={styles.operateBtn}>编辑</span>
             <Divider type="vertical" />
             <span onClick={(e) => { self.deletePositionById(item) }} className={styles.operateBtn}>删除</span>

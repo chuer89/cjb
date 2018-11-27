@@ -58,7 +58,7 @@ class BatchEditUser extends React.Component {
           let orgId = ''; // 组织
           let lastId = '';
 
-          if (_.isArray(guishu)) {
+          if (!_.isEmpty(guishu)) {
             lastId = _.last(_.last(guishu).split('.'));
 
             if (guishu[0] === '2') {
@@ -150,7 +150,7 @@ class BatchEditUser extends React.Component {
         <div>
           <div id="js_sele_designate_department"></div>
           <form>
-            <FormItem {...formItemLayout} label="员工归属">
+            <FormItem {...formItemLayout} label="所在部门">
               {getFieldDecorator('guishu')(
                 <DeptSele {...deptOpt} />
               )}

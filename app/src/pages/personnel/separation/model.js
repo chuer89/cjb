@@ -11,6 +11,8 @@ export default {
     chartDepartureEducation: [], // 学历
     chartDepartureWork: [], // 工作年限
     chartDepartureTime: [], // 时间纬度
+
+    chartResignation: {},
   },
 
   subscriptions: {
@@ -23,6 +25,10 @@ export default {
 
           dispatch({
             type: 'chartDepartureAge',
+          });
+
+          dispatch({
+            type: 'chartResignation',
           });
 
           dispatch({
@@ -60,6 +66,25 @@ export default {
           type: 'save',
           payload: {
             chartDepartureReason: data.data
+          }
+        });
+      }
+    },
+
+    // 离职率
+    *chartResignation({ payload }, { call, put, select }) {
+      const { dept } = yield select(_ => _.user);
+      let param = {};
+      _.extend(param, payload, {
+        dept,
+      });
+      let temp = yield call(services.chartResignation, param);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            chartResignation: data.data
           }
         });
       }

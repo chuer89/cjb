@@ -59,8 +59,12 @@ class JobStatusUser extends React.Component {
     if (isSeleLeave) {
       renderReason = (
         <div>
-          <FormItem {...formItemLayout} label="离职类型">
-            {getFieldDecorator('resignationType')(
+          <FormItem {...formItemLayout} label="离职原因">
+            {getFieldDecorator('resignationType', {
+              rules: [{
+                required: true, message: '请选择离职原因',
+              }],
+            })(
               <Select style={{ width: 180 }}>
                 {
                   resignationTypeMap.map((item) => {
@@ -73,13 +77,17 @@ class JobStatusUser extends React.Component {
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="离职时间">
-            {getFieldDecorator('resignationTime')(
+            {getFieldDecorator('resignationTime', {
+              rules: [{
+                required: true, message: '请选择离职时间',
+              }],
+            })(
               <DatePicker />
             )}
           </FormItem>
-          <FormItem {...formItemLayout} label="离职原因">
+          <FormItem {...formItemLayout} label="原因备注">
             {getFieldDecorator('resignationReason')(
-              <Input placeholder="请输入离职原因" autoComplete="off" maxLength="32" />
+              <Input placeholder="请输入备注" autoComplete="off" maxLength="32" />
             )}
           </FormItem>
         </div>
@@ -113,7 +121,7 @@ class JobStatusUser extends React.Component {
                   required: true, message: '请选择在职状态',
                 }],
               })(
-                <Select style={{ width: 180 }} onChange={handerChange}>
+                <Select style={{ width: 180 }} placeholder="请选择在职状态" onChange={handerChange}>
                   {renderSeleStatus}
                 </Select>
               )}
