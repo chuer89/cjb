@@ -19,6 +19,8 @@ export default {
     positionData: [], // 岗位
     twoDepartmentData: [], // 二级部门
 
+    userMaster: [], // 必填字段
+
     uid: '', // 操作当前的uid
 
     userWork: [], // 工作经验
@@ -32,8 +34,8 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      history.listen(({ pathname }) => {
-        if (pathname.indexOf('/personnel/record/userdetails/') === 0 || 
+      history.listen(({ pathname, query: { complete } }) => {
+        if (pathname.indexOf('/personnel/record/userdetails/') === 0 ||
           pathname.indexOf('/personnel/record/editUser/') === 0) {
           let _pathname = pathname.split('/');
           let pathnameLen = _pathname.length;
@@ -57,6 +59,13 @@ export default {
               dispatch({
                 type: 'getPosition'
               });
+
+              // 完善信息
+              if (complete) {
+                dispatch({
+                  type: 'getUserMaster'
+                })
+              }
             }
           }
         }
@@ -127,6 +136,21 @@ export default {
           type: 'save',
           payload: {
             positionData,
+          }
+        });
+      }
+    },
+
+    // 获取当前岗位
+    *getUserMaster({ payload }, { call, put }) {
+      let temp = yield call(services.getUserMaster, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        let userMaster = data.data;
+        yield put({
+          type: 'save',
+          payload: {
+            userMaster,
           }
         });
       }

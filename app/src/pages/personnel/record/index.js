@@ -574,10 +574,11 @@ class RecordList extends React.Component {
               </div>
               <div className={style.searchItem}>
                 <span>在职状态：</span>
-                <Select value={searchParam.status || ''}
+                <Select value={searchParam.status}
                   style={{ width: 150 }}
+                  mode="multiple"
+                  placeholder="全部"
                   onChange={(e) => { handerChangeSearch('status', e) }}>
-                  <Option value="">全部</Option>
                   {renderSeleStatus}
                 </Select>
               </div>

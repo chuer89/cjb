@@ -120,7 +120,7 @@ class BasicForm extends React.Component {
   }
 
   render() {
-    let { userDetails, form, positionData, twoDepartmentData, handerFastEntry } = this.props;
+    let { userDetails, form, positionData, twoDepartmentData, handerFastEntry, userMaster } = this.props;
     const { getFieldDecorator } = form;
     let { invitationChannel, rankType, tagTwoDepartment,
       isRecommendChannel, contractType, additionInfoList, statusMapList } = this.state;
@@ -141,6 +141,10 @@ class BasicForm extends React.Component {
         sm: { span: 15 },
       },
     };
+
+    let isRequired = (key) => {
+      return _.indexOf(userMaster, key) >= 0;
+    }
 
     let onChange = (date, dateString) => {
       console.log(date, dateString);
@@ -170,6 +174,9 @@ class BasicForm extends React.Component {
         <FormItem {...formItemLayout} label="岗位">
           {getFieldDecorator('position', {
             initialValue: userDetails.position || '',
+            rules: [{
+              required: isRequired('position'), message: '请选择岗位',
+            }],
           })(
             <Select style={{ width: 120 }}>
               {renderProfessionLevel}
@@ -203,6 +210,9 @@ class BasicForm extends React.Component {
         <FormItem {...formItemLayout} label="二级部门">
           {getFieldDecorator('twoDepartmentSele', {
             initialValue: userDetails.twoDepartment || '',
+            rules: [{
+              required: isRequired('twoDepartment'), message: '请选择二级部门',
+            }],
           })(
             <Select style={{ width: 120 }} onChange={handleTwoDepartmentChange}>
               {rendertwoDepartmentSele}
@@ -261,6 +271,9 @@ class BasicForm extends React.Component {
           <FormItem {...formItemLayout} label="推荐人">
             {getFieldDecorator('referrer', {
               initialValue: userDetails.referrer,
+              rules: [{
+                required: isRequired('referrer'), message: '请填写推荐人',
+              }],
             })(
               <Input placeholder="请输入推荐人" autoComplete="off" maxLength="32" />
             )}
@@ -268,6 +281,9 @@ class BasicForm extends React.Component {
           <FormItem {...formItemLayout} label="推荐人门店">
             {getFieldDecorator('referrerStore', {
               initialValue: userDetails.referrer,
+              rules: [{
+                required: isRequired('referrerStore'), message: '请填写推荐人门店',
+              }],
             })(
               <Input placeholder="请输入推荐人门店" autoComplete="off" maxLength="32" />
             )}
@@ -283,6 +299,9 @@ class BasicForm extends React.Component {
         <FormItem {...formItemLayout} label={item.label} key={index}>
           {getFieldDecorator(item.key, {
             initialValue: userDetails[item.key],
+            rules: [{
+              required: isRequired(item.key), message: '请填写' + item.label,
+            }],
           })(
             <Input placeholder={item.placeholder} autoComplete="off" maxLength={maxLength} />
           )}
@@ -294,9 +313,9 @@ class BasicForm extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
           {getFieldDecorator('joinTime', {
-            // rules: [{
-            //   required: true, message: '请选择入职日期',
-            // }],
+            rules: [{
+              required: isRequired('joinTime'), message: '请选择入职日期',
+            }],
             initialValue: joinTimeInit
           })(
             <DatePicker />
@@ -304,16 +323,19 @@ class BasicForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="健康证到期时间">
           {getFieldDecorator('healthCertificateTime', {
-            initialValue: healthCertificateTimeInit
+            initialValue: healthCertificateTimeInit,
+            rules: [{
+              required: isRequired('joinTime'), message: '请选择健康证到期时间',
+            }],
           })(
             <DatePicker />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="职级">
           {getFieldDecorator('type', {
-            // rules: [{
-            //   required: true, message: '请选择职级',
-            // }],
+            rules: [{
+              required: isRequired('type'), message: '请选择职级',
+            }],
             initialValue: '' + (userDetails.type || '')
           })(
             <Select style={{ width: 120 }}>
@@ -325,9 +347,9 @@ class BasicForm extends React.Component {
         {renderTwoDepartment}{renderTwoDepartmentOwn}
         <FormItem {...formItemLayout} label="合同类型">
           {getFieldDecorator('contractType', {
-            // rules: [{
-            //   required: true, message: '请选择合同类型',
-            // }],
+            rules: [{
+              required: isRequired('contractType'), message: '请选择合同类型',
+            }],
             initialValue: '' + (userDetails.contractType || '')
           })(
             <Select style={{ width: 120 }}>
@@ -337,9 +359,9 @@ class BasicForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="合同有效期">
           {getFieldDecorator('contractDate', {
-            // rules: [{
-            //   required: true, message: '请选择合同有效期',
-            // }],
+            rules: [{
+              required: isRequired('contractDate'), message: '请选择合同有效期',
+            }],
             initialValue: contractDateInit
           })(
             <RangePicker onChange={onChange} />
@@ -347,9 +369,9 @@ class BasicForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="当前薪水">
           {getFieldDecorator('salary', {
-            // rules: [{
-            //   required: true, message: '请输入当前薪水',
-            // }],
+            rules: [{
+              required: isRequired('salary'), message: '请输入当前薪水',
+            }],
             initialValue: userDetails.salary
           })(
             <InputNumber min={0} />
@@ -358,14 +380,20 @@ class BasicForm extends React.Component {
         {renderAddition}
         <FormItem {...formItemLayout} label="意外险过期日期">
           {getFieldDecorator('insuranceTime', {
-            initialValue: insuranceTimeInit
+            initialValue: insuranceTimeInit,
+            rules: [{
+              required: isRequired('insuranceTime'), message: '请填写意外险过期日期',
+            }],
           })(
             <DatePicker />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="应聘渠道">
           {getFieldDecorator('applyChannel', {
-            initialValue: '' + (userDetails.applyChannel || '')
+            initialValue: '' + (userDetails.applyChannel || ''),
+            rules: [{
+              required: isRequired('applyChannel'), message: '请选择应聘渠道',
+            }],
           })(
             <Select style={{ width: 120 }} onChange={handleChangeChannel}>
               {renderInvitationChannel}
@@ -386,7 +414,7 @@ class BasicForm extends React.Component {
 
 const WrappedBasicForm = Form.create()(BasicForm);
 
-const Basic = ({ handerNext, userDetails, positionData, twoDepartmentData, handerFastEntry }) => {
+const Basic = ({ handerNext, userDetails, positionData, twoDepartmentData, handerFastEntry, userMaster }) => {
 
   let opt = {
     handerNext,
@@ -394,6 +422,7 @@ const Basic = ({ handerNext, userDetails, positionData, twoDepartmentData, hande
     positionData,
     twoDepartmentData,
     handerFastEntry,
+    userMaster,
   };
 
   return (

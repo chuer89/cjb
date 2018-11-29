@@ -4,9 +4,9 @@ import Link from 'umi/link';
 
 export default ({ records, pageSize, total, handerChange }) => {
   let columns = [{
-    title: '工号', dataIndex: 'code'
+    title: '工号', dataIndex: 'code', width: 100
   }, {
-    title: '姓名', dataIndex: 'name',
+    title: '姓名', dataIndex: 'name', width: 120
   }, {
     title: '说明信息', dataIndex: 'content',
   }, {
@@ -26,7 +26,7 @@ export default ({ records, pageSize, total, handerChange }) => {
     render(item) {
       return (
         <div>
-          <Link to={'/personnel/record/editUser/' + item.uid} target="_blank">完善资料</Link>
+          <Link to={'/personnel/record/editUser/' + item.uid + '?complete=true'} target="_blank">完善资料</Link>
         </div>
       )
     },

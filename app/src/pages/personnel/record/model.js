@@ -60,8 +60,9 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        // let status = [_.get(history, 'location.query.status')];
-        let status = _.get(history, 'location.query.status');
+        let defaultStatus = _.get(history, 'location.query.status');
+        let status = defaultStatus ? [defaultStatus] : [];
+        // let status = _.get(history, 'location.query.status');
         // let type = _.get(history, 'location.query.type');
         if (pathname === '/personnel/record') {
           dispatch({
@@ -110,7 +111,7 @@ export default {
       _.extend(param, searchParam, payload, {
         length: pageSize,
         dept,
-        // status: status.join(',')
+        status: status.join(',')
       });
 
       let start = pageSize * (param.page - 1) || 0;

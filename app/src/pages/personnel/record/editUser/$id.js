@@ -27,7 +27,7 @@ class Edit extends React.Component {
   render() {
     let { editUser, dispatch, app, user } = this.props;
     let { personalDisabled, basicDisabled, experienceDisabled, twoDepartmentData,
-      portrayalDisabled, activeTabsKey, userParam, uid, positionData,
+      portrayalDisabled, activeTabsKey, userParam, uid, positionData, userMaster,
       userWork, userDetails, portrayalImg, departmentType } = editUser;
     let { defaultImg } = app;
     const { userInfo: { token } } = user;
@@ -105,6 +105,7 @@ class Edit extends React.Component {
     // 个人信息
     let personalOpt = {
       userDetails,
+      userMaster,
       handerNext(values) {
         _.extend(userParam, values);
         dispatch({
@@ -122,6 +123,7 @@ class Edit extends React.Component {
     let baseOpt = {
       userDetails,
       positionData,
+      userMaster,
       twoDepartmentData,
       handerNext(values) {
         _.extend(userParam, values, {

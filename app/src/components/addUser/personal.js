@@ -17,13 +17,17 @@ class PersonalForm extends React.Component {
   }
 
   render() {
-    let { handerNext, form, userDetails, handerFastEntry } = this.props;
+    let { handerNext, form, userDetails, handerFastEntry, userMaster } = this.props;
     const { getFieldDecorator } = form;
     const { education } = this.state;
 
     userDetails = userDetails || {};
     let { idcardTime } = userDetails;
     let idcardTimeInit = idcardTime ? moment(idcardTime) : null;
+
+    let isRequired = (key) => {
+      return _.indexOf(userMaster, key) >= 0;
+    }
 
     let handleSubmit = (e, fast) => {
       e.preventDefault();
@@ -97,7 +101,7 @@ class PersonalForm extends React.Component {
         <FormItem {...formItemLayout} label="身份证">
           {getFieldDecorator('idcard', {
             rules: [{
-              // required: true, message: '请输入身份证',
+              required: isRequired('idcard'), message: '请输入身份证',
               pattern: common.reg.idcard, message: '请输入正确的身份证号',
             }],
             initialValue: userDetails.idcard,
@@ -107,9 +111,9 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="身份证到期日期">
           {getFieldDecorator('idcardTime', {
-            // rules: [{
-            //   required: true, message: '请选择身份证到期日期',
-            // }],
+            rules: [{
+              required: isRequired('idcardTime'), message: '请选择身份证到期日期',
+            }],
             initialValue: idcardTimeInit,
           })(
             <DatePicker />
@@ -117,9 +121,9 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="身份证地址">
           {getFieldDecorator('idcardAddr', {
-            // rules: [{
-            //   required: true, message: '请输入身份证地址',
-            // }],
+            rules: [{
+              required: isRequired('idcardAddr'), message: '请输入身份证地址',
+            }],
             initialValue: userDetails.idcardAddr,
           })(
             <Input placeholder="请输入身份证地址" autoComplete="off" maxLength="32"/>
@@ -127,10 +131,10 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="银行卡号">
           {getFieldDecorator('bankCard', {
-            // rules: [{
-            //   required: true, message: '请输入银行卡号',
-            //   pattern: common.reg.bankCard, message: '请输入正确的银行卡号',
-            // }],
+            rules: [{
+              required: isRequired('bankCard'), message: '请输入银行卡号',
+              // pattern: common.reg.bankCard, message: '请输入正确的银行卡号',
+            }],
             initialValue: userDetails.bankCard
           })(
             <Input placeholder="请输入银行卡号" autoComplete="off" maxLength="32"/>
@@ -139,6 +143,9 @@ class PersonalForm extends React.Component {
         <FormItem {...formItemLayout} label="学历">
           {getFieldDecorator('education', {
             initialValue: '' + (userDetails.education || ''),
+            rules: [{
+              required: isRequired('education'), message: '请选择学历',
+            }],
           })(
             <Select style={{ width: 120 }}>
               {renderEducation}
@@ -147,7 +154,10 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="婚姻状态">
           {getFieldDecorator('marry', {
-            initialValue: '' + (userDetails.marry || '0')
+            initialValue: '' + (userDetails.marry || '0'),
+            rules: [{
+              required: isRequired('marry'), message: '请选择婚姻状态',
+            }],
           })(
             <Radio.Group>
               <Radio value="0">未婚</Radio>
@@ -159,6 +169,9 @@ class PersonalForm extends React.Component {
         <FormItem {...formItemLayout} label="生育状态">
           {getFieldDecorator('bear', {
             initialValue: ''+ (userDetails.bear || '0'),
+            rules: [{
+              required: isRequired('bear'), message: '请选择生育状态',
+            }],
           })(
             <Radio.Group>
               <Radio value="0">未育</Radio>
@@ -179,11 +192,12 @@ class PersonalForm extends React.Component {
 
 const WrappedPersonalForm = Form.create()(PersonalForm);
 
-const Personal = ({ handerNext, userDetails, handerFastEntry }) => {
+const Personal = ({ handerNext, userDetails, handerFastEntry, userMaster }) => {
   let opt = {
     handerNext,
     userDetails,
     handerFastEntry,
+    userMaster,
   };
 
   return (

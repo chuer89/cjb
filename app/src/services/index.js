@@ -96,6 +96,10 @@ let httpApi = {
 	updateAll(param = {}) {
 		return post('base', '/user/updateAll', param);
 	},
+	// 员工字段必填
+	getUserMaster(param = {}) {
+		return post('base', '/enum/userMust', param);
+	},
 	// 删除员工
 	deleteUserById(param = {}) {
 		return post('base', '/user/deleteUserById', param);
