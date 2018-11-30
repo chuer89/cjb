@@ -335,10 +335,14 @@ let httpApi = {
 	workusercare(param = {}) {
 		return post('base', '/workbench/usercare', param);
 	},
+	// 工作台 - 员工关怀 导出
+	usercareExport: host['base'] + '/workbench/usercare/export',
 	// 工作台 - 代办事项（预警）
 	todoList(param = {}) {
 		return post('base', '/todo/list', param);
 	},
+	// 工作台 - 代办事项 导出
+	todoExport: host['base'] + '/todo/export',
 	// 工作台 - 提醒信息完整性
 	remindIncomplete(param = {}) {
 		return post('base', '/remind/user/incomplete', param);

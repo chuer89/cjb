@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Card, Tabs, Row, Col } from 'antd';
+import { Card, Tabs, Row, Col, Button } from 'antd';
 import style from './index.less';
 import Link from 'umi/link';
 import moment from 'moment';
 import common from '@common';
-
+import services from '@services/';
 import Remind from './components/remind'; // 提醒完善资料
 
 const TabPane = Tabs.TabPane;
@@ -47,6 +47,8 @@ class Dashboard extends React.Component {
         records,
         total,
       }
+    }, user: {
+      userInfo: { token }, dept
     }, dispatch } = this.props;
 
     let personnelGeneral = [{
@@ -80,7 +82,17 @@ class Dashboard extends React.Component {
     let warnLevel = []; // 预警
     let remindLevel = []; // 提醒
     let renderAllList = '暂无数据';
+    // 代办 提醒 导出
+    let todoExportUrl = `${services.todoExport}?token=${token}&dept=${dept}`;
+    let rendertodoExport = '';
+
     if (!_.isEmpty(todoList)) {
+      rendertodoExport = (
+        <a href={todoExportUrl} target="_blank">
+          <Button type="primary">导出</Button>
+        </a>
+      )
+
       renderAllList = todoList.map((item, index) => {
         const { level, content, eventDate } = item;
         if (level === 2) {
@@ -141,6 +153,9 @@ class Dashboard extends React.Component {
     let renderUserCare = (
       <div>暂无数据</div>
     )
+    // 员工关怀 导出
+    let usercareExportUrl = `${services.usercareExport}?token=${token}&dept=${dept}`;;
+    let renderUsercareExport = '';
     if (!_.isEmpty(workusercare)) {
       renderUserCare = workusercare.map((item, index) => {
         let time = moment(item.eventDate).format('YYYY-MM-DD hh:mm');
@@ -153,6 +168,11 @@ class Dashboard extends React.Component {
           </div>
         )
       });
+      renderUsercareExport = (
+        <a href={usercareExportUrl} target="_blank">
+          <Button type="primary">导出</Button>
+        </a>
+      )
     }
 
     let remindProps = {
@@ -182,7 +202,7 @@ class Dashboard extends React.Component {
           </Card>
         </div>
         <div className={style.itemBox}>
-          <Card loading={loading} title="提醒事项">
+          <Card loading={loading} title="提醒事项" extra={rendertodoExport}>
             <Tabs tabPosition={'left'}>
               <TabPane tab="全部" key="1">
                 <ul>{renderAllList}</ul>
@@ -197,13 +217,14 @@ class Dashboard extends React.Component {
           </Card>
         </div>
         <div className={style.itemBox}>
-          <Card title="员工关怀" style={{ width: '50%' }}>{renderUserCare}</Card>
+          <Card title="员工关怀" style={{ width: '50%' }} extra={renderUsercareExport}>{renderUserCare}</Card>
         </div>
       </div>
     );
   }
 }
 
-export default connect((({ work }) => ({
+export default connect((({ work, user }) => ({
   work,
+  user,
 })))(Dashboard);
