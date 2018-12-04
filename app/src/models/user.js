@@ -35,6 +35,10 @@ export default {
       'operation-info': {
         icon: 'file-text', path: '/personnel/operate'
       },
+      // 人事异动记录
+      'emp-change': {
+        icon: 'calendar', path: '/personnel/change'
+      },
 
       // 后台管理
       'store-config': {

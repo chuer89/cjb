@@ -20,9 +20,11 @@ if (hostName === 'www.canjian.com') {
 
 let post = (region, api, params = {}) => {
 	let userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+	let dept = localStorage.getItem('dept') || ''; // 筛选的门店或部门，左上角
 
 	_.extend(params, {
 		'token': userInfo.token,
+		dept,
 	});
 
 	let url = (host[region] || '') + api;
