@@ -1,16 +1,23 @@
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
-import { Card, Select } from 'antd';
+import { Card, Select, Icon, Tabs, Table } from 'antd';
 
 const Option = Select.Option;
+const TabPane = Tabs.TabPane;
 
 export default ({ data, handerChangeSearch }) => {
   let xAxisData = [];
   let seriesData = [];
+  let dataSource = [];
+
   if (!_.isEmpty(data)) {
     _.forEach(data, (item, key) => {
       xAxisData.push(key);
       seriesData.push(item.v);
+      dataSource.push({
+        time: key,
+        ...item,
+      })
     })
   }
   let lineOption = {
@@ -63,10 +70,38 @@ export default ({ data, handerChangeSearch }) => {
     )
   }
 
+  const columns = [{
+    title: '时间', dataIndex: 'time', width: 200,
+  }, {
+    title: '离职数', dataIndex: 'v', 
+  }, {
+    title: '离职总数', dataIndex: 'total', 
+  }];
+
+  console.log(dataSource, 'xx')
+
+  const tableOpt = {
+    dataSource,
+    rowKey: 'time',
+    scroll: { y: 400 },
+    columns,
+    pagination: false,
+    locale: {
+      emptyText: '暂无数据'
+    }
+  }
+
   return (
     <div>
       <Card title="按时间维度分析" extra={renderSele}>
-        {renderEcharts}
+        <Tabs defaultActiveKey="1" tabPosition="right">
+          <TabPane tab={<span><Icon type="line-chart" />趋势图</span>} key="1">
+            <div>{renderEcharts}</div>
+          </TabPane>
+          <TabPane tab={<span><Icon type="table" />表格</span>} key="2">
+            <div><Table {...tableOpt} /></div>
+          </TabPane>
+        </Tabs>
       </Card>
     </div>
   )

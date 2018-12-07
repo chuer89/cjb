@@ -115,6 +115,7 @@ class Structure extends React.Component {
     this.handerShowDel(() => {
       services.deletePositionById({
         id,
+        type: '1', // 强制删除
       }).then(({ data }) => {
         self.handerAjaxBack(data);
       });
