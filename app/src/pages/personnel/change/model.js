@@ -9,15 +9,23 @@ export default {
     pageSize: 10, // 
     firstPage: 1,
 
+    // 岗位记录
     positionSearch: {
       start: 0,
     },
     postionBody: {},
 
+    // 部门记录
     deptSearch: {
       start: 0,
     },
     deptBody: {},
+
+    // 职级
+    userTypeSearch: {
+      start: 0,
+    },
+    userTypeBody: {},
   },
 
   subscriptions: {
@@ -30,6 +38,10 @@ export default {
               postionBody: {},
               deptBody: {},
             }
+          })
+
+          dispatch({
+            type: 'getPostion',
           })
         }
       })
@@ -87,6 +99,7 @@ export default {
           type: 'save',
           payload: {
             postionBody: data.data,
+            positionSearch: param,
           }
         })
       }
@@ -113,6 +126,34 @@ export default {
           type: 'save',
           payload: {
             deptBody: data.data,
+            deptSearch: param,
+          }
+        })
+      }
+    },
+
+    // 获取变更职级
+    *getUserType({ payload }, { call, put, select }) {
+      const { pageSize, userTypeSearch } = yield select(_ => _.personnelChange);
+
+      let param = {};
+
+      _.extend(param, userTypeSearch, payload, {
+        length: pageSize,
+      });
+
+      let start = pageSize * (param.page - 1) || 0;
+      param.start = start;
+
+      const temp = yield call(services.getUserTypeChangeList, param);
+
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            userTypeBody: data.data,
+            userTypeSearch: param,
           }
         })
       }

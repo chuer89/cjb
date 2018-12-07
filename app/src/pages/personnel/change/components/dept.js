@@ -27,9 +27,9 @@ export default ({
       )
     }
   }, {
-    title: '调整前岗位', dataIndex: 'beforeName',
+    title: '调整前部门', dataIndex: 'beforeName',
   }, {
-    title: '调整后岗位', dataIndex: 'afterName',
+    title: '调整后部门', dataIndex: 'afterName',
   }];
 
   const tableOpt = {

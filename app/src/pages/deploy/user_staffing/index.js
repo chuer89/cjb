@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Table, Modal, message, Divider, Select } from 'antd'
+import { Button, Table, Modal, message, Divider, Select, Upload, Icon } from 'antd'
 import _ from 'lodash';
 import services from '@services/';
 import styles from './index.less'
@@ -9,6 +9,8 @@ import Modify from './components/modify'
 
 const confirm = Modal.confirm;
 const Option = Select.Option;
+
+const Dragger = Upload.Dragger;
 
 // 岗位管理
 class UserStaffing extends React.Component {
@@ -264,8 +266,91 @@ class UserStaffing extends React.Component {
   }
 }
 
-export default connect(({ userStaffing, structure, user }) => ({
+// export default connect(({ userStaffing, structure, user }) => ({
+//   userStaffing,
+//   structure,
+//   user,
+// }))(UserStaffing)
+
+// 员工编制
+class WorkersStaffing extends React.Component {
+  state = {
+
+  }
+
+  render() {
+    const {
+      userStaffing: {
+        list,
+        searchParam,
+      },
+      user: {
+        userInfo: { token }
+      },
+      dispatch,
+    } = this.props;
+
+    let exportTemplate = `${services.exportTemplateStaffing}?token=${token}`;
+    let exportStaffing = `${services.exportStaffing}?token=${token}`;
+
+    const uploadProps = {
+      name: 'file',
+      action: services.importStaffing + '?token=' + token,
+      accept: '.xlsx,.xls,.xlt',
+      listType: 'picture',
+      // showUploadList: false,
+      onChange(info) {
+        const status = info.file.status;
+        if (status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+
+        if (info.file.status === 'done') {
+          let response = info.file.response;
+          let { msg, data } = response;
+  
+          if (msg === 'success') {
+            message.success('导入成功');
+          } else {
+            Modal.error({
+              title: '导入失败',
+              content: msg,
+            });
+          }
+        } else if (info.file.status === 'error') {
+          Modal.error({
+            title: '服务器有误',
+            content: '上传失败，请稍后再试。',
+          });
+        }
+      },
+    };
+
+    return (
+      <div className={styles.contentStyle}>
+        <div style={{ paddingBottom: '24px' }}>
+          <a href={exportTemplate} target="_blank">
+            <Button type="primary" size="large">模版下载</Button>
+          </a>
+          <a href={exportStaffing} target="_blank" style={{ paddingLeft: '24px' }}>
+            <Button type="primary" size="large">编制导出</Button>
+          </a>
+        </div>
+        <div>
+          <Dragger {...uploadProps}>
+            <p className="ant-upload-drag-icon">
+              <Icon type="inbox" />
+            </p>
+            <p className="ant-upload-text">单击或拖动文件到此区域上载</p>
+            <p className="ant-upload-hint">请按照模版格式导入文件，如需查看列表请暂时导出文件</p>
+          </Dragger>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default connect(({ userStaffing, user }) => ({
   userStaffing,
-  structure,
   user,
-}))(UserStaffing)
+}))(WorkersStaffing)

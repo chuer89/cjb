@@ -1,5 +1,7 @@
 import post from './post';
+import host from './host';
 
+// 后台配置接口
 export default {
   // 获取所有岗位
 	getPosition(param = {}) {
@@ -42,6 +44,12 @@ export default {
 	getUserStaffing(param = {}) {
 		return post('base', '/userStaffing/get', param);
 	},
+	// 员工编制导出模版
+	exportTemplateStaffing: host['base'] + '/userStaffing/exportTemplate',
+	// 员工编制导入
+	importStaffing: host['base'] + '/userStaffing/import',
+	// 员工导出
+	exportStaffing: host['base'] + '/userStaffing/export',
 
 	// 获取门店的二级部门
 	getTwoDepartmentBySid(param = {}) {
