@@ -1,13 +1,12 @@
 // 档案管理列表
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Input, Select, Modal, message, Divider, Upload, Icon, Dropdown, Menu } from 'antd';
+import { Table, Button, Input, Select, Modal, message, Divider, Upload, Icon, Dropdown, Menu, Tabs } from 'antd';
 import style from './record.less';
 import Link from 'umi/link';
 import _ from 'lodash';
 import moment from 'moment';
 import services from '@services/';
-import { UploadField, Uploader } from '@navjobs/upload';
 import {
   rankTypeMap, contractTypeMap, genderObj,
   educationObj, statusMap, statusMapObj
@@ -18,6 +17,7 @@ import JobStatus from './components/jobStatus'; // 在职状态
 
 const Option = Select.Option;
 const confirm = Modal.confirm;
+const TabPane = Tabs.TabPane;
 
 // 上传
 const UploadFile = ({ addFile, token }) => {
@@ -251,7 +251,7 @@ class RecordList extends React.Component {
     let { record, user, dispatch, structure, editUser: {
       positionData,
     } } = this.props;
-    let { dataBody, contractType, warningData, visibleJobStatus,
+    let { dataBody, contractType, warningData, visibleJobStatus, workUserinfo,
       searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
     let { dept, userInfo: { token, userType, hr } } = user;
     let inputStyle = {
@@ -537,6 +537,40 @@ class RecordList extends React.Component {
       </Menu>
     )
 
+    let renderSearch = (
+      <div className={style.searchBox}>
+        <div className={style.searchItemBox + ' clearfix'}>
+          <div className={style.searchItem}>
+            <span>工号：</span>
+            <Input value={searchParam.code} onChange={(e) => { handerChangeSearch('code', e.target.value) }} placeholder="请输入工号" maxLength={32} style={inputStyle} />
+          </div>
+          <div className={style.searchItem}>
+            <span>姓名：</span>
+            <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => { handerChangeSearch('name', e.target.value) }} maxLength={32} style={inputStyle} />
+          </div>
+          <div className={style.searchItem}>
+            <Button type="primary" onClick={handerSearch} style={{ 'marginRight': '15px' }}>查询</Button>
+            <Button onClick={resetSearch}>重置</Button>
+          </div>
+        </div>
+      </div>
+    )
+
+    let handerChangeTab = (keys) => {
+      handerChangeSearch('code', '');
+      handerChangeSearch('name', '');
+      handerChangeSearch('status', keys);
+      handerSearch();
+    }
+
+    // 2全职 1实习 5兼职 3离职 4待离职
+    let tabsProps = {
+      defaultActiveKey: "",
+      onChange: handerChangeTab,
+      type: "card",
+      tabBarGutter: 8,
+    }
+
     return (
       <div>
         <div>
@@ -552,11 +586,39 @@ class RecordList extends React.Component {
             </Dropdown>
           </div>
 
-          <div className={style.searchBox}>
+          <div>
+            <Tabs {...tabsProps}>
+              <TabPane tab="全部" key="">
+                {renderSearch}<Table {...tableOpt} />
+              </TabPane>
+              <TabPane tab={`全职 ${workUserinfo.all}人`} key="2">
+                {renderSearch}<Table {...tableOpt} />
+              </TabPane>
+              <TabPane tab={`实习 ${workUserinfo.practice}人`} key="1">
+                <Table {...tableOpt} />
+              </TabPane>
+              <TabPane tab={`兼职 ${workUserinfo.part}人`} key="5">
+                <Table {...tableOpt} />
+              </TabPane>
+              <TabPane tab={`离职 ${workUserinfo.leave}人`} key="3">
+                <Table {...tableOpt} />
+              </TabPane>
+            </Tabs>
+          </div>
+
+          <div className={style.searchBox} style={{ display: 'none' }}>
             <div className={'clearfix'}>
               <div className={style.searchItem}>
-                <span>工号：</span>
-                <Input value={searchParam.code} onChange={(e) => { handerChangeSearch('code', e.target.value) }} placeholder="请输入工号" maxLength={32} style={inputStyle} />
+                <span>合同类型：</span>
+                <Select value={searchParam.contractType || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('contractType', e) }}>
+                  {renderContractType}
+                </Select>
+              </div>
+              <div className={style.searchItem}>
+                <span>信息预警：</span>
+                <Select value={searchParam.warning || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('warning', e) }}>
+                  {renderWarningData}
+                </Select>
               </div>
               <div className={style.searchItem}>
                 <span>职级：</span>
@@ -585,20 +647,12 @@ class RecordList extends React.Component {
             </div>
             <div className={style.searchItemBox + ' clearfix'}>
               <div className={style.searchItem}>
+                <span>工号：</span>
+                <Input value={searchParam.code} onChange={(e) => { handerChangeSearch('code', e.target.value) }} placeholder="请输入工号" maxLength={32} style={inputStyle} />
+              </div>
+              <div className={style.searchItem}>
                 <span>姓名：</span>
                 <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => { handerChangeSearch('name', e.target.value) }} maxLength={32} style={inputStyle} />
-              </div>
-              <div className={style.searchItem}>
-                <span>合同类型：</span>
-                <Select value={searchParam.contractType || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('contractType', e) }}>
-                  {renderContractType}
-                </Select>
-              </div>
-              <div className={style.searchItem}>
-                <span>信息预警：</span>
-                <Select value={searchParam.warning || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('warning', e) }}>
-                  {renderWarningData}
-                </Select>
               </div>
               <div className={style.searchItem}>
                 <Button type="primary" onClick={handerSearch} style={{ 'marginRight': '15px' }}>查询</Button>
@@ -606,7 +660,7 @@ class RecordList extends React.Component {
               </div>
             </div>
           </div>
-          <Table {...tableOpt} />
+
         </div>
       </div>
     );

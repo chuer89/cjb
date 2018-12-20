@@ -55,6 +55,8 @@ export default {
     selectedRowUserId: '', // 选中的列
     visibleBatch: false,
     visibleJobStatus: false,
+
+    workUserinfo: {},
   },
 
   subscriptions: {
@@ -83,6 +85,8 @@ export default {
             }
           })
 
+          dispatch({ type: 'fetchWorkUserinfo' })
+
           dispatch({
             type: 'save',
             payload: {
@@ -100,18 +104,32 @@ export default {
       yield put({ type: 'save' });
     },
 
+    // 工作记录
+    *fetchWorkUserinfo({ payload }, { call, put }) {
+      let temp = yield call(services.workUserinfo, payload);
+      let { data } = temp;
+      if (data.msg === 'success') {
+        yield put({
+          type: 'save',
+          payload: {
+            workUserinfo: data.data,
+          }
+        })
+      }
+    },
+
     // 获取列表
     *getUserList({ payload }, { call, put, select }) {
       const { dept } = yield select(_ => _.user);
       const { pageSize, searchParam } = yield select(_ => _.record);
       
       let param = {};
-      let status = searchParam.status || [];
+      // let status = searchParam.status || [];
 
       _.extend(param, searchParam, payload, {
         length: pageSize,
         dept,
-        status: status.join(',')
+        // status: status.join(',')
       });
 
       let start = pageSize * (param.page - 1) || 0;
