@@ -198,6 +198,7 @@ class Add extends React.Component {
     let portrayalOpt = {
       action: services.addImg + '?token=' + token,
       defaultImg,
+      portrayalImg: {},
       handerNext(param) {
         _.extend(param, {
           uid,

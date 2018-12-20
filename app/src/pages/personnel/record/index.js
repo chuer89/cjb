@@ -251,7 +251,7 @@ class RecordList extends React.Component {
     let { record, user, dispatch, structure, editUser: {
       positionData,
     } } = this.props;
-    let { dataBody, contractType, warningData, visibleJobStatus, workUserinfo,
+    let { dataBody, contractType, warningData, visibleJobStatus, workUserinfo, loadingList,
       searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
     let { dept, userInfo: { token, userType, hr } } = user;
     let inputStyle = {
@@ -354,6 +354,7 @@ class RecordList extends React.Component {
       locale: {
         emptyText: '暂无数据'
       },
+      loading: loadingList,
       rowSelection,
       pagination: {
         pageSize,
@@ -591,17 +592,17 @@ class RecordList extends React.Component {
               <TabPane tab="全部" key="">
                 {renderSearch}<Table {...tableOpt} />
               </TabPane>
-              <TabPane tab={`全职 ${workUserinfo.all}人`} key="2">
+              <TabPane tab={`全职 ${workUserinfo.all || '0'}人`} key="2">
                 {renderSearch}<Table {...tableOpt} />
               </TabPane>
-              <TabPane tab={`实习 ${workUserinfo.practice}人`} key="1">
-                <Table {...tableOpt} />
+              <TabPane tab={`实习 ${workUserinfo.practice || '0'}人`} key="1">
+                {renderSearch}<Table {...tableOpt} />
               </TabPane>
-              <TabPane tab={`兼职 ${workUserinfo.part}人`} key="5">
-                <Table {...tableOpt} />
+              <TabPane tab={`兼职 ${workUserinfo.part || '0'}人`} key="5">
+                {renderSearch}<Table {...tableOpt} />
               </TabPane>
-              <TabPane tab={`离职 ${workUserinfo.leave}人`} key="3">
-                <Table {...tableOpt} />
+              <TabPane tab={`离职 ${workUserinfo.leave || '0'}人`} key="3">
+                {renderSearch}<Table {...tableOpt} />
               </TabPane>
             </Tabs>
           </div>

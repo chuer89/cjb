@@ -121,6 +121,7 @@ class PortrayalForm extends React.Component {
 
   UNSAFE_componentWillMount() {
     this._isMounted = true;
+    this.initState();
   }
   componentWillUnmount() {
     this._isMounted = false;
@@ -132,7 +133,7 @@ class PortrayalForm extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  initState() {
     let { portrayalImg } = this.props;
     let { isInit } = this.state;
     let { idcardFront, idcardReverse, healthCertificateFront,
@@ -147,19 +148,17 @@ class PortrayalForm extends React.Component {
         healthCertificateReverse,
         contract,
       });
-
-      // console.log(this.props.portrayalImg)
     }
   }
 
+  componentDidUpdate() {
+    this.initState();
+  }
+
   render() {
-    let { defaultImg, action, handerNext, portrayalImg: {
-      idcardFront,
-      idcardReverse, 
-      healthCertificateFront,
-      healthCertificateReverse, 
-      contract,
-    } } = this.props;
+    let { defaultImg, action, handerNext } = this.props;
+    const { idcardFront, idcardReverse, healthCertificateFront, 
+      healthCertificateReverse, contract } = this.state;
     let self = this;
 
     // 身份证前照片

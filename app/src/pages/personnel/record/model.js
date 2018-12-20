@@ -12,6 +12,8 @@ export default {
     pageSize: 20, // 
     firstPage: 1,
 
+    loadingList: true, // 加载列表
+
     // 状态筛选 1试用 2在职 3离职 4待离职
     statusData: [{
       value: '全部', code: ''
@@ -122,6 +124,13 @@ export default {
     *getUserList({ payload }, { call, put, select }) {
       const { dept } = yield select(_ => _.user);
       const { pageSize, searchParam } = yield select(_ => _.record);
+
+      yield put({
+        type: 'save',
+        payload: {
+          loadingList: true,
+        }
+      })
       
       let param = {};
       // let status = searchParam.status || [];
@@ -143,6 +152,14 @@ export default {
           type: 'save',
           payload: {
             dataBody: data.data,
+            loadingList: false,
+          }
+        })
+      } else {
+        yield put({
+          type: 'save',
+          payload: {
+            loadingList: true,
           }
         })
       }

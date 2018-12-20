@@ -78,8 +78,6 @@ export default ({ data, handerChangeSearch }) => {
     title: '离职总数', dataIndex: 'total', 
   }];
 
-  console.log(dataSource, 'xx')
-
   const tableOpt = {
     dataSource,
     rowKey: 'time',
