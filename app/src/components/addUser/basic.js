@@ -36,7 +36,9 @@ class BasicForm extends React.Component {
 
       // 附加信息
       additionInfoList: [{
-        label: '银行', placeholder: '请输入银行卡号', key: 'bank',
+        label: '银行卡号', placeholder: '请输入银行卡号', key: 'bankCard'
+      }, {
+        label: '开户银行', placeholder: '请输入开户银行', key: 'bank',
       }, {
         label: '籍贯', placeholder: '请输入籍贯', key: 'nativePlace',
       }, {

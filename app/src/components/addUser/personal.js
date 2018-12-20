@@ -129,17 +129,6 @@ class PersonalForm extends React.Component {
             <Input placeholder="请输入身份证地址" autoComplete="off" maxLength="32"/>
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="银行卡号">
-          {getFieldDecorator('bankCard', {
-            rules: [{
-              required: isRequired('bankCard'), message: '请输入银行卡号',
-              // pattern: common.reg.bankCard, message: '请输入正确的银行卡号',
-            }],
-            initialValue: userDetails.bankCard
-          })(
-            <Input placeholder="请输入银行卡号" autoComplete="off" maxLength="32"/>
-          )}
-        </FormItem>
         <FormItem {...formItemLayout} label="学历">
           {getFieldDecorator('education', {
             initialValue: '' + (userDetails.education || ''),

@@ -227,7 +227,7 @@ class Edit extends React.Component {
           </Breadcrumb>
         </div>
         <div className={'contentBox'}>
-          <Tabs activeKey={activeTabsKey} tabPosition="left" onChange={handerChange}>
+          <Tabs activeKey={activeTabsKey} tabPosition="top" onChange={handerChange}>
             <TabPane tab="归属部门" key="0"><Department {...departmentOpt} /></TabPane>
             <TabPane tab="个人信息" disabled={personalDisabled} key="1"><Personal {...personalOpt} /></TabPane>
             <TabPane tab="基本信息" disabled={basicDisabled} key="2"><Basic {...baseOpt} /></TabPane>
