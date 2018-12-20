@@ -141,10 +141,7 @@ class Edit extends React.Component {
                 activeTabsKey: '3',
               }
             });
-            // 获取工作经验
-            dispatch({
-              type: 'editUser/getUserWorkByUid'
-            });
+
           } else {
             message.error(data.msg);
           }
@@ -170,10 +167,6 @@ class Edit extends React.Component {
                 portrayalDisabled: false,
                 activeTabsKey: '4',
               }
-            });
-
-            dispatch({
-              type: 'editUser/getUserPortrayalByUid',
             });
           } else {
             message.error(data.msg);

@@ -178,7 +178,6 @@ const Department = ({ handerNext, structure, handerChange, departmentType, userD
 
   return (
     <div>
-      <div className={style.titleBox}>填写归属部门</div>
       <WrappedDepartmentForm {...opt} />
     </div>
   );

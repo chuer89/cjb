@@ -435,4 +435,4 @@ const Basic = ({ handerNext, userDetails, positionData, twoDepartmentData, hande
   );
 };
 
-export default Basic;
+export default Form.create()(BasicForm);

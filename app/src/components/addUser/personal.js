@@ -191,10 +191,9 @@ const Personal = ({ handerNext, userDetails, handerFastEntry, userMaster }) => {
 
   return (
     <div>
-      <div className={style.titleBox}>填写个人信息</div>
       <WrappedPersonalForm {...opt}/>
     </div>
   );
 };
 
-export default Personal;
+export default Form.create()(PersonalForm);

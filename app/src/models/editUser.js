@@ -9,10 +9,10 @@ export default {
     userParam: {}, // 修改员工参数
 
     activeTabsKey: '0', // 选中面板
-    personalDisabled: true, // 个人信息
-    basicDisabled: true, // 基本信息
-    experienceDisabled: true, // 工作经验
-    portrayalDisabled: true,  // 员工画像
+    personalDisabled: false, // 个人信息
+    basicDisabled: false, // 基本信息
+    experienceDisabled: false, // 工作经验
+    portrayalDisabled: false,  // 员工画像
 
     departmentType: '1', // 部门类型 1门店 2行政
 
@@ -58,6 +58,16 @@ export default {
               // 岗位列表
               dispatch({
                 type: 'getPosition'
+              });
+
+              // 获取工作经验
+              dispatch({
+                type: 'getUserWorkByUid'
+              });
+
+              // 获取画像
+              dispatch({
+                type: 'getUserPortrayalByUid',
               });
 
               // 完善信息

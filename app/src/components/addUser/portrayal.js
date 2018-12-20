@@ -153,9 +153,13 @@ class PortrayalForm extends React.Component {
   }
 
   render() {
-    let { defaultImg, action, handerNext } = this.props;
-    let { idcardFront, idcardReverse, healthCertificateFront,
-      healthCertificateReverse, contract } = this.state;
+    let { defaultImg, action, handerNext, portrayalImg: {
+      idcardFront,
+      idcardReverse, 
+      healthCertificateFront,
+      healthCertificateReverse, 
+      contract,
+    } } = this.props;
     let self = this;
 
     // 身份证前照片
@@ -302,4 +306,4 @@ const Portrayal = ({ dispatch, handerNext, defaultImg, action, portrayalImg }) =
   );
 };
 
-export default Portrayal;
+export default Form.create()(PortrayalForm);

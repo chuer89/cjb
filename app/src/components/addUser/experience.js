@@ -266,4 +266,4 @@ const Personal = ({ handerNext, userWork, handerDel, handerFastEntry }) => {
   );
 };
 
-export default Personal;
+export default Form.create()(DynamicFieldSet);

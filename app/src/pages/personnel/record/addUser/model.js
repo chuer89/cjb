@@ -20,6 +20,8 @@ export default {
     uid: '', // 操作当前的uid
     positionData: [], // 当前门店岗位
     twoDepartmentData: [], // 二级部门
+
+    portrayalImg: {},
   },
 
   subscriptions: {
