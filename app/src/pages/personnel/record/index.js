@@ -559,7 +559,7 @@ class RecordList extends React.Component {
     let handerChangeTab = (keys) => {
       handerChangeSearch('code', '');
       handerChangeSearch('name', '');
-      handerChangeSearch('status', keys);
+      handerChangeSearch('status', keys || '');
       handerSearch();
     }
 
