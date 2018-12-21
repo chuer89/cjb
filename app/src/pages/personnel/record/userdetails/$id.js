@@ -54,6 +54,14 @@ class DetailsInfo extends React.Component {
       portrayalImg,
     }
 
+    let tabsProps = {
+      tabBarStyle: {
+        marginBottom: '35px',
+      },
+      onChange: callback,
+      defaultActiveKey: '1'
+    }
+
     return (
       <div>
         <div style={{'paddingBottom': '12px'}}>
@@ -65,7 +73,7 @@ class DetailsInfo extends React.Component {
           </Breadcrumb>
         </div>
         <div style={contentStyle}>
-          <Tabs defaultActiveKey="1" onChange={callback}>
+          <Tabs {...tabsProps}>
             <TabPane tab="基本信息" key="1"><Basic {...basicOpt} /></TabPane>
             <TabPane tab="个人成长" key="2"><Expression /></TabPane>
             <TabPane tab="员工画像" key="3"><Picture {...pictureOpt} /></TabPane>
