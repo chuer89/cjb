@@ -112,13 +112,13 @@ class Add extends React.Component {
     // 处理快速入职
     let handerFastEntry = (values) => {
       _.extend(addUserParam, values);
-        services.addUser(addUserParam).then(({ data }) => {
-          if (data.msg === 'success') {
-            handerEntryCallBack();
-          } else {
-            message.error(data.msg);
-          }
-        })
+      services.addUser(addUserParam).then(({ data }) => {
+        if (data.msg === 'success') {
+          handerEntryCallBack();
+        } else {
+          message.error(data.msg);
+        }
+      })
     }
 
     // 个人信息

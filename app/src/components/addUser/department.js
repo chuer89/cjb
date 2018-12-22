@@ -26,12 +26,23 @@ class DepartmentForm extends React.Component {
     });
   }
 
+  onSave = (e) => {
+    e.preventDefault();
+    let { form, handerSave } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        handerSave(values);
+      }
+    });
+  }
+
   render() {
     let { form, handerChange, userOrganizations, storeStructure, departmentType, userDetails } = this.props;
     const { getFieldDecorator } = form;
 
     // orgId 组织，storeId 门店
-    let { orgId, storeId } = userDetails || {}
+    let { orgId, storeId } = userDetails || {};
 
     const formItemLayout = {
       labelCol: {
@@ -133,6 +144,18 @@ class DepartmentForm extends React.Component {
       )
     }
 
+    let renderSave = (
+      <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
+    );
+    if (!_.isEmpty(userDetails)) {
+      renderSave = (
+        <div>
+          <Button type="primary" onClick={this.onSave} size="large" className={style.saveBtn}>保存</Button>
+          <Button htmlType="submit">下一步</Button>
+        </div>
+      )
+    }
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="员工归属">
@@ -151,7 +174,7 @@ class DepartmentForm extends React.Component {
         {renderStuc}
         <FormItem>
           <div className={style.submitBtnBox}>
-            <Button block type="primary" htmlType="submit" size="large">下一步</Button>
+            {renderSave}
           </div>
         </FormItem>
       </Form>
@@ -161,7 +184,7 @@ class DepartmentForm extends React.Component {
 
 const WrappedDepartmentForm = Form.create()(DepartmentForm);
 
-const Department = ({ handerNext, structure, handerChange, departmentType, userDetails }) => {
+const Department = ({ handerNext, structure, handerChange, departmentType, userDetails, handerSave }) => {
   const { sectionStructure, storeStructure } = structure
 
   let opt = {
@@ -170,6 +193,7 @@ const Department = ({ handerNext, structure, handerChange, departmentType, userD
     departmentType,
     storeStructure,
     userDetails,
+    handerSave,
     handerChange(e) {
       let departmentType = e.target.value;
       _.isFunction(handerChange) && handerChange(departmentType);

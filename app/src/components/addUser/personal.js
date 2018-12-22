@@ -16,6 +16,18 @@ class PersonalForm extends React.Component {
     education: educationMap
   }
 
+  onSave = (e) => {
+    e.preventDefault();
+    let { form, handerSave } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        values.idcardTime = common.format(values.idcardTime);
+        console.log('Received values of form: ', values);
+        handerSave(values);
+      }
+    });
+  }
+
   render() {
     let { handerNext, form, userDetails, handerFastEntry, userMaster } = this.props;
     const { getFieldDecorator } = form;
@@ -46,6 +58,18 @@ class PersonalForm extends React.Component {
     if (_.isFunction(handerFastEntry)) {
       renderfastEntry = (
         <Button size="large" onClick={(e) => { handleSubmit(e, true) }}>快速入职</Button>
+      )
+    }
+
+    let renderSave = (
+      <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
+    );
+    if (!_.isEmpty(userDetails)) {
+      renderSave = (
+        <div>
+          <Button type="primary" onClick={this.onSave} size="large" className={style.saveBtn}>保存</Button>
+          <Button htmlType="submit">下一步</Button>
+        </div>
       )
     }
 
@@ -170,8 +194,7 @@ class PersonalForm extends React.Component {
         </FormItem>
         <FormItem>
           <div className={style.submitNextBtnBox}>
-            <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
-            {renderfastEntry}
+            {renderSave}{renderfastEntry}
           </div>
         </FormItem>
       </Form>

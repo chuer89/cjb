@@ -76,6 +76,18 @@ class BasicForm extends React.Component {
     }
   }
 
+  onSave = (e) => {
+    e.preventDefault();
+    let { form, handerSave } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        values.idcardTime = common.format(values.idcardTime);
+        console.log('Received values of form: ', values);
+        handerSave(values);
+      }
+    });
+  }
+
   handleSubmit = (e, isFast) => {
     e.preventDefault();
     let { form, handerNext, handerFastEntry } = this.props;

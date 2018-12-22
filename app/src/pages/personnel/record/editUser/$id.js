@@ -24,6 +24,32 @@ class Edit extends React.Component {
     };
   }
 
+  onSave(param) {
+    this.handerAjaxSave(param, () => {
+      message.success('员工修改成功')
+      // routerRedux.push({
+      //   pathname: '/personnel/record'
+      // })
+    })
+  }
+
+  handerAjaxSave(userParam, cb) {
+    let { editUser: {
+      uid,
+    } } = this.props;
+    _.assign(userParam, {
+      id: uid,
+    });
+
+    services.updateUser(userParam).then(({ data }) => {
+      if (data.msg === 'success') {
+        _.isFunction(cb) && cb();
+      } else {
+        message.error(data.msg);
+      }
+    })
+  }
+
   render() {
     let { editUser, dispatch, app, user } = this.props;
     let { personalDisabled, basicDisabled, experienceDisabled, twoDepartmentData,
@@ -68,6 +94,17 @@ class Edit extends React.Component {
           }
         });
       },
+      handerSave(values) {
+        const { storeId } = values;
+        _.assign(userParam, values);
+        if (storeId) {
+          _.assign(userParam, {
+            orgId: '',
+          })
+        }
+
+        self.onSave(userParam);
+      },
       handerNext(values) {
         const { storeId } = values;
         _.extend(userParam, values);
@@ -106,6 +143,9 @@ class Edit extends React.Component {
     let personalOpt = {
       userDetails,
       userMaster,
+      handerSave(values) {
+        self.onSave(values);
+      },
       handerNext(values) {
         _.extend(userParam, values);
         dispatch({
@@ -125,27 +165,45 @@ class Edit extends React.Component {
       positionData,
       userMaster,
       twoDepartmentData,
+      handerSave(values) {
+        _.assign(userParam, values, {
+          contractDate: '',
+          id: uid,
+        });
+        self.onSave(userParam);
+      },
       handerNext(values) {
-        _.extend(userParam, values, {
+        _.assign(userParam, values, {
           contractDate: '',
           id: uid,
         });
 
-        services.updateUser(userParam).then(({ data }) => {
-          if (data.msg === 'success') {
-            // 切换tab
-            dispatch({
-              type: 'editUser/save',
-              payload: {
-                experienceDisabled: false,
-                activeTabsKey: '3',
-              }
-            });
+        this.handerAjaxSave(userParam, () => {
+          // 切换tab
+          dispatch({
+            type: 'editUser/save',
+            payload: {
+              experienceDisabled: false,
+              activeTabsKey: '3',
+            }
+          });
+        })
 
-          } else {
-            message.error(data.msg);
-          }
-        });
+        // services.updateUser(userParam).then(({ data }) => {
+        //   if (data.msg === 'success') {
+        //     // 切换tab
+        //     dispatch({
+        //       type: 'editUser/save',
+        //       payload: {
+        //         experienceDisabled: false,
+        //         activeTabsKey: '3',
+        //       }
+        //     });
+
+        //   } else {
+        //     message.error(data.msg);
+        //   }
+        // });
       },
     }
 
