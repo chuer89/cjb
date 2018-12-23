@@ -76,21 +76,9 @@ class BasicForm extends React.Component {
     }
   }
 
-  onSave = (e) => {
+  handerFarmSave(e, cb) {
     e.preventDefault();
-    let { form, handerSave } = this.props;
-    form.validateFields((err, values) => {
-      if (!err) {
-        values.idcardTime = common.format(values.idcardTime);
-        console.log('Received values of form: ', values);
-        handerSave(values);
-      }
-    });
-  }
-
-  handleSubmit = (e, isFast) => {
-    e.preventDefault();
-    let { form, handerNext, handerFastEntry } = this.props;
+    let { form } = this.props;
     form.validateFields((err, values) => {
       let contractStarttime = '';
       let contractEndtime = '';
@@ -124,11 +112,25 @@ class BasicForm extends React.Component {
         });
 
         console.log('Received values of form: ', values);
-        if (isFast) {
-          handerFastEntry(values)
-        } else {
-          handerNext(values);
-        }
+        _.isFunction(cb) && cb(values);
+      }
+    });
+  }
+
+  onSave = (e) => {
+    let { handerSave } = this.props;
+    this.handerFarmSave(e, (values) => {
+      handerSave(values);
+    });
+  }
+
+  handleSubmit = (e, isFast) => {
+    let { handerNext, handerFastEntry } = this.props;
+    this.handerFarmSave(e, (values) => {
+      if (isFast) {
+        handerFastEntry(values)
+      } else {
+        handerNext(values);
       }
     });
   }
@@ -323,6 +325,18 @@ class BasicForm extends React.Component {
       )
     })
 
+    let renderSave = (
+      <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
+    );
+    if (!_.isEmpty(userDetails)) {
+      renderSave = (
+        <div>
+          <Button type="primary" onClick={this.onSave} size="large" className={style.saveBtn}>保存</Button>
+          <Button htmlType="submit">下一步</Button>
+        </div>
+      )
+    }
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="入职日期">
@@ -417,8 +431,7 @@ class BasicForm extends React.Component {
         {renderRecommendChannel}
         <FormItem>
           <div className={style.submitNextBtnBox}>
-            <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
-            {renderfastEntry}
+            {renderSave}{renderfastEntry}
           </div>
         </FormItem>
       </Form>

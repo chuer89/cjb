@@ -456,6 +456,11 @@ class RecordList extends React.Component {
         dispatch({
           type: 'record/updateAll',
           payload,
+          successBack() {
+            dispatch({
+              type: 'record/fetchWorkUserinfo',
+            })
+          }
         })
       }
     }
@@ -548,6 +553,13 @@ class RecordList extends React.Component {
           <div className={style.searchItem}>
             <span>姓名：</span>
             <Input placeholder="请输入姓名" value={searchParam.name} onChange={(e) => { handerChangeSearch('name', e.target.value) }} maxLength={32} style={inputStyle} />
+          </div>
+          <div className={style.searchItem}>
+            <span>岗位：</span>
+            <Select value={searchParam.position || ''} style={{ width: 120 }} onChange={(e) => { handerChangeSearch('position', e) }}>
+              <Option value="">全部</Option>
+              {renderProfessionLevel}
+            </Select>
           </div>
           <div className={style.searchItem}>
             <Button type="primary" onClick={handerSearch} style={{ 'marginRight': '15px' }}>查询</Button>

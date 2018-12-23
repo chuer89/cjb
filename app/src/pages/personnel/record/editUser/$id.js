@@ -27,9 +27,9 @@ class Edit extends React.Component {
   onSave(param) {
     this.handerAjaxSave(param, () => {
       message.success('员工修改成功')
-      // routerRedux.push({
-      //   pathname: '/personnel/record'
-      // })
+      routerRedux.push({
+        pathname: '/personnel/record'
+      })
     })
   }
 
@@ -48,6 +48,26 @@ class Edit extends React.Component {
         message.error(data.msg);
       }
     })
+  }
+
+  handerAddUserWork(param, cb) {
+    let { editUser: {
+      uid,
+    } } = this.props;
+
+    _.forEach(param, (item) => {
+      item.uid = uid;
+    });
+
+    services.addUserWork({
+      jsondata: JSON.stringify(param),
+    }).then(({ data }) => {
+      if (data.msg === 'success') {
+        _.isFunction(cb) && cb();
+      } else {
+        message.error(data.msg);
+      }
+    });
   }
 
   render() {
@@ -178,7 +198,7 @@ class Edit extends React.Component {
           id: uid,
         });
 
-        this.handerAjaxSave(userParam, () => {
+        self.handerAjaxSave(userParam, () => {
           // 切换tab
           dispatch({
             type: 'editUser/save',
@@ -188,47 +208,28 @@ class Edit extends React.Component {
             }
           });
         })
-
-        // services.updateUser(userParam).then(({ data }) => {
-        //   if (data.msg === 'success') {
-        //     // 切换tab
-        //     dispatch({
-        //       type: 'editUser/save',
-        //       payload: {
-        //         experienceDisabled: false,
-        //         activeTabsKey: '3',
-        //       }
-        //     });
-
-        //   } else {
-        //     message.error(data.msg);
-        //   }
-        // });
       },
     }
 
     // 工作经验
     let experienceOpt = {
       userWork,
-      handerNext(param) {
-        _.forEach(param, (item) => {
-          item.uid = uid;
+      handerSave(values) {
+        self.handerAddUserWork(values, () => {
+          routerRedux.push({
+            pathname: '/personnel/record'
+          })
         });
-
-        services.addUserWork({
-          jsondata: JSON.stringify(param),
-        }).then(({ data }) => {
-          if (data.msg === 'success') {
-            dispatch({
-              type: 'editUser/save',
-              payload: {
-                portrayalDisabled: false,
-                activeTabsKey: '4',
-              }
-            });
-          } else {
-            message.error(data.msg);
-          }
+      },
+      handerNext(param) {
+        self.handerAddUserWork(param, () => {
+          dispatch({
+            type: 'editUser/save',
+            payload: {
+              portrayalDisabled: false,
+              activeTabsKey: '4',
+            }
+          });
         });
       },
       handerDel(id) {

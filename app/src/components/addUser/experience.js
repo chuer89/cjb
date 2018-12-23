@@ -74,9 +74,9 @@ class DynamicFieldSet extends React.Component {
     }
   }
 
-  handleSubmit = (e, isFast) => {
+  handerFarmSave(e, cb) {
     e.preventDefault();
-    let { form, handerNext, userWork, handerFastEntry } = this.props;
+    let { form, userWork } = this.props;
     form.validateFields((err, values) => {
       let { keys } = values;
       let params = [];
@@ -113,14 +113,28 @@ class DynamicFieldSet extends React.Component {
             params.push(workParm);
           }
 
-          if (isFast) {
-            handerFastEntry(params);
-          } else {
-            handerNext(params);
-          }
+          _.isFunction(cb) && cb(params);
         });
       }
     });
+  }
+
+  onSave = (e) => {
+    let { handerSave } = this.props;
+    this.handerFarmSave(e, (values) => {
+      handerSave(values);
+    });
+  }
+
+  handleSubmit = (e, isFast) => {
+    let { handerFastEntry, handerNext } = this.props;
+    this.handerFarmSave(e, (params) => {
+      if (isFast) {
+        handerFastEntry(params);
+      } else {
+        handerNext(params);
+      }
+    })
   }
 
   render() {
@@ -136,10 +150,20 @@ class DynamicFieldSet extends React.Component {
       },
     };
 
+    let renderSave = (
+      <div>
+        <Button type="primary" onClick={this.onSave} size="large" className={style.saveBtn}>保存</Button>
+        <Button htmlType="submit">下一步</Button>
+      </div>
+    )
     let renderfastEntry = '';
     if (_.isFunction(handerFastEntry)) {
       renderfastEntry = (
         <Button size="large" onClick={(e) => { self.handleSubmit(e, true) }}>快速入职</Button>
+      )
+
+      renderSave = (
+        <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
       )
     }
 
@@ -239,8 +263,7 @@ class DynamicFieldSet extends React.Component {
         </FormItem>
         <FormItem {...formItemLayoutWithOutLabel}>
           <div className={style.submitNextBtnBox}>
-            <Button type="primary" htmlType="submit" size="large" className={style.nextBtn}>下一步</Button>
-            {renderfastEntry}
+            {renderSave}{renderfastEntry}
           </div>
         </FormItem>
       </Form>

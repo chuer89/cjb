@@ -106,7 +106,7 @@ export default {
       yield put({ type: 'save' });
     },
 
-    // 工作记录
+    // 获取职位状态数量
     *fetchWorkUserinfo({ payload }, { call, put }) {
       let temp = yield call(services.workUserinfo, payload);
       let { data } = temp;
@@ -166,7 +166,7 @@ export default {
     },
 
     // 批量修改
-    *updateAll({ payload }, { call, put }) {
+    *updateAll({ payload, successBack }, { call, put }) {
       const temp = yield call(services.updateAll, payload);
       let { data } = temp;
       if (data.msg === 'success') {
@@ -183,6 +183,8 @@ export default {
         yield put({
           type: 'getUserList',
         })
+        
+        _.isFunction(successBack) && successBack();
       } else {
         message.error(data.msg);
       }
