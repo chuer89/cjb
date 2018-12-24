@@ -60,11 +60,7 @@ class JobStatusUser extends React.Component {
       renderReason = (
         <div>
           <FormItem {...formItemLayout} label="离职原因">
-            {getFieldDecorator('resignationType', {
-              rules: [{
-                required: true, message: '请选择离职原因',
-              }],
-            })(
+            {getFieldDecorator('resignationType')(
               <Select style={{ width: 180 }}>
                 {
                   resignationTypeMap.map((item) => {
@@ -77,11 +73,7 @@ class JobStatusUser extends React.Component {
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="离职时间">
-            {getFieldDecorator('resignationTime', {
-              rules: [{
-                required: true, message: '请选择离职时间',
-              }],
-            })(
+            {getFieldDecorator('resignationTime')(
               <DatePicker />
             )}
           </FormItem>
