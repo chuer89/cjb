@@ -158,7 +158,7 @@ class RecordList extends React.Component {
       //     <div>{value}</div>
       //   )
       // }
-      title: '工作年限',
+      title: '入职年限',
       dataIndex: 'workAge',
     }, {
       title: '入职时间',

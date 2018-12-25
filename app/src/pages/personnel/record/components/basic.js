@@ -45,9 +45,11 @@ class Basic extends React.Component {
     let importantData = [{
       label: '姓名', value: userDetails.name,
     }, {
-      label: '性别', value: gender[userDetails.gender],
-    }, {
       label: '电话', value: userDetails.phone,
+    }, {
+      label: '入职年限', value: userDetails.workAge
+    }, {
+      label: '岗位名称', value: userDetails.positionName
     }];
     let renderImportant = importantData.map((item, index) => {
       return (
@@ -61,9 +63,9 @@ class Basic extends React.Component {
     let listData = [{
       title: '个人信息',
       data: [{
-        label: '学历', value: education[userDetails.education]
-      }, {
         label: '年龄', value: userDetails.age
+      }, {
+        label: '性别', value: gender[userDetails.gender],
       }, {
         label: '出生日期', value: common.format(userDetails.birthday)
       }, {
@@ -72,6 +74,8 @@ class Basic extends React.Component {
         label: '身份证地址', value: userDetails.idcardAddr
       }, {
         label: '籍贯', value: userDetails.nativePlace
+      }, {
+        label: '学历', value: education[userDetails.education]
       }, {
         label: '学校', value: userDetails.school
       }, {
@@ -92,15 +96,11 @@ class Basic extends React.Component {
     }, {
       title: '职位信息',
       data: [{
-        label: '岗位名称', value: userDetails.positionName
-      }, {
         label: '所在部门', value: userDetails.deptName
       }, {
         label: '入职时间', value: common.format(userDetails.joinTime)
       }, {
         label: '转正时间', value: common.format(userDetails.positiveTime)
-      }, {
-        label: '工作年限', value: userDetails.workAge,
       }, {
         label: '职级', value: rankTypeObj[userDetails.type]
       }, {
@@ -159,7 +159,7 @@ class Basic extends React.Component {
     return (
       <div>
         <div className={style.firstBox}>
-          <div className={style.firstItemHead}>
+          <div className={style.firstItemHead} style={{ paddingTop: '24px' }}>
             <img className={style.headImg} src={defaultHead} alt="" />
           </div>
           <div className={style.firstItem} style={{ width: '70%' }}>{renderImportant}</div>
