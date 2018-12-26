@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card } from 'antd';
+import { Row, Col, Card, Button } from 'antd';
 import _ from 'lodash';
 import ReactEcharts from 'echarts-for-react';
 import common from '@common';
@@ -8,6 +8,9 @@ import style from './index.less';
 
 import ChartWork from './components/work'; // 工作年限
 import ChartTime from './components/time'; // 时间维度
+import PieComp from '@components/dashboard/pie'; // 饼图
+
+const ButtonGroup = Button.Group;
 
 class SeparationList extends React.Component {
   state = {
@@ -33,77 +36,42 @@ class SeparationList extends React.Component {
       span: 12,
     }
 
-    // 原因分布
-    let reasonPie = [];
-    if (_.isArray(chartDepartureReason.data)) {
-      _.forEach(chartDepartureReason.data, (item) => {
-        reasonPie.push({
-          name: item.name,
-          value: item.num,
-        });
-      })
-    }
-
-    // 离职率
-    let resignationPie = [];
-    if (_.isArray(chartResignation.data)) {
-      _.forEach(chartResignation.data, (item) => {
-        resignationPie.push({
-          name: item.name,
-          value: item.num,
-        });
-      });
-    }
-
-    // 年龄分布
-    let agePie = [];
-    if (_.isArray(chartDepartureAge.data)) {
-      _.forEach(chartDepartureAge.data, (item) => {
-        agePie.push({
-          name: item.name,
-          value: item.num,
-        });
-      })
-    }
-
-    // 学历分析
-    let educationPie = [];
-    if (_.isArray(chartDepartureEducation.data)) {
-      _.forEach(chartDepartureEducation.data, (item) => {
-        educationPie.push({
-          name: item.name,
-          value: item.num,
-        });
-      })
-    }
-
     let pieData = [{
       title: '离职原因分析',
-      data: reasonPie,
+      data: chartDepartureReason.data,
+      columns: [{
+        title: '原因', dataIndex: 'name', width: '40%'
+      }, {
+        title: '离职数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
+      }]
     }, {
       title: '离职率',
-      data: resignationPie,
+      data: chartResignation.data,
+      columns: [{
+        title: '状态', dataIndex: 'name', width: '40%'
+      }, {
+        title: '离职数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
+      }]
     }];
     let renderPieQudao = pieData.map((item, index) => {
-      let option = common.getPieOption(item.data);
       let colStyle = {};
       if (index === 1) {
         colStyle = {
           'marginRight': '0',
         }
       }
-      let renderEcharts = (
-        <div className={style.notData}>暂无数据</div>
-      )
-      if (!_.isEmpty(item.data)) {
-        renderEcharts = (
-          <ReactEcharts option={option} />
-        )
+      let pieCompProps = {
+        ...item,
       }
+
       return (
         <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
-            <Card title={item.title}>{renderEcharts}</Card>
+            <PieComp {...pieCompProps} />
           </div>
         </Col>
       )
@@ -111,32 +79,41 @@ class SeparationList extends React.Component {
 
     let topPie = [{
       title: '离职年龄分析',
-      data: agePie,
+      data: chartDepartureAge.data,
+      columns: [{
+        title: '年龄段', dataIndex: 'name', width: '40%'
+      }, {
+        title: '离职数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比', dataIndex: 'proportion', width: '30%'
+      }]
     }, {
       title: '离职学历分析',
-      data: educationPie,
+      data: chartDepartureEducation.data,
+      columns: [{
+        title: '学历', dataIndex: 'name', width: '40%'
+      }, {
+        title: '离职数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比', dataIndex: 'proportion', width: '30%'
+      }]
     }];
     let renderTopPie = topPie.map((item, index) => {
-      let option = common.getPieOption(item.data);
       let colStyle = {};
       if (index === 2) {
         colStyle = {
           'marginRight': '0',
         }
       }
-      let renderEcharts = (
-        <div className={style.notData}>暂无数据</div>
-      )
-      if (!_.isEmpty(item.data)) {
-        renderEcharts = (
-          <ReactEcharts option={option} />
-        )
+
+      let pieCompProps = {
+        ...item,
       }
 
       return (
         <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
-            <Card title={item.title}>{renderEcharts}</Card>
+            <PieComp {...pieCompProps} />
           </div>
         </Col>
       )
