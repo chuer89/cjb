@@ -1,16 +1,12 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Button } from 'antd';
+import { Row, Col, Card } from 'antd';
 import _ from 'lodash';
-import ReactEcharts from 'echarts-for-react';
-import common from '@common';
 import style from './index.less';
 
 import ChartWork from './components/work'; // 工作年限
 import ChartTime from './components/time'; // 时间维度
 import PieComp from '@components/dashboard/pie'; // 饼图
-
-const ButtonGroup = Button.Group;
 
 class SeparationList extends React.Component {
   state = {
@@ -26,8 +22,6 @@ class SeparationList extends React.Component {
       chartDepartureTime,
       chartResignation,
     }, dispatch } = this.props;
-
-    // console.log(chartDepartureWork, chartDepartureTime)
 
     let RowSpan3 = {
       span: 8,
@@ -85,7 +79,7 @@ class SeparationList extends React.Component {
       }, {
         title: '离职数', dataIndex: 'num', width: '30%'
       }, {
-        title: '占比', dataIndex: 'proportion', width: '30%'
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
       }]
     }, {
       title: '离职学历分析',
@@ -95,7 +89,7 @@ class SeparationList extends React.Component {
       }, {
         title: '离职数', dataIndex: 'num', width: '30%'
       }, {
-        title: '占比', dataIndex: 'proportion', width: '30%'
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
       }]
     }];
     let renderTopPie = topPie.map((item, index) => {

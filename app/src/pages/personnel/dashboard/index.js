@@ -6,6 +6,7 @@ import style from './index.less';
 import { Row, Col, Card } from 'antd';
 import _ from 'lodash';
 
+import PieComp from '@components/dashboard/pie'; // 饼图
 import Comments from './components/comments';
 
 class Dashboard extends React.Component {
@@ -29,99 +30,44 @@ class Dashboard extends React.Component {
     let RowSpan2 = {
       span: 12,
     }
-
-    // 年龄分布
-    let agePie = [];
-    if (_.isArray(chartAge.data)) {
-      _.forEach(chartAge.data, (item) => {
-        agePie.push({
-          name: item.name,
-          value: item.num,
-        });
-      })
-    }
-
-    // 学历分布
-    let educationPie = [];
-    if (_.isArray(chartEducation.data)) {
-      _.forEach(chartEducation.data, (item) => {
-        educationPie.push({
-          name: item.name,
-          value: item.num,
-        });
-      });
-    }
-
-    // 性别分布
-    let genderPie = [];
-    if (_.isArray(chartGender.data)) {
-      _.forEach(chartGender.data, (item) => {
-        genderPie.push({
-          name: item.name,
-          value: item.num,
-        });
-      });
-    }
-
-    // 招聘渠道
-    let applyChannelPie = [];
-    if (_.isArray(chartApplyChannel.data)) {
-      _.forEach(chartApplyChannel.data, (item) => {
-        applyChannelPie.push({
-          name: item.name,
-          value: item.num,
-        });
-      });
-    }
-
-    // 兼职全职分布
-    let jobTypePie = [];
-    if (_.isArray(chartJobType.data)) {
-      _.forEach(chartJobType.data, (item) => {
-        jobTypePie.push({
-          name: item.name,
-          value: item.num,
-        });
-      });
-    }
-
-    let onJobProportionPie = [];
-    if (_.isArray(chartOnJobProportion.data)) {
-      _.forEach(chartOnJobProportion.data, (item) => {
-        onJobProportionPie.push({
-          name: item.name,
-          value: item.num,
-        });
-      });
-    }
-
+    
     let topPie = [{
       title: '年龄分布',
-      data: agePie,
+      data: chartAge.data,
+      columns: [{
+        title: '年龄段', dataIndex: 'name', width: '40%'
+      }, {
+        title: '人数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
+      }]
     }, {
       title: '学历分布',
-      data: educationPie,
+      data: chartEducation.data,
+      columns: [{
+        title: '学历', dataIndex: 'name', width: '40%'
+      }, {
+        title: '人数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
+      }]
     }];
     let renderTopPie = topPie.map((item, index) => {
-      let option = common.getPieOption(item.data);
       let colStyle = {};
       if (index === 2) {
         colStyle = {
           'marginRight': '0',
         }
       }
-      let renderEcharts = (
-        <div className={style.notData}>暂无数据</div>
-      )
-      if (!_.isEmpty(item.data)) {
-        renderEcharts = (
-          <ReactEcharts option={option} />
-        )
+
+      let pieCompProps = {
+        ...item,
       }
+
       return (
         <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
-            <Card title={item.title}>{renderEcharts}</Card>
+            <PieComp {...pieCompProps} />
           </div>
         </Col>
       )
@@ -129,31 +75,39 @@ class Dashboard extends React.Component {
 
     let pieData = [{
       title: '招聘渠道',
-      data: applyChannelPie,
+      data: chartApplyChannel.data,
+      columns: [{
+        title: '渠道', dataIndex: 'name', width: '40%'
+      }, {
+        title: '人数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
+      }]
     }, {
       title: '性别分布',
-      data: genderPie,
+      data: chartGender.data,
+      columns: [{
+        title: '性别', dataIndex: 'name', width: '40%'
+      }, {
+        title: '人数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
+      }]
     }];
     let renderPieQudao = pieData.map((item, index) => {
-      let option = common.getPieOption(item.data);
       let colStyle = {};
       if (index === 1) {
         colStyle = {
           'marginRight': '0',
         }
       }
-      let renderEcharts = (
-        <div className={style.notData}>暂无数据</div>
-      )
-      if (!_.isEmpty(item.data)) {
-        renderEcharts = (
-          <ReactEcharts option={option} />
-        )
+      let pieCompProps = {
+        ...item,
       }
       return (
         <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
-            <Card title={item.title}>{renderEcharts}</Card>
+            <PieComp {...pieCompProps} />
           </div>
         </Col>
       )
@@ -161,31 +115,39 @@ class Dashboard extends React.Component {
 
     let pieZhi = [{
       title: '兼职全职分布',
-      data: jobTypePie,
+      data: chartJobType.data,
+      columns: [{
+        title: '类别', dataIndex: 'name', width: '40%'
+      }, {
+        title: '人数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
+      }]
     }, {
       title: '满编率',
-      data: onJobProportionPie
+      data: chartOnJobProportion.data,
+      columns: [{
+        title: '类别', dataIndex: 'name', width: '40%'
+      }, {
+        title: '人数', dataIndex: 'num', width: '30%'
+      }, {
+        title: '占比(%)', dataIndex: 'proportion', width: '30%'
+      }]
     }];
     let renderPieZhi = pieZhi.map((item, index) => {
-      let option = common.getPieOption(item.data);
       let colStyle = {};
       if (index === 1) {
         colStyle = {
           'marginRight': '0',
         }
       }
-      let renderEcharts = (
-        <div className={style.notData}>暂无数据</div>
-      )
-      if (!_.isEmpty(item.data)) {
-        renderEcharts = (
-          <ReactEcharts option={option} />
-        )
+      let pieCompProps = {
+        ...item,
       }
       return (
         <Col {...RowSpan2} key={index}>
           <div className={style.splitBox} style={colStyle}>
-            <Card title={item.title}>{renderEcharts}</Card>
+            <PieComp {...pieCompProps} />
           </div>
         </Col>
       )
