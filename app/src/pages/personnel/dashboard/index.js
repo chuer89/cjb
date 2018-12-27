@@ -7,6 +7,7 @@ import { Row, Col, Card } from 'antd';
 import _ from 'lodash';
 
 import PieComp from '@components/dashboard/pie'; // 饼图
+import LineComp from '@components/dashboard/line'; // 饼图
 import Comments from './components/comments';
 
 class Dashboard extends React.Component {
@@ -188,6 +189,11 @@ class Dashboard extends React.Component {
         type: 'line',
         smooth: true
       }]
+    }
+
+    let turnoverProps = {
+      title: '流动分析',
+      data: chartUserTurnover,
     }
 
     return (
