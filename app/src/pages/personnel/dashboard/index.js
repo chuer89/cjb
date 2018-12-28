@@ -1,27 +1,19 @@
 import React from 'react';
 import { connect } from 'dva';
-import ReactEcharts from 'echarts-for-react';
-import common from '@common';
 import style from './index.less';
-import { Row, Col, Card } from 'antd';
+import { Row, Col } from 'antd';
 import _ from 'lodash';
 
 import PieComp from '@components/dashboard/pie'; // 饼图
-import LineComp from '@components/dashboard/line'; // 饼图
 import Comments from './components/comments';
+import FlowComp from './components/flow'; // 流动分析
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    // 设置 initial state
-    this.state = {
-      month: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
-    }
+  state = {
   }
 
   render() {
     let { dispatch, dashboard } = this.props;
-    let { month } = this.state;
     let { chartAge, chartEducation, chartGender, chartApplyChannel, 
       chartJobType, chartOnJobProportion, chartUserTurnover } = dashboard;
 
@@ -154,46 +146,16 @@ class Dashboard extends React.Component {
       )
     });
 
-    let xAxisData = [];
-    let inService = []; // 在职
-    let outService = []; // 离职
-    if (_.isArray(chartUserTurnover)) {
-      _.forEach(chartUserTurnover, (item, index) => {
-        let { entry, out } = item || {};
-
-        xAxisData.push(month[index] + '月');
-        inService.push(entry || undefined);
-        outService.push(out || undefined);
-      });
-    }
-    let lineOption = {
-      xAxis: {
-        data: xAxisData,
-        boundaryGap: false,
-      },
-      tooltip: {
-        trigger: 'axis',
-        // formatter: '{b} : {c}'
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [{
-        name: '入职',
-        data: inService,
-        type: 'line',
-        smooth: true
-      }, {
-        name: '离职',
-        data: outService,
-        type: 'line',
-        smooth: true
-      }]
-    }
-
-    let turnoverProps = {
+    let FlowCompProps = {
       title: '流动分析',
       data: chartUserTurnover,
+      columns: [{
+        title: '月份', dataIndex: 'month', width: '40%'
+      }, {
+        title: '入职', dataIndex: 'entry', width: '30%'
+      }, {
+        title: '离职', dataIndex: 'out', width: '30%'
+      }]
     }
 
     return (
@@ -205,9 +167,7 @@ class Dashboard extends React.Component {
           <Row>{renderPieQudao}</Row>
         </div>
         <div className={style.box}>
-          <Card title="流动分析">
-            <ReactEcharts style={{ 'height': '400px' }} option={lineOption} />
-          </Card>
+          <FlowComp {...FlowCompProps} />
         </div>
         <div className={style.box}>
           <Row>{renderPieZhi}</Row>

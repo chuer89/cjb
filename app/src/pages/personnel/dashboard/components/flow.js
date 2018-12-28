@@ -9,6 +9,7 @@ const ButtonGroup = Button.Group;
 class LineComp extends React.Component {
   state = {
     isCartTable: false,
+    month: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
   }
 
   UNSAFE_componentWillMount() {
@@ -30,26 +31,35 @@ class LineComp extends React.Component {
       data,
       columns,
     } = this.props;
-    const { isCartTable } = this.state;
+    const { isCartTable, month } = this.state;
     let extraCss = {
       padding: '0',
     }
     let xAxisData = [];
-    let seriesData = [];
     let dataSource = [];
     let renderChangeChart = '';
     let tableOpt = {};
 
-    if (!_.isEmpty(data)) {
-      _.forEach(data, (item, key) => {
-        xAxisData.push(key);
-        seriesData.push(item.v);
+    let inService = []; // 在职
+    let outService = []; // 离职
+
+    if (_.isArray(data)) {
+      _.forEach(data, (item, index) => {
+        let { entry, out } = item || {};
+
+        xAxisData.push(month[index] + '月');
+        inService.push(entry || undefined);
+        outService.push(out || undefined);
+
         dataSource.push({
-          index: key,
-          ...item,
+          index,
+          entry: entry || '--',
+          out: out || '--',
+          month: month[index] + '月',
         })
-      })
+      });
     }
+
     let lineOption = {
       xAxis: {
         data: xAxisData,
@@ -63,8 +73,13 @@ class LineComp extends React.Component {
         type: 'value'
       },
       series: [{
-        // name: '入职',
-        data: seriesData,
+        name: '入职',
+        data: inService,
+        type: 'line',
+        smooth: true
+      }, {
+        name: '离职',
+        data: outService,
         type: 'line',
         smooth: true
       }]
@@ -108,7 +123,7 @@ class LineComp extends React.Component {
     )
     if (!_.isEmpty(dataSource)) {
       renderEcharts = (
-        <ReactEcharts option={lineOption} />
+        <ReactEcharts style={cssStyleBox} option={lineOption} />
       )
 
       if (isCartTable) {
