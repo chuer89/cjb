@@ -6,7 +6,7 @@ const { Footer } = Layout;
 const FooterDom = () => {
   return (
     <div>
-      <Footer style={{ textAlign: 'center' }}>匠 ©2018</Footer>
+      <Footer style={{ textAlign: 'center' }}></Footer>
     </div>
   );
 };

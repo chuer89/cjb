@@ -252,7 +252,7 @@ class RecordList extends React.Component {
       positionData,
     } } = this.props;
     let { dataBody, contractType, warningData, visibleJobStatus, workUserinfo, loadingList,
-      searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch } = record;
+      searchParam, pageSize, firstPage, selectedRowUserId, visibleBatch, defaultActiveStatusKey } = record;
     let { dept, userInfo: { token, userType, hr } } = user;
     let inputStyle = {
       'width': '180px',
@@ -578,7 +578,7 @@ class RecordList extends React.Component {
 
     // 2全职 1实习 5兼职 3离职 4待离职
     let tabsProps = {
-      defaultActiveKey: "",
+      defaultActiveKey: defaultActiveStatusKey,
       onChange: handerChangeTab,
       type: "card",
       tabBarGutter: 8,

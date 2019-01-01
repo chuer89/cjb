@@ -12,6 +12,8 @@ export default {
     pageSize: 20, // 
     firstPage: 1,
 
+    defaultActiveStatusKey: '', // 被选中的tab
+
     loadingList: true, // 加载列表
 
     // 状态筛选 1试用 2在职 3离职 4待离职
@@ -65,7 +67,7 @@ export default {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
         let defaultStatus = _.get(history, 'location.query.status');
-        let status = defaultStatus ? [defaultStatus] : [];
+        let status = defaultStatus || '';
         // let status = _.get(history, 'location.query.status');
         // let type = _.get(history, 'location.query.type');
         if (pathname === '/personnel/record') {
@@ -75,7 +77,8 @@ export default {
               searchParam: {
                 page: 1,
                 status,
-              }
+              },
+              defaultActiveStatusKey: status,
             }
           })
 
