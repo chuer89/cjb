@@ -71,11 +71,11 @@ export default ({ data, handerChangeSearch }) => {
   }
 
   const columns = [{
-    title: '时间', dataIndex: 'time', width: 200,
+    title: '时间', dataIndex: 'time', width: '40%',
   }, {
-    title: '离职数', dataIndex: 'v', 
+    title: '离职数', dataIndex: 'v', width: '30%'
   }, {
-    title: '离职总数', dataIndex: 'total', 
+    title: '总人数', dataIndex: 'total', width: '30%'
   }];
 
   const tableOpt = {
